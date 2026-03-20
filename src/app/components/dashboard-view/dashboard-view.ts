@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { fromEvent, Subject, takeUntil } from 'rxjs';
 import { getTypeBreakdown } from '../../core/catalog';
 import { COLS, MIN_CANVAS_W, ROW_H } from '../../core/constants';
 import { computeColW, computeCanvasH } from '../../core/layout.utils';
@@ -35,6 +36,7 @@ export class DashboardView  implements OnInit, OnDestroy {
   private clockTimer?: ReturnType<typeof setInterval>;
   private resizeObserver?: ResizeObserver;
   private onFullscreenChange!: () => void;
+  private readonly destroy$ = new Subject<void>();
  
   // ── Derived ───────────────────────────────────────────────────
   get widgets()       { return this.svc.widgets(); }
@@ -57,10 +59,15 @@ export class DashboardView  implements OnInit, OnDestroy {
   // ── Lifecycle ─────────────────────────────────────────────────
   ngOnInit(): void {
     const canvas = this.canvasRef.nativeElement;
+    const main = this.mainRef.nativeElement;
  
     // Measure immediately on init — do NOT wait for ResizeObserver's first
     // callback, which fires asynchronously and causes the blank-layout flash.
     this._measure();
+
+    fromEvent(main, 'scroll')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.svc.setScrollTop(main.scrollTop));
  
     // ResizeObserver keeps colW accurate on window resize
     this.resizeObserver = new ResizeObserver(() => {
@@ -79,6 +86,8 @@ export class DashboardView  implements OnInit, OnDestroy {
   }
  
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.resizeObserver?.disconnect();
     clearInterval(this.clockTimer);
     document.removeEventListener('fullscreenchange', this.onFullscreenChange);
@@ -90,6 +99,9 @@ export class DashboardView  implements OnInit, OnDestroy {
     const w = this.canvasRef.nativeElement.offsetWidth || window.innerWidth;
     this.colW    = computeColW(Math.max(w, MIN_CANVAS_W));
     this.canvasH = computeCanvasH(this.widgets);
+    this.svc.setCanvasW(w);
+    this.svc.setViewportH(this.mainRef.nativeElement.clientHeight);
+    this.svc.setScrollTop(this.mainRef.nativeElement.scrollTop);
   }
  
   // ── Keyboard ──────────────────────────────────────────────────

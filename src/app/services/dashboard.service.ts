@@ -141,6 +141,7 @@ export class DashboardService {
    * Reactive state — NOT read from DOM at render time (bug fix #11).
    */
   readonly scrollTop = signal<number>(0);
+  readonly viewportH = signal<number>(600);
 
   /**
    * Whether the minimap overlay is visible.
@@ -397,6 +398,11 @@ export class DashboardService {
   /** Update scroll position — called by scroll event. */
   setScrollTop(top: number): void {
     this.scrollTop.set(top);
+  }
+
+  /** Update visible scroll viewport height â€” used by minimap viewport math. */
+  setViewportH(height: number): void {
+    this.viewportH.set(Math.max(1, height));
   }
 
   /** Set zoom level — clamped to valid range. */

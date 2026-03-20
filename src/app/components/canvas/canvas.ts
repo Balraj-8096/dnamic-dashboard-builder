@@ -140,11 +140,13 @@ export class Canvas implements OnInit, OnDestroy {
     const main = this.mainRef.nativeElement;
     const canvas = this.canvasRef.nativeElement;
     this.syncResponsiveUi();
+    this.svc.setViewportH(main.clientHeight);
 
     // Step 32: ResizeObserver with rAF delay (bug fix #14)
     this.resizeObserver = new ResizeObserver(() => {
       requestAnimationFrame(() => {
         this.svc.setCanvasW(canvas.offsetWidth);
+        this.svc.setViewportH(main.clientHeight);
         this.syncResponsiveUi();
       });
     });
@@ -224,6 +226,7 @@ export class Canvas implements OnInit, OnDestroy {
 
   @HostListener('window:resize')
   onWindowResize(): void {
+    this.svc.setViewportH(this.mainRef.nativeElement.clientHeight);
     this.syncResponsiveUi();
   }
 
