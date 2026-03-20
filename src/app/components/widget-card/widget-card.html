@@ -16,7 +16,7 @@
   [class.is-locked]="isLocked"
   [class.is-interacting]="isInteracting"
   (click)="onCardClick($event)"
-  (mousedown)="onSurfaceMousedown($event)"
+  (pointerdown)="onSurfacePointerDown($event)"
   (contextmenu)="onContextMenu($event)">
 
   <!-- ── HEADER ────────────────────────────────────────────── -->
@@ -75,27 +75,27 @@
   <!-- ── RESIZE HANDLES (hidden when locked) ───────────────── -->
   @if (!isLocked) {
     <div class="resize-handle resize-handle--n"
-      (mousedown)="onResizeMousedown($event, RD.N)"></div>
+      (pointerdown)="onResizePointerDown($event, RD.N)"></div>
     <div class="resize-handle resize-handle--e"
-      (mousedown)="onResizeMousedown($event, RD.E)"></div>
+      (pointerdown)="onResizePointerDown($event, RD.E)"></div>
     <div class="resize-handle resize-handle--s"
-      (mousedown)="onResizeMousedown($event, RD.S)"></div>
+      (pointerdown)="onResizePointerDown($event, RD.S)"></div>
     <div class="resize-handle resize-handle--w"
-      (mousedown)="onResizeMousedown($event, RD.W)"></div>
+      (pointerdown)="onResizePointerDown($event, RD.W)"></div>
     <div class="resize-handle resize-handle--nw"
-      (mousedown)="onResizeMousedown($event, RD.NW)">
+      (pointerdown)="onResizePointerDown($event, RD.NW)">
       <div class="resize-corner-dot"></div>
     </div>
     <div class="resize-handle resize-handle--ne"
-      (mousedown)="onResizeMousedown($event, RD.NE)">
+      (pointerdown)="onResizePointerDown($event, RD.NE)">
       <div class="resize-corner-dot"></div>
     </div>
     <div class="resize-handle resize-handle--sw"
-      (mousedown)="onResizeMousedown($event, RD.SW)">
+      (pointerdown)="onResizePointerDown($event, RD.SW)">
       <div class="resize-corner-dot"></div>
     </div>
     <div class="resize-handle resize-handle--se"
-      (mousedown)="onResizeMousedown($event, RD.SE)">
+      (pointerdown)="onResizePointerDown($event, RD.SE)">
       <div class="resize-corner-dot"></div>
     </div>
   }

@@ -21,6 +21,8 @@
   flex: 1;
   overflow: auto;
   position: relative;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar       { width: 8px; height: 8px; }
   &::-webkit-scrollbar-track { background: var(--bg0); }
@@ -111,4 +113,30 @@
 .empty-sep {
   font-size: 12px;
   color: var(--txt2);
+}
+
+@media (max-width: 1024px) {
+  .canvas-shell {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .snap-guide {
+    display: none;
+  }
+
+  .alignment-guide {
+    opacity: 0.75;
+  }
+
+  .empty-state {
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  .empty-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }

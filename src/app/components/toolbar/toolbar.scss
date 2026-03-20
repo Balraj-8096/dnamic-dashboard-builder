@@ -252,3 +252,78 @@
     cursor: not-allowed;
   }
 }
+
+@media (max-width: 1100px) {
+  .toolbar {
+    height: auto;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+  }
+
+  .cluster {
+    flex-wrap: wrap;
+
+    &--left,
+    &--center,
+    &--right {
+      flex: 1 1 100%;
+    }
+
+    &--left {
+      justify-content: space-between;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .toolbar {
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .logo {
+    font-size: 12px;
+  }
+
+  .title-span {
+    max-width: 150px;
+  }
+
+  .cluster {
+    gap: 6px;
+
+    &--center,
+    &--right {
+      justify-content: flex-start;
+    }
+  }
+
+  .vdivider {
+    display: none;
+  }
+
+  .btn-text,
+  .btn-add,
+  .btn-view {
+    min-height: 32px;
+  }
+}
+
+@media (max-width: 560px) {
+  .title-input {
+    width: min(100%, 150px);
+  }
+
+  .widget-count {
+    display: none;
+  }
+
+  .zoom-group {
+    order: 2;
+  }
+
+  .cluster--right {
+    gap: 4px;
+  }
+}

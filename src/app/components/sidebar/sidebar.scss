@@ -296,3 +296,53 @@
     background: color-mix(in srgb, var(--grn) 10%, transparent);
   }
 }
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    max-height: min(38vh, 360px);
+    border-right: none;
+    border-bottom: 1px solid var(--bdr);
+    padding: 12px 12px 10px;
+  }
+
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 6px;
+  }
+
+  .palette-item {
+    margin-bottom: 0;
+  }
+
+  .shortcuts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px 12px;
+  }
+
+  .shortcut-row {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar {
+    max-height: 46vh;
+    padding-inline: 10px;
+  }
+
+  .palette {
+    grid-template-columns: 1fr;
+  }
+
+  .shortcuts {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-info {
+    gap: 2px;
+  }
+}

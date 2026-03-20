@@ -8,6 +8,7 @@
   overflow: hidden;
   contain: layout paint;
   box-shadow: var(--shadow-card);
+  touch-action: auto;
   transition:
     border-color var(--transition-base),
     box-shadow   var(--transition-base),
@@ -70,6 +71,7 @@
   border-bottom: 1px solid var(--bdr);
   background: linear-gradient(180deg, var(--bg2) 0%, var(--bg1) 100%);
   user-select: none;
+  touch-action: none;
 
   &.can-drag { cursor: inherit; }
   &.can-drag:active { cursor: inherit; }
@@ -188,6 +190,7 @@
   position: absolute;
   z-index: 20;
   background: transparent;
+  touch-action: none;
   opacity: 0.75;
   transition:
     background var(--transition-fast),
@@ -345,4 +348,51 @@
   background: color-mix(in srgb, var(--acc) 8%, transparent);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--acc) 18%, transparent);
   pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .card-header {
+    padding: 0 8px;
+  }
+
+  .header-right {
+    gap: 6px;
+  }
+
+  .type-label {
+    display: none;
+  }
+
+  .action-btns {
+    opacity: 1;
+  }
+
+  .action-btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .resize-handle {
+    &--n,
+    &--s {
+      left: 10px;
+      right: 10px;
+      height: 14px;
+    }
+
+    &--e,
+    &--w {
+      top: 10px;
+      bottom: 10px;
+      width: 14px;
+    }
+
+    &--nw,
+    &--ne,
+    &--sw,
+    &--se {
+      width: 22px;
+      height: 22px;
+    }
+  }
 }

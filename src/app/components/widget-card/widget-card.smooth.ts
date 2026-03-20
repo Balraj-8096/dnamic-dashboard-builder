@@ -59,6 +59,8 @@ export class WidgetCard implements OnDestroy {
   private static readonly ALIGNMENT_THRESHOLD_PX = 8;
 
   private dragRef: {
+    pointerId: number;
+    pointerType: string;
     startX: number;
     startY: number;
     origX: number;
@@ -73,6 +75,7 @@ export class WidgetCard implements OnDestroy {
   } | null = null;
 
   private resizeRef: {
+    pointerId: number;
     dir: ResizeDirection;
     startX: number;
     startY: number;
@@ -90,10 +93,12 @@ export class WidgetCard implements OnDestroy {
   private dragRafId: number | null = null;
   private resizeRafId: number | null = null;
 
-  private dragMoveHandler!: (e: MouseEvent) => void;
-  private dragUpHandler!: (e: MouseEvent) => void;
-  private resizeMoveHandler!: (e: MouseEvent) => void;
-  private resizeUpHandler!: (e: MouseEvent) => void;
+  private dragMoveHandler!: (e: PointerEvent) => void;
+  private dragUpHandler!: (e: PointerEvent) => void;
+  private dragCancelHandler!: (e: PointerEvent) => void;
+  private resizeMoveHandler!: (e: PointerEvent) => void;
+  private resizeUpHandler!: (e: PointerEvent) => void;
+  private resizeCancelHandler!: (e: PointerEvent) => void;
 
   get pixelRect(): PixelRect {
     return gridToPixel(this.widget, this.svc.colW());
@@ -253,9 +258,10 @@ export class WidgetCard implements OnDestroy {
     this.svc.deleteWidget(this.widget.id);
   }
 
-  onSurfaceMousedown(e: MouseEvent): void {
-    if (e.button !== 0) return;
+  onSurfacePointerDown(e: PointerEvent): void {
+    if (!this.isPrimaryPointer(e)) return;
     if (this.shouldIgnoreDragStart(e.target)) return;
+    if (e.pointerType === 'touch' && !this.isTouchDragHandle(e.target)) return;
 
     e.stopPropagation();
     this.svc.select(this.widget.id);
@@ -266,6 +272,8 @@ export class WidgetCard implements OnDestroy {
     e.preventDefault();
 
     this.dragRef = {
+      pointerId: e.pointerId,
+      pointerType: e.pointerType,
       startX: e.clientX,
       startY: e.clientY,
       origX: this.widget.x,
@@ -279,20 +287,23 @@ export class WidgetCard implements OnDestroy {
       previewRect: null,
     };
 
-    this.dragMoveHandler = (mv: MouseEvent) => this.onDragMove(mv);
-    this.dragUpHandler = () => this.onDragUp();
-    document.addEventListener('mousemove', this.dragMoveHandler);
-    document.addEventListener('mouseup', this.dragUpHandler);
+    this.dragMoveHandler = (mv: PointerEvent) => this.onDragMove(mv);
+    this.dragUpHandler = (up: PointerEvent) => this.onDragUp(up);
+    this.dragCancelHandler = (cancel: PointerEvent) => this.onDragUp(cancel);
+    document.addEventListener('pointermove', this.dragMoveHandler);
+    document.addEventListener('pointerup', this.dragUpHandler);
+    document.addEventListener('pointercancel', this.dragCancelHandler);
   }
 
-  onResizeMousedown(e: MouseEvent, dir: ResizeDirection): void {
-    if (e.button !== 0 || this.widget.locked) return;
+  onResizePointerDown(e: PointerEvent, dir: ResizeDirection): void {
+    if (!this.isPrimaryPointer(e) || this.widget.locked) return;
 
     e.preventDefault();
     e.stopPropagation();
 
     const baseRect = gridToPixel(this.widget, this.svc.colW());
     this.resizeRef = {
+      pointerId: e.pointerId,
       dir,
       startX: e.clientX,
       startY: e.clientY,
@@ -309,20 +320,24 @@ export class WidgetCard implements OnDestroy {
 
     this.svc.setActive(this.widget.id);
 
-    this.resizeMoveHandler = (mv: MouseEvent) => this.onResizeMove(mv);
-    this.resizeUpHandler = () => this.onResizeUp();
-    document.addEventListener('mousemove', this.resizeMoveHandler);
-    document.addEventListener('mouseup', this.resizeUpHandler);
+    this.resizeMoveHandler = (mv: PointerEvent) => this.onResizeMove(mv);
+    this.resizeUpHandler = (up: PointerEvent) => this.onResizeUp(up);
+    this.resizeCancelHandler = (cancel: PointerEvent) => this.onResizeUp(cancel);
+    document.addEventListener('pointermove', this.resizeMoveHandler);
+    document.addEventListener('pointerup', this.resizeUpHandler);
+    document.addEventListener('pointercancel', this.resizeCancelHandler);
   }
 
-  private onDragMove(mv: MouseEvent): void {
-    if (!this.dragRef) return;
+  private onDragMove(mv: PointerEvent): void {
+    if (!this.dragRef || mv.pointerId !== this.dragRef.pointerId) return;
     this.dragRef.latestX = mv.clientX;
     this.dragRef.latestY = mv.clientY;
     this.scheduleDragPreview();
   }
 
-  private onDragUp(): void {
+  private onDragUp(up: PointerEvent): void {
+    if (this.dragRef && up.pointerId !== this.dragRef.pointerId) return;
+
     const nextLayout = this.dragRef?.previewLayout ?? null;
     const shouldCommit = !!this.dragRef?.engaged && !!nextLayout && this.layoutChanged(nextLayout);
 
@@ -343,14 +358,16 @@ export class WidgetCard implements OnDestroy {
     this.cdr.markForCheck();
   }
 
-  private onResizeMove(mv: MouseEvent): void {
-    if (!this.resizeRef) return;
+  private onResizeMove(mv: PointerEvent): void {
+    if (!this.resizeRef || mv.pointerId !== this.resizeRef.pointerId) return;
     this.resizeRef.latestX = mv.clientX;
     this.resizeRef.latestY = mv.clientY;
     this.scheduleResizePreview();
   }
 
-  private onResizeUp(): void {
+  private onResizeUp(up: PointerEvent): void {
+    if (this.resizeRef && up.pointerId !== this.resizeRef.pointerId) return;
+
     const nextLayout = this.resizeRef?.previewLayout ?? null;
     const shouldCommit = !!nextLayout && this.layoutChanged(nextLayout);
 
@@ -399,9 +416,12 @@ export class WidgetCard implements OnDestroy {
     ref.translateY = dy;
 
     if (!ref.engaged) {
+      const dragThreshold = ref.pointerType === 'touch'
+        ? WidgetCard.DRAG_THRESHOLD_PX * 3
+        : WidgetCard.DRAG_THRESHOLD_PX;
       const movedFarEnough =
-        Math.abs(dx) >= WidgetCard.DRAG_THRESHOLD_PX ||
-        Math.abs(dy) >= WidgetCard.DRAG_THRESHOLD_PX;
+        Math.abs(dx) >= dragThreshold ||
+        Math.abs(dy) >= dragThreshold;
 
       if (!movedFarEnough) {
         this.cdr.markForCheck();
@@ -461,13 +481,15 @@ export class WidgetCard implements OnDestroy {
   }
 
   private removeDragListeners(): void {
-    if (this.dragMoveHandler) document.removeEventListener('mousemove', this.dragMoveHandler);
-    if (this.dragUpHandler) document.removeEventListener('mouseup', this.dragUpHandler);
+    if (this.dragMoveHandler) document.removeEventListener('pointermove', this.dragMoveHandler);
+    if (this.dragUpHandler) document.removeEventListener('pointerup', this.dragUpHandler);
+    if (this.dragCancelHandler) document.removeEventListener('pointercancel', this.dragCancelHandler);
   }
 
   private removeResizeListeners(): void {
-    if (this.resizeMoveHandler) document.removeEventListener('mousemove', this.resizeMoveHandler);
-    if (this.resizeUpHandler) document.removeEventListener('mouseup', this.resizeUpHandler);
+    if (this.resizeMoveHandler) document.removeEventListener('pointermove', this.resizeMoveHandler);
+    if (this.resizeUpHandler) document.removeEventListener('pointerup', this.resizeUpHandler);
+    if (this.resizeCancelHandler) document.removeEventListener('pointercancel', this.resizeCancelHandler);
   }
 
   private gridWidthPx(cols: number): number {
@@ -673,5 +695,14 @@ export class WidgetCard implements OnDestroy {
     return !!el.closest(
       'button, input, textarea, select, option, a, .action-btn, .resize-handle, [data-no-drag], [contenteditable="true"]'
     );
+  }
+
+  private isPrimaryPointer(e: PointerEvent): boolean {
+    return e.isPrimary && (e.pointerType !== 'mouse' || e.button === 0);
+  }
+
+  private isTouchDragHandle(target: EventTarget | null): boolean {
+    const el = target as HTMLElement | null;
+    return !!el?.closest('.card-header');
   }
 }

@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostListener, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { getTypeBreakdown } from '../../core/catalog';
-import { COLS, ROW_H } from '../../core/constants';
+import { COLS, MIN_CANVAS_W, ROW_H } from '../../core/constants';
 import { computeColW, computeCanvasH } from '../../core/layout.utils';
 import { DashboardService } from '../../services/dashboard.service';
 import { ViewWidgetCard } from "../shared/view-widget-card/view-widget-card";
@@ -88,7 +88,7 @@ export class DashboardView  implements OnInit, OnDestroy {
     // offsetWidth of the canvas element — falls back to window width minus
     // any chrome (header/footer are negligible for column math).
     const w = this.canvasRef.nativeElement.offsetWidth || window.innerWidth;
-    this.colW    = computeColW(w);
+    this.colW    = computeColW(Math.max(w, MIN_CANVAS_W));
     this.canvasH = computeCanvasH(this.widgets);
   }
  
