@@ -79,11 +79,11 @@
       }
     </div>
 
-    <!-- Minimap (same component, read-only) -->
-    @if (showMinimap && widgetCount > 0) {
-      <app-minimap />
-    }
   </main>
+
+  @if (showMinimap && widgetCount > 0) {
+    <app-minimap />
+  }
 
   <!-- ══ FOOTER (32px) ════════════════════════════════════════ -->
   <footer class="view-footer">

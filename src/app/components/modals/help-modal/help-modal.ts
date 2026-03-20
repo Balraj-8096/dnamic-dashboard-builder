@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 interface HelpItem { key: string; desc: string; }
 interface HelpSection {
@@ -12,7 +12,7 @@ interface HelpSection {
 
 @Component({
   selector: 'app-help-modal',
-  imports: [MatDialogContent, MatDialogActions],
+  imports: [],
   templateUrl: './help-modal.html',
   styleUrl: './help-modal.scss',
 })

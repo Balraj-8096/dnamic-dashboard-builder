@@ -1,5 +1,9 @@
 // ── Angular Material theme ───────────────────────────────────────
 @use '@angular/material' as mat;
+// ── Our token files ──────────────────────────────────────────────
+@use 'app/styles/tokens';
+@use 'app/styles/material';
+@use 'app/styles/animations';
 
 @include mat.core();
 
@@ -36,10 +40,6 @@ $dashcraft-theme-light: mat.define-theme((
 // ── Fonts ────────────────────────────────────────────────────────
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap');
 
-// ── Our token files ──────────────────────────────────────────────
-@import 'app/styles/tokens';
-@import 'app/styles/material';
-@import 'app/styles/animations';
 
 // ── Global reset ─────────────────────────────────────────────────
 *, *::before, *::after {

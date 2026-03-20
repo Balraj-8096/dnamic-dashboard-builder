@@ -6,6 +6,14 @@
   display: block;
 }
 
+:host-context(.view-shell) {
+  bottom: 48px;
+}
+
+:host-context(.canvas-shell.is-compact) {
+  bottom: 90px;
+}
+
 .minimap {
   background: var(--bg1);
   border: 1px solid var(--bdrH);
@@ -28,4 +36,19 @@
 
 .minimap-svg {
   display: block;
+}
+
+@media (max-width: 768px) {
+  :host {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  :host-context(.view-shell) {
+    bottom: 52px;
+  }
+
+  :host-context(.canvas-shell.is-compact) {
+    bottom: 126px;
+  }
 }

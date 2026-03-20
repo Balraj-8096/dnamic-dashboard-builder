@@ -69,15 +69,15 @@
             </div><!-- /zoom-wrapper -->
 
             <!-- ── MINIMAP (Step 30) ── -->
-            @if (svc.showMinimap() && svc.widgetCount() > 0) {
-            <app-minimap />
-            }
-
         </main><!-- /scroll-area -->
 
         <!-- ── CONTEXT MENU (Step 29) — outside scroll-area so fixed positioning works ── -->
         @if (svc.contextMenu()) {
         <app-context-menu />
+        }
+
+        @if (svc.showMinimap() && svc.widgetCount() > 0) {
+        <app-minimap />
         }
 
         @if (svc.compactViewport() && svc.selectedWidget(); as selectedWidget) {

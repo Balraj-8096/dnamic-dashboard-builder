@@ -56,6 +56,8 @@ export class WidgetCard implements OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
 
   private static readonly DRAG_THRESHOLD_PX = 4;
+  private static readonly TOUCH_DRAG_HOLD_MS = 170;
+  private static readonly TOUCH_SCROLL_CANCEL_PX = 10;
   private static readonly ALIGNMENT_THRESHOLD_PX = 8;
 
   private dragRef: {
@@ -72,6 +74,7 @@ export class WidgetCard implements OnDestroy {
     translateY: number;
     previewLayout: Widget[] | null;
     previewRect: PixelRect | null;
+    awaitingLongPress: boolean;
   } | null = null;
 
   private resizeRef: {
@@ -92,6 +95,7 @@ export class WidgetCard implements OnDestroy {
 
   private dragRafId: number | null = null;
   private resizeRafId: number | null = null;
+  private touchDragHoldTimer: number | null = null;
 
   private dragMoveHandler!: (e: PointerEvent) => void;
   private dragUpHandler!: (e: PointerEvent) => void;
@@ -217,6 +221,7 @@ export class WidgetCard implements OnDestroy {
   ngOnDestroy(): void {
     this.removeDragListeners();
     this.removeResizeListeners();
+    this.clearTouchDragHoldTimer();
     if (this.dragRafId !== null) cancelAnimationFrame(this.dragRafId);
     if (this.resizeRafId !== null) cancelAnimationFrame(this.resizeRafId);
     this.svc.setAlignmentGuides([]);
@@ -261,7 +266,8 @@ export class WidgetCard implements OnDestroy {
   onSurfacePointerDown(e: PointerEvent): void {
     if (!this.isPrimaryPointer(e)) return;
     if (this.shouldIgnoreDragStart(e.target)) return;
-    if (e.pointerType === 'touch' && !this.isTouchDragHandle(e.target)) return;
+
+    const wasSelected = this.isSelected;
 
     e.stopPropagation();
     this.svc.select(this.widget.id);
@@ -269,7 +275,10 @@ export class WidgetCard implements OnDestroy {
 
     if (this.widget.locked) return;
 
-    e.preventDefault();
+    const requiresTouchHold = e.pointerType === 'touch' && !wasSelected;
+    if (!requiresTouchHold) {
+      e.preventDefault();
+    }
 
     this.dragRef = {
       pointerId: e.pointerId,
@@ -285,6 +294,7 @@ export class WidgetCard implements OnDestroy {
       translateY: 0,
       previewLayout: null,
       previewRect: null,
+      awaitingLongPress: requiresTouchHold,
     };
 
     this.dragMoveHandler = (mv: PointerEvent) => this.onDragMove(mv);
@@ -293,6 +303,17 @@ export class WidgetCard implements OnDestroy {
     document.addEventListener('pointermove', this.dragMoveHandler);
     document.addEventListener('pointerup', this.dragUpHandler);
     document.addEventListener('pointercancel', this.dragCancelHandler);
+
+    if (requiresTouchHold) {
+      this.touchDragHoldTimer = window.setTimeout(() => {
+        if (!this.dragRef || this.dragRef.pointerId !== e.pointerId) return;
+        this.dragRef.awaitingLongPress = false;
+        this.dragRef.engaged = true;
+        this.svc.setActive(this.widget.id);
+        this.touchDragHoldTimer = null;
+        this.cdr.markForCheck();
+      }, WidgetCard.TOUCH_DRAG_HOLD_MS);
+    }
   }
 
   onResizePointerDown(e: PointerEvent, dir: ResizeDirection): void {
@@ -330,6 +351,16 @@ export class WidgetCard implements OnDestroy {
 
   private onDragMove(mv: PointerEvent): void {
     if (!this.dragRef || mv.pointerId !== this.dragRef.pointerId) return;
+
+    if (this.dragRef.awaitingLongPress) {
+      const dx = Math.abs(mv.clientX - this.dragRef.startX);
+      const dy = Math.abs(mv.clientY - this.dragRef.startY);
+      if (dx > WidgetCard.TOUCH_SCROLL_CANCEL_PX || dy > WidgetCard.TOUCH_SCROLL_CANCEL_PX) {
+        this.cancelPendingTouchDrag();
+      }
+      return;
+    }
+
     this.dragRef.latestX = mv.clientX;
     this.dragRef.latestY = mv.clientY;
     this.scheduleDragPreview();
@@ -341,6 +372,7 @@ export class WidgetCard implements OnDestroy {
     const nextLayout = this.dragRef?.previewLayout ?? null;
     const shouldCommit = !!this.dragRef?.engaged && !!nextLayout && this.layoutChanged(nextLayout);
 
+    this.clearTouchDragHoldTimer();
     this.dragRef = null;
     if (this.dragRafId !== null) {
       cancelAnimationFrame(this.dragRafId);
@@ -484,6 +516,24 @@ export class WidgetCard implements OnDestroy {
     if (this.dragMoveHandler) document.removeEventListener('pointermove', this.dragMoveHandler);
     if (this.dragUpHandler) document.removeEventListener('pointerup', this.dragUpHandler);
     if (this.dragCancelHandler) document.removeEventListener('pointercancel', this.dragCancelHandler);
+  }
+
+  private cancelPendingTouchDrag(): void {
+    this.clearTouchDragHoldTimer();
+    this.dragRef = null;
+    if (this.dragRafId !== null) {
+      cancelAnimationFrame(this.dragRafId);
+      this.dragRafId = null;
+    }
+    this.removeDragListeners();
+    this.svc.setActive(null);
+    this.cdr.markForCheck();
+  }
+
+  private clearTouchDragHoldTimer(): void {
+    if (this.touchDragHoldTimer === null) return;
+    clearTimeout(this.touchDragHoldTimer);
+    this.touchDragHoldTimer = null;
   }
 
   private removeResizeListeners(): void {
@@ -701,8 +751,4 @@ export class WidgetCard implements OnDestroy {
     return e.isPrimary && (e.pointerType !== 'mouse' || e.button === 0);
   }
 
-  private isTouchDragHandle(target: EventTarget | null): boolean {
-    const el = target as HTMLElement | null;
-    return !!el?.closest('.card-header');
-  }
 }
