@@ -81,7 +81,9 @@ export class TableWidget implements OnChanges {
           ? { ...this.cfg.queryConfig, filters: [...(this.cfg.queryConfig.filters ?? []), this.localDateFilter] }
           : this.cfg.queryConfig;
         const mapped = mapTableResult(this.qsvc.executeTableQuery(effectiveQcfg));
-        this._displayCols = mapped.columns;
+        // Prefer cfg.columns (user-configured visible columns) so that source fields
+        // fetched for derived/combined columns don't appear as extra table columns.
+        this._displayCols = this.cfg.columns?.length ? this.cfg.columns : mapped.columns;
         this._displayRows = mapped.rows;
       } catch {
         this._displayCols = null;

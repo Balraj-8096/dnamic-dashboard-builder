@@ -150,22 +150,37 @@ export class TableEditorModal implements OnInit {
       this.pageSize     = qcfg.pageSize        ?? 20;
       this.filterGroups = qcfg.filterGroups    ? [...qcfg.filterGroups] : [];
 
-      // Build normal EditorColumns from query config
+      // Build normal EditorColumns from query config.
+      // Exclude source-only fields that were added to queryConfig.columns solely to support
+      // derived column computation — they should not be restored as visible columns.
       const cfgColMap = new Map((cfg.columns ?? []).map(c => [c.key, c]));
-      const normalCols: EditorColumn[] = (qcfg.columns ?? []).map(c => {
-        const key      = `${c.entity}.${c.field}`;
-        const saved    = cfgColMap.get(key);
-        const fieldDef = this.getFieldDef(c.entity, c.field);
-        return {
-          key,
-          label:   saved?.label  ?? fieldDef?.name ?? c.field,
-          entity:  c.entity,
-          field:   c.field,
-          visible: true,
-          type:    fieldDef?.type ?? saved?.type ?? FieldType.String,
-          width:   saved?.width  ?? 'auto',
-        };
-      });
+      const derivedSourceKeys = new Set<string>(
+        (qcfg.derivedColumns ?? []).flatMap(def =>
+          def.sources.map(s => `${s.entity}.${s.field}`)
+        )
+      );
+      const normalCols: EditorColumn[] = (qcfg.columns ?? [])
+        .filter(c => {
+          const key = `${c.entity}.${c.field}`;
+          // Always include if cfg.columns (user's display config) has it
+          if (cfgColMap.has(key)) return true;
+          // Otherwise exclude source-only fields used only by derived columns
+          return !derivedSourceKeys.has(key);
+        })
+        .map(c => {
+          const key      = `${c.entity}.${c.field}`;
+          const saved    = cfgColMap.get(key);
+          const fieldDef = this.getFieldDef(c.entity, c.field);
+          return {
+            key,
+            label:   saved?.label  ?? fieldDef?.name ?? c.field,
+            entity:  c.entity,
+            field:   c.field,
+            visible: true,
+            type:    fieldDef?.type ?? saved?.type ?? FieldType.String,
+            width:   saved?.width  ?? 'auto',
+          };
+        });
 
       // Restore derived EditorColumns from derivedColumns + cfg.columns
       const derivedCols: EditorColumn[] = (qcfg.derivedColumns ?? []).map(def => {
@@ -275,6 +290,7 @@ export class TableEditorModal implements OnInit {
       this.newColEntity = this.entityList[0];
       this.newColField  = this.fieldsFor(this.newColEntity)[0]?.name ?? '';
     }
+    this.pushLocalHistory();
     this.refreshPreview();
   }
 
@@ -632,15 +648,12 @@ export class TableEditorModal implements OnInit {
 
     if (!normalCols.length && !derivedCols.length) return null;
 
-    // Collect source fields: normal cols + sources from all derived cols (deduplicated)
+    // Only include actual display columns — NOT derived-column source fields.
+    // The query service automatically fetches source fields when computing derivedColumns.
+    // Adding source fields here would cause them to appear as extra columns in the output.
     const colSet = new Map<string, { entity: string; field: string }>();
     for (const c of normalCols) {
       colSet.set(c.key, { entity: c.entity, field: c.field });
-    }
-    for (const c of derivedCols) {
-      for (const src of c.derivedDef!.sources) {
-        colSet.set(`${src.entity}.${src.field}`, src);
-      }
     }
 
     const existingQcfg = (this.widget.config as TableConfig).queryConfig;

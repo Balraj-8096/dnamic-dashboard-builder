@@ -1,99 +1,266 @@
 // ═══════════════════════════════════════════════════════════════
 //  DASHCRAFT — Dashboard Templates
 //
-//  All templates are EPX-product templates defined in
-//  ProductTemplates.ts and re-exported here.
+//  Product templates are defined in ProductTemplates.ts.
+//  The demo layout (Load Demo) is defined here and showcases
+//  all 9 widget types with live EPX query data.
 //
-//  Loading a template:
+//  Loading a template or demo:
 //  ├── Replaces widgets[] entirely
-//  ├── RESETS history stack to [templateWidgets]
-//  ├── NOT undoable back to before template load (C3 audit)
+//  ├── RESETS history stack to [templateWidgets]    (C3 audit)
+//  ├── NOT undoable back to before template load
 //  └── Sets dashTitle to template name
 // ═══════════════════════════════════════════════════════════════
 
-import { Widget, WidgetType } from './interfaces';
-import { FACTORIES }          from './factories';
+import { Widget, WidgetType, TextAlign } from './interfaces';
+import { FACTORIES }                     from './factories';
+import {
+  AggregationFunction, DateInterval, SortDirection,
+  FilterOperator, FilterGroup, DerivedColumnDef,
+} from './query-types';
+
 export { PRODUCT_TEMPLATES as TEMPLATES } from './ProductTemplates';
 
 
 // ───────────────────────────────────────────────────────────────
-//  DEMO LAYOUT
-//  B5 fix: was incorrectly returning buildSales().
-//  The demo is a DISTINCT layout from the Sales template:
-//  - Uses analytics cards (not just stat cards) in row 2
-//  - Includes a note widget in row 8
-//  - Showcases the breadth of widget types as a builder intro
-//  Direct port from React loadDemo() inline definition.
+//  DEMO LAYOUT — Load Demo button
+//  Showcases all 9 widget types with live EPX query data.
+//  B5 fix: distinct from any product template.
 // ───────────────────────────────────────────────────────────────
 
 export function buildSalesDemo(): Widget[] {
   return [
-    // Row 0 — 4 stat cards (custom configs)
-    FACTORIES[WidgetType.Stat](0, 0),
+
+    // ── Section header ─────────────────────────────────────────
     {
-      ...FACTORIES[WidgetType.Stat](3, 0),
-      title:  'Active Users',
+      ...FACTORIES[WidgetType.Section](0, 0),
+      title: 'Section',
+      config: { label: 'DASHCRAFT Demo — EPX Clinical', accent: '#3b82f6', showLine: true, align: TextAlign.Left },
+    },
+
+    // ── Row 1 — 4 stat cards with live queries ─────────────────
+    {
+      ...FACTORIES[WidgetType.Stat](0, 1),
+      title: 'Total Appointments',
       config: {
-        value: '8,291', subValue: 'Daily active',
-        trend: '+5.2%', trendUp: true, accent: '#22c55e',
-        prefix: '', suffix: '', description: 'Users active in last 24h',
-        showSparkline: true,
-        sparkData: [20, 32, 28, 42, 38, 51, 45, 60, 54, 68],
-        selectedFields: [],
+        value: '–', subValue: 'COUNT query', trend: '', trendUp: true,
+        accent: '#3b82f6', prefix: '', suffix: '',
+        description: 'Live COUNT of all appointment rows',
+        showSparkline: false, sparkData: [], selectedFields: [],
+        queryConfig: {
+          product: 'epx',
+          entities: ['appointment', 'appointment_patient'],
+          agg: { entity: 'appointment_patient', field: 'appointment_id', function: AggregationFunction.Count },
+          periodLabel: 'All time',
+        },
       },
     },
     {
-      ...FACTORIES[WidgetType.Stat](6, 0),
-      title:  'Conversion Rate',
+      ...FACTORIES[WidgetType.Stat](3, 1),
+      title: 'Completed',
       config: {
-        value: '3.84', subValue: 'Checkout rate',
-        trend: '-0.3%', trendUp: false, accent: '#f59e0b',
-        prefix: '', suffix: '%', description: 'Visitors who completed purchase',
-        showSparkline: true,
-        sparkData: [4.2, 3.8, 4.5, 3.2, 3.6, 4.1, 3.9, 3.5, 4.0, 3.8],
-        selectedFields: [],
+        value: '–', subValue: 'status = completed', trend: '', trendUp: true,
+        accent: '#10b981', prefix: '', suffix: '',
+        description: 'Appointments with status = completed',
+        showSparkline: false, sparkData: [], selectedFields: [],
+        queryConfig: {
+          product: 'epx',
+          entities: ['appointment', 'appointment_patient'],
+          agg: { entity: 'appointment_patient', field: 'appointment_id', function: AggregationFunction.Count },
+          filters: [{ entity: 'appointment', field: 'status', operator: FilterOperator.Eq, value: 'completed' }],
+          periodLabel: 'All time',
+        },
       },
     },
     {
-      ...FACTORIES[WidgetType.Stat](9, 0),
-      title:  'Avg. Order Value',
+      ...FACTORIES[WidgetType.Stat](6, 1),
+      title: 'Total Revenue',
       config: {
-        value: '127.40', subValue: 'Per transaction',
-        trend: '+8.1%', trendUp: true, accent: '#a78bfa',
-        prefix: '$', suffix: '', description: 'Mean value of completed orders',
-        showSparkline: true,
-        sparkData: [110, 95, 130, 118, 142, 125, 138, 120, 145, 127],
-        selectedFields: [],
+        value: '–', subValue: 'SUM(price)', trend: '', trendUp: true,
+        accent: '#a78bfa', prefix: '£', suffix: '',
+        description: 'SUM of all consultation fees',
+        showSparkline: false, sparkData: [], selectedFields: [],
+        queryConfig: {
+          product: 'epx',
+          entities: ['appointment', 'appointment_patient'],
+          agg: { entity: 'appointment_patient', field: 'price', function: AggregationFunction.Sum },
+          periodLabel: 'All time',
+        },
+      },
+    },
+    {
+      ...FACTORIES[WidgetType.Stat](9, 1),
+      title: 'Active Patients',
+      config: {
+        value: '–', subValue: 'patient.status = active', trend: '', trendUp: true,
+        accent: '#06b6d4', prefix: '', suffix: '',
+        description: 'COUNT of patients with status = active',
+        showSparkline: false, sparkData: [], selectedFields: [],
+        queryConfig: {
+          product: 'epx',
+          entities: ['patient'],
+          agg: { entity: 'patient', field: 'id', function: AggregationFunction.Count },
+          filters: [{ entity: 'patient', field: 'status', operator: FilterOperator.Eq, value: 'active' }],
+          periodLabel: 'Current',
+        },
       },
     },
 
-    // Row 2 — line chart + 2 analytics cards
-    FACTORIES[WidgetType.Line](0, 2),
+    // ── Row 3 — analytics + pie ────────────────────────────────
     {
-      ...FACTORIES[WidgetType.Analytics](7, 2),
-      w: 2,
+      ...FACTORIES[WidgetType.Analytics](0, 3),
+      w: 4, h: 3,
+      title: 'Appointment Trend',
+      config: {
+        value: '–', changeValue: '', changeLabel: 'vs previous period',
+        trendUp: true, accent: '#3b82f6', data: [], period: '',
+        selectedFields: [],
+        queryConfig: {
+          product: 'epx',
+          entities: ['appointment', 'appointment_patient'],
+          agg: { entity: 'appointment_patient', field: 'appointment_id', function: AggregationFunction.Count },
+          periodLabel: 'Monthly trend',
+          trend: { entity: 'appointment', field: 'start_date', interval: DateInterval.Month, periods: 12 },
+        },
+      },
     },
     {
-      ...FACTORIES[WidgetType.Analytics](9, 2),
-      w: 3,
-      title:  'Bounce Rate',
+      ...FACTORIES[WidgetType.Bar](4, 3),
+      w: 5, h: 3,
+      title: 'Appointments by Month',
       config: {
-        value: '38.4%', changeValue: '-2.1%',
-        changeLabel: 'vs last week', trendUp: false,
-        accent: '#f59e0b',
-        data: [42, 38, 45, 36, 40, 37, 39, 35, 41, 38, 36, 38],
-        period: 'Last 12 days',
-        selectedFields: [],
+        accent: '#3b82f6', stacked: false, horizontal: false,
+        showGrid: true, showLegend: false, series: [], selectedFields: [],
+        queryConfig: {
+          product: 'epx',
+          entities: ['appointment', 'appointment_patient'],
+          dateAxis: { entity: 'appointment', field: 'start_date', interval: DateInterval.Month },
+          valueAgg: { entity: 'appointment_patient', field: 'appointment_id', function: AggregationFunction.Count },
+          dateRangeField: { entity: 'appointment', field: 'start_date' },
+        },
+      },
+    },
+    {
+      ...FACTORIES[WidgetType.Pie](9, 3),
+      w: 3, h: 3,
+      title: 'By Payor Type',
+      config: {
+        innerRadius: 50, showLabels: false, showLegend: true, data: [], selectedFields: [],
+        queryConfig: {
+          product: 'epx',
+          entities: ['appointment', 'appointment_patient'],
+          groupBy: { entity: 'appointment_patient', field: 'payor_type' },
+          valueAgg: { entity: 'appointment_patient', field: 'appointment_id', function: AggregationFunction.Count },
+        },
       },
     },
 
-    // Row 5 — bar + pie + progress
-    FACTORIES[WidgetType.Bar](0, 5),
-    { ...FACTORIES[WidgetType.Pie](5, 5),      w: 3 },
-    { ...FACTORIES[WidgetType.Progress](8, 5), w: 4 },
+    // ── Row 6 — line + progress + note ────────────────────────
+    {
+      ...FACTORIES[WidgetType.Line](0, 6),
+      w: 4, h: 3,
+      title: 'Monthly Revenue',
+      config: {
+        areaFill: true, smooth: true, showGrid: true, showDots: false, showLegend: false,
+        series: [], selectedFields: [],
+        queryConfig: {
+          product: 'epx',
+          entities: ['appointment', 'appointment_patient'],
+          dateAxis: { entity: 'appointment', field: 'start_date', interval: DateInterval.Month },
+          valueAgg: { entity: 'appointment_patient', field: 'price', function: AggregationFunction.Sum },
+        },
+      },
+    },
+    {
+      ...FACTORIES[WidgetType.Progress](4, 6),
+      w: 4, h: 3,
+      title: 'Appointment Status',
+      config: {
+        showValues: true, animated: true, selectedFields: [],
+        items: [
+          { label: 'Completed', value: 0, max: 50, color: '#10b981' },
+          { label: 'Confirmed', value: 0, max: 50, color: '#22c55e' },
+          { label: 'Cancelled', value: 0, max: 50, color: '#6b7280' },
+          { label: 'No Shows',  value: 0, max: 50, color: '#ef4444' },
+        ],
+        progressQueries: [
+          {
+            product: 'epx', entities: ['appointment', 'appointment_patient'],
+            agg: { entity: 'appointment_patient', field: 'appointment_id', function: AggregationFunction.Count },
+            filters: [{ entity: 'appointment', field: 'status', operator: FilterOperator.Eq, value: 'completed' }],
+          },
+          {
+            product: 'epx', entities: ['appointment', 'appointment_patient'],
+            agg: { entity: 'appointment_patient', field: 'appointment_id', function: AggregationFunction.Count },
+            filters: [{ entity: 'appointment', field: 'status', operator: FilterOperator.Eq, value: 'confirmed' }],
+          },
+          {
+            product: 'epx', entities: ['appointment', 'appointment_patient'],
+            agg: { entity: 'appointment_patient', field: 'appointment_id', function: AggregationFunction.Count },
+            filters: [{ entity: 'appointment', field: 'status', operator: FilterOperator.Eq, value: 'cancelled' }],
+          },
+          {
+            product: 'epx', entities: ['appointment', 'appointment_patient'],
+            agg: { entity: 'appointment_patient', field: 'appointment_id', function: AggregationFunction.Count },
+            filters: [{ entity: 'appointment', field: 'status', operator: FilterOperator.Eq, value: 'no_show' }],
+          },
+        ],
+      },
+    },
+    {
+      ...FACTORIES[WidgetType.Note](8, 6),
+      w: 4, h: 3,
+      title: 'Welcome to DASHCRAFT',
+      config: {
+        accent: '#3b82f6',
+        fontSize: '13px',
+        bgColor: '',
+        content: `**Welcome to DASHCRAFT**
 
-    // Row 8 — table + note
-    FACTORIES[WidgetType.Table](0, 8),
-    { ...FACTORIES[WidgetType.Note](8, 8),     w: 4 },
+This demo uses live EPX clinical data queries.
+
+**Getting started:**
+• Drag widgets from the sidebar to the canvas
+• Click any widget to select and configure it
+• Use **Browse Templates** for pre-built dashboards
+• Press **Ctrl+1…9** to add widgets by type
+
+All widgets on this canvas are fully editable.`,
+      },
+    },
+
+    // ── Row 9 — table with derived column ─────────────────────
+    {
+      ...FACTORIES[WidgetType.Table](0, 9),
+      w: 12, h: 3,
+      title: 'Recent Appointments',
+      config: {
+        striped: true, compact: false, statusColumn: true,
+        columns: [], rows: [], selectedFields: [],
+        queryConfig: {
+          product: 'epx',
+          entities: ['appointment', 'appointment_patient', 'patient', 'contact'],
+          columns: [
+            { entity: 'appointment',         field: 'identifier'  },
+            { entity: 'appointment',         field: 'start_date'  },
+            { entity: 'appointment',         field: 'status'      },
+            { entity: 'appointment_patient', field: 'payor_type'  },
+            { entity: 'appointment_patient', field: 'price'       },
+          ],
+          derivedColumns: [
+            {
+              key: '__derived_demo_name', label: 'Patient Name', mode: 'concat',
+              sources: [
+                { entity: 'contact', field: 'firstname' },
+                { entity: 'contact', field: 'lastname'  },
+              ],
+              separator: ' ',
+            } as DerivedColumnDef,
+          ],
+          sort:     { entity: 'appointment', field: 'start_date', direction: SortDirection.Desc },
+          pageSize: 20,
+        },
+      },
+    },
   ];
 }

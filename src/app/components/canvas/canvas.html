@@ -4,8 +4,7 @@
     @if (!svc.compactViewport()) {
     <app-sidebar />
     } @else {
-    <div class="compact-backdrop"
-        [class.is-visible]="svc.sidebarOpen() || svc.toolbarMenuOpen()"
+    <div class="compact-backdrop" [class.is-visible]="svc.sidebarOpen() || svc.toolbarMenuOpen()"
         (click)="closeCompactChrome()"></div>
     <div class="compact-sidebar-shell" [class.is-open]="svc.sidebarOpen()">
         <app-sidebar />
@@ -29,10 +28,8 @@
 
                 <!-- Canvas -->
                 <div class="canvas" #canvasRef [style.min-height.px]="svc.canvasH()"
-                    [class.no-grid]="!svc.showGridBackground()"
-                    [class.drag-over]="isDragOver"
-                    (dragover)="onCanvasDragOver($event)"
-                    (dragleave)="onCanvasDragLeave($event)"
+                    [class.no-grid]="!svc.showGridBackground()" [class.drag-over]="isDragOver"
+                    (dragover)="onCanvasDragOver($event)" (dragleave)="onCanvasDragLeave($event)"
                     (drop)="onCanvasDrop($event)">
                     <!-- Column snap guides (during active drag) -->
                     @if (svc.activeId()) {
@@ -44,10 +41,8 @@
 
                     @if (svc.showAlignmentGuides() && svc.alignmentGuides().length) {
                     @for (guide of svc.alignmentGuides(); track $index) {
-                    <div class="alignment-guide"
-                        [class.alignment-guide--vertical]="guide.axis === 'x'"
-                        [class.alignment-guide--horizontal]="guide.axis === 'y'"
-                        [ngStyle]="alignmentGuideStyle(guide)">
+                    <div class="alignment-guide" [class.alignment-guide--vertical]="guide.axis === 'x'"
+                        [class.alignment-guide--horizontal]="guide.axis === 'y'" [ngStyle]="alignmentGuideStyle(guide)">
                     </div>
                     }
                     }
@@ -57,16 +52,13 @@
                     <div class="empty-state">
                         <div class="empty-icon">◈</div>
                         <div class="empty-title">Start with a flexible layout, then shape it as you go.</div>
-                        <div class="empty-hint">Add a widget from scratch, load a demo, or begin from a template and refine the canvas once the data is in place.</div>
+                        <div class="empty-hint">Add a widget from scratch, load a demo, or begin from a template and
+                            refine the canvas once the data is in place.</div>
                         <div class="empty-actions">
-                            <button class="empty-btn empty-btn--primary" (click)="openAddWidgetWizard()">+ Add Widget</button>
+                            <button class="empty-btn empty-btn--primary" (click)="openAddWidgetWizard()">+ Add
+                                Widget</button>
                             <button class="empty-btn" (click)="openTemplates()">Browse Templates</button>
                             <button class="empty-btn empty-btn--accent" (click)="loadDemo()">Load Demo</button>
-                        </div>
-                        <div class="empty-links">
-                            <span class="empty-link empty-link--pur">⊟ templates</span>
-                            <span class="empty-sep">·</span>
-                            <span class="empty-link empty-link--grn">⚡ demo</span>
                         </div>
                     </div>
                     }
@@ -104,7 +96,8 @@
                     {{ selectedWidget.locked ? 'Unlock' : 'Lock' }}
                 </button>
                 <button class="mobile-action-btn" (click)="bringSelectedWidgetFront()">Front</button>
-                <button class="mobile-action-btn mobile-action-btn--danger" (click)="deleteSelectedWidget()">Delete</button>
+                <button class="mobile-action-btn mobile-action-btn--danger"
+                    (click)="deleteSelectedWidget()">Delete</button>
             </div>
         </div>
         }
