@@ -1,37 +1,83 @@
-<!-- Product selector -->
-<div class="section-hdr" style="padding-top:0">Data Source</div>
-<div class="field-row" style="margin-bottom:16px">
-  <label class="field-label">Product</label>
-  <select class="sel"
-    [(ngModel)]="selectedProduct"
-    (ngModelChange)="onProductChange($event)">
-    @for (p of products; track p.slug) {
-      <option [value]="p.slug">{{ p.display_name }}</option>
-    }
-  </select>
-</div>
+<div class="query-builder-shell">
+  <div class="query-builder-intro">
+    <div>
+      <div class="query-builder-kicker">Live Data Setup</div>
+      <div class="query-builder-title">Connect this widget to a product</div>
+      <div class="query-builder-copy">Pick a product first, then define the query details that feed this widget.</div>
+    </div>
+    <div class="query-builder-badge">{{ builderLabel }}</div>
+  </div>
 
-<!-- Sub-builder routed by widget type -->
-@if (selectedProduct) {
-  @if (isStat || isProgress) {
-    <app-stat-query-builder
-      [product]="selectedProduct"
-      [config]="statConfig"
-      (configChange)="onQueryConfigChange($event)" />
-  } @else if (isChart) {
-    <app-chart-query-builder
-      [product]="selectedProduct"
-      [config]="chartConfig"
-      (configChange)="onQueryConfigChange($event)" />
-  } @else if (isPie) {
-    <app-pie-query-builder
-      [product]="selectedProduct"
-      [config]="pieConfig"
-      (configChange)="onQueryConfigChange($event)" />
-  } @else if (isTable) {
-    <app-table-query-builder
-      [product]="selectedProduct"
-      [config]="tableConfig"
-      (configChange)="onQueryConfigChange($event)" />
-  }
-}
+  <div class="query-builder-flow">
+    <div class="query-flow-step is-active">
+      <span class="query-flow-step__num">1</span>
+      <span class="query-flow-step__label">Select Product</span>
+    </div>
+    <div class="query-flow-step" [class.is-active]="!!selectedProduct">
+      <span class="query-flow-step__num">2</span>
+      <span class="query-flow-step__label">Configure Query</span>
+    </div>
+  </div>
+
+  <div class="query-builder-card">
+    <div class="query-builder-card__header">
+      <div>
+        <div class="query-builder-card__kicker">Step 1</div>
+        <div class="query-builder-card__title">Product</div>
+      </div>
+      <div class="query-builder-card__meta">{{ productLabel }}</div>
+    </div>
+
+    <div class="query-builder-card__body">
+      <div class="field-row">
+        <label class="field-label">Product</label>
+        <select class="sel"
+          [(ngModel)]="selectedProduct"
+          (ngModelChange)="onProductChange($event)">
+          @for (p of products; track p.slug) {
+            <option [value]="p.slug">{{ p.display_name }}</option>
+          }
+        </select>
+        <div class="field-hint">Switching product resets the query fields below so the new schema stays consistent.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="query-builder-card query-builder-card--detail">
+    <div class="query-builder-card__header">
+      <div>
+        <div class="query-builder-card__kicker">Step 2</div>
+        <div class="query-builder-card__title">Query Details</div>
+      </div>
+      <div class="query-builder-card__meta">{{ builderLabel }}</div>
+    </div>
+
+    <div class="query-builder-card__body">
+      @if (selectedProduct) {
+        @if (isStat || isProgress) {
+          <app-stat-query-builder
+            [product]="selectedProduct"
+            [config]="statConfig"
+            (configChange)="onQueryConfigChange($event)" />
+        } @else if (isChart) {
+          <app-chart-query-builder
+            [product]="selectedProduct"
+            [config]="chartConfig"
+            (configChange)="onQueryConfigChange($event)" />
+        } @else if (isPie) {
+          <app-pie-query-builder
+            [product]="selectedProduct"
+            [config]="pieConfig"
+            (configChange)="onQueryConfigChange($event)" />
+        } @else if (isTable) {
+          <app-table-query-builder
+            [product]="selectedProduct"
+            [config]="tableConfig"
+            (configChange)="onQueryConfigChange($event)" />
+        }
+      } @else {
+        <p class="query-builder-empty">Select a product above to unlock query fields and filters.</p>
+      }
+    </div>
+  </div>
+</div>

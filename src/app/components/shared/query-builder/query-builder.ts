@@ -39,6 +39,20 @@ export class QueryBuilder implements OnInit {
     return this.qsvc.getProductList();
   }
 
+  get productLabel(): string {
+    return this.products.find(p => p.slug === this.selectedProduct)?.display_name ?? 'Select product';
+  }
+
+  get builderLabel(): string {
+    if (this.widgetType === WidgetType.Analytics) return 'Analytics metric';
+    if (this.widgetType === WidgetType.Progress) return 'Progress metric';
+    if (this.isStat) return 'Single-value metric';
+    if (this.isChart) return 'Series chart';
+    if (this.isPie) return 'Distribution chart';
+    if (this.isTable) return 'Tabular query';
+    return 'Query builder';
+  }
+
   ngOnInit(): void {
     this.selectedProduct =
       (this.queryConfig as any)?.product ?? this.products[0]?.slug ?? '';
