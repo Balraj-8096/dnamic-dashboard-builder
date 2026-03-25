@@ -16,6 +16,7 @@ $dashcraft-theme-dark: mat.define-theme((
     brand-family: 'Outfit, sans-serif',
     plain-family: 'Outfit, sans-serif',
   ),
+  density: (scale: -2),
 ));
 
 $dashcraft-theme-light: mat.define-theme((
@@ -27,6 +28,7 @@ $dashcraft-theme-light: mat.define-theme((
     brand-family: 'Outfit, sans-serif',
     plain-family: 'Outfit, sans-serif',
   ),
+  density: (scale: -2),
 ));
 
 :root {
@@ -36,10 +38,6 @@ $dashcraft-theme-light: mat.define-theme((
 [data-theme="light"] {
   @include mat.all-component-colors($dashcraft-theme-light);
 }
-
-// ── Fonts ────────────────────────────────────────────────────────
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap');
-
 
 // ── Global reset ─────────────────────────────────────────────────
 *, *::before, *::after {
@@ -51,7 +49,7 @@ $dashcraft-theme-light: mat.define-theme((
 html, body {
   height: 100%;
   overflow: hidden;
-  font-family: var(--font-sans);
+  font-family: var(--font-sans) !important;
   background: var(--bg0);
   color: var(--txt0);
   -webkit-font-smoothing: antialiased;
