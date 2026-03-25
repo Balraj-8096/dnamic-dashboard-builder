@@ -11,25 +11,12 @@
   min-height: 46px;
 }
 
-.filter-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
 .filter-label {
   font-size: 10px;
   font-family: var(--font-mono);
   color: var(--txt2);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-
-.filter-subtitle {
-  font-size: 11px;
-  color: var(--txt1);
   white-space: nowrap;
 }
 
@@ -80,17 +67,6 @@
   }
 }
 
-.filter-count {
-  font-size: 10px;
-  font-family: var(--font-mono);
-  color: var(--acc);
-  background: color-mix(in srgb, var(--acc) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--acc) 20%, transparent);
-  border-radius: 999px;
-  padding: 4px 8px;
-  white-space: nowrap;
-}
-
 .btn-clear {
   font-size: 10px;
   font-family: var(--font-mono);
@@ -125,7 +101,7 @@
   }
 
   .filter-group,
-  .filter-meta,
+  .filter-label,
   .btn-clear {
     flex: 0 0 auto;
   }
@@ -142,7 +118,4 @@
     min-width: 108px;
   }
 
-  .filter-subtitle {
-    display: none;
-  }
 }

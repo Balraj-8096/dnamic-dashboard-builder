@@ -115,9 +115,49 @@
   &::-webkit-scrollbar-thumb { background: var(--bdr); border-radius: 4px; }
 }
 
+.form-section {
+  margin-bottom: 14px;
+  border: 1px solid color-mix(in srgb, var(--bdr) 85%, transparent);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--bg2) 45%, transparent);
+  overflow: hidden;
+}
+
+.form-section-header {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--bdr) 70%, transparent);
+  background: color-mix(in srgb, var(--bg1) 90%, transparent);
+}
+
+.form-section-kicker {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--acc);
+  margin-bottom: 4px;
+}
+
+.form-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--txt0);
+  margin-bottom: 3px;
+}
+
+.form-section-hint {
+  font-size: 11px;
+  color: var(--txt2);
+  line-height: 1.45;
+}
+
+.form-section-body {
+  padding: 14px;
+}
+
 // Title field
 .title-field {
-  margin-bottom: 14px;
+  margin-bottom: 0;
 }
 
 .field-label {
@@ -330,6 +370,47 @@
   border-radius: 2px;
   display: inline-block;
   flex-shrink: 0;
+}
+
+.debug-toggle {
+  margin: 0 14px 14px;
+  padding: 10px 12px;
+  width: calc(100% - 28px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--bdr) 90%, transparent);
+  background: color-mix(in srgb, var(--bg1) 85%, transparent);
+  color: var(--txt1);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    background: var(--bg1);
+    border-color: var(--bdrH);
+    color: var(--txt0);
+  }
+
+  &.is-open {
+    border-color: color-mix(in srgb, var(--acc) 30%, transparent);
+    background: color-mix(in srgb, var(--acc) 8%, transparent);
+  }
+}
+
+.debug-toggle__label {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.debug-toggle__state {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--txt2);
+  white-space: nowrap;
 }
 
 // ── Dev Tools Panel ───────────────────────────────────────────

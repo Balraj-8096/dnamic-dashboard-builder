@@ -145,11 +145,18 @@
   display: flex;
   align-items: center;
   gap: 2px;
-  opacity: 0;
-  transition: opacity var(--transition-fast);
+  padding: 2px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg1) 90%, transparent);
+  border: 1px solid transparent;
+  opacity: 0.58;
+  transition: opacity var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
 
   .widget-card:hover &,
-  .widget-card.is-selected & { opacity: 1; }
+  .widget-card.is-selected & {
+    opacity: 1;
+    border-color: color-mix(in srgb, var(--bdr) 90%, transparent);
+  }
 }
 
 .action-btn {
@@ -366,6 +373,7 @@
 
   .action-btns {
     opacity: 1;
+    border-color: color-mix(in srgb, var(--bdr) 90%, transparent);
   }
 
   .action-btn {

@@ -34,7 +34,6 @@ import { DashboardService } from '../../services/dashboard.service';
 import { filterCatalog } from '../../core/catalog';
 import { COLS, KEYBOARD_SHORTCUTS, ROW_H } from '../../core/constants';
 import { WidgetType } from '../../core/interfaces';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-sidebar',
@@ -45,7 +44,6 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class Sidebar {
   readonly svc = inject(DashboardService);
-  private readonly dialog = inject(MatDialog);
 
   // Expose constants to template
   readonly COLS = COLS;

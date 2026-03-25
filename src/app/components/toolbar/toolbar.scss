@@ -49,18 +49,6 @@
 .logo-dash    { color: var(--txt0); }
 .logo-craft   { color: var(--acc2); }
 
-.workspace-badge {
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--acc) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--acc) 20%, transparent);
-  color: var(--acc);
-  font-size: 10px;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
 // ── Title ─────────────────────────────────────────────────────
 .title-span {
   font-size: 13px;

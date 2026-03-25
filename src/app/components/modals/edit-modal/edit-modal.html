@@ -31,48 +31,76 @@
     <div class="panel-left">
       <div class="form-body">
 
-        <!-- Title -->
-        <div class="title-field">
-          <label class="field-label">Widget Title</label>
-          <input class="title-inp" [(ngModel)]="title" placeholder="e.g. Monthly Revenue" />
-        </div>
+        <section class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-kicker">Basics</div>
+            <div class="form-section-title">Identity</div>
+            <div class="form-section-hint">Set the name users will see on the dashboard.</div>
+          </div>
+
+          <div class="form-section-body">
+            <div class="title-field">
+              <label class="field-label">Widget Title</label>
+              <input class="title-inp" [(ngModel)]="title" placeholder="e.g. Monthly Revenue" />
+            </div>
+          </div>
+        </section>
 
         <!-- Query Builder (not for Note / Section) -->
         @if (hasQuery) {
-          <app-query-builder
-            [widgetType]="widget.type"
-            [queryConfig]="queryCfg"
-            (queryConfigChange)="onQueryCfgChange($event)" />
-          <div class="panel-divider"></div>
+          <section class="form-section">
+            <div class="form-section-header">
+              <div class="form-section-kicker">Data</div>
+              <div class="form-section-title">Source Query</div>
+              <div class="form-section-hint">Choose the product, entities, fields, and filters that power this widget.</div>
+            </div>
+
+            <div class="form-section-body">
+              <app-query-builder
+                [widgetType]="widget.type"
+                [queryConfig]="queryCfg"
+                (queryConfigChange)="onQueryCfgChange($event)" />
+            </div>
+          </section>
         }
 
         <!-- Display Options — widget-type-specific -->
-        @switch (widget.type) {
-          @case (WidgetType.Stat) {
-            <app-edit-stat-config [cfg]="cfgAsStat" (cfgChange)="onCfgChange($event)" />
-          }
-          @case (WidgetType.Analytics) {
-            <app-edit-analytics-config [cfg]="cfgAsAnalytics" (cfgChange)="onCfgChange($event)" />
-          }
-          @case (WidgetType.Bar) {
-            <app-edit-series-config [cfg]="cfgAsSeries" typeLabel="bar" (cfgChange)="onCfgChange($event)" />
-          }
-          @case (WidgetType.Line) {
-            <app-edit-series-config [cfg]="cfgAsSeries" typeLabel="line" (cfgChange)="onCfgChange($event)" />
-          }
-          @case (WidgetType.Pie) {
-            <app-edit-pie-config [cfg]="cfgAsPie" (cfgChange)="onCfgChange($event)" />
-          }
-          @case (WidgetType.Progress) {
-            <app-edit-progress-config [cfg]="cfgAsProgress" (cfgChange)="onCfgChange($event)" />
-          }
-          @case (WidgetType.Note) {
-            <app-edit-note-config [cfg]="cfgAsNote" (cfgChange)="onCfgChange($event)" />
-          }
-          @case (WidgetType.Section) {
-            <app-edit-section-config [cfg]="cfgAsSection" (cfgChange)="onCfgChange($event)" />
-          }
-        }
+        <section class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-kicker">Appearance</div>
+            <div class="form-section-title">Presentation</div>
+            <div class="form-section-hint">Fine-tune labels, layout, colors, and widget-specific display options.</div>
+          </div>
+
+          <div class="form-section-body">
+            @switch (widget.type) {
+              @case (WidgetType.Stat) {
+                <app-edit-stat-config [cfg]="cfgAsStat" (cfgChange)="onCfgChange($event)" />
+              }
+              @case (WidgetType.Analytics) {
+                <app-edit-analytics-config [cfg]="cfgAsAnalytics" (cfgChange)="onCfgChange($event)" />
+              }
+              @case (WidgetType.Bar) {
+                <app-edit-series-config [cfg]="cfgAsSeries" typeLabel="bar" (cfgChange)="onCfgChange($event)" />
+              }
+              @case (WidgetType.Line) {
+                <app-edit-series-config [cfg]="cfgAsSeries" typeLabel="line" (cfgChange)="onCfgChange($event)" />
+              }
+              @case (WidgetType.Pie) {
+                <app-edit-pie-config [cfg]="cfgAsPie" (cfgChange)="onCfgChange($event)" />
+              }
+              @case (WidgetType.Progress) {
+                <app-edit-progress-config [cfg]="cfgAsProgress" (cfgChange)="onCfgChange($event)" />
+              }
+              @case (WidgetType.Note) {
+                <app-edit-note-config [cfg]="cfgAsNote" (cfgChange)="onCfgChange($event)" />
+              }
+              @case (WidgetType.Section) {
+                <app-edit-section-config [cfg]="cfgAsSection" (cfgChange)="onCfgChange($event)" />
+              }
+            }
+          </div>
+        </section>
 
       </div>
     </div>
@@ -129,6 +157,17 @@
 
       <!-- ── DEV TOOLS PANEL ─────────────────────────────── -->
       @if (queryCfg) {
+        <button class="debug-toggle"
+          [class.is-open]="showDebugTools"
+          (click)="showDebugTools = !showDebugTools">
+          <span class="debug-toggle__label">
+            {{ showDebugTools ? 'Hide debug data' : 'Show debug data' }}
+          </span>
+          <span class="debug-toggle__state">{{ debugStateLabel }}</span>
+        </button>
+      }
+
+      @if (queryCfg && showDebugTools) {
         <div class="dev-panel">
 
           <!-- Panel title -->
@@ -181,7 +220,7 @@
 
       <!-- Settings strip -->
       <div class="settings-section">
-        <div class="settings-label">Current Settings</div>
+        <div class="settings-label">Summary</div>
         <div class="settings-list">
           @for (row of settingsRows; track row.k) {
             <div class="settings-row">

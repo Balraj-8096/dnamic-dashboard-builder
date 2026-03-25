@@ -49,6 +49,7 @@ export class EditModal implements OnInit {
 
   title   = '';
   cfg!:    WidgetConfig;
+  showDebugTools = false;
   queryJsonOpen  = true;
   resultJsonOpen = true;
 
@@ -153,6 +154,14 @@ export class EditModal implements OnInit {
 
   get previewWidget(): Widget {
     return { ...this.widget, title: this.title, config: this.cfg ?? this.widget.config };
+  }
+
+  get debugStateLabel(): string {
+    if (this.queryError) return 'error';
+    const warnings = (this.queryResult as { warnings?: unknown[] } | null)?.warnings?.length ?? 0;
+    if (warnings) return `${warnings} warning${warnings === 1 ? '' : 's'}`;
+    if (this.queryResult) return 'ready';
+    return 'idle';
   }
 
   // ── Settings strip ────────────────────────────────────────────

@@ -68,82 +68,218 @@
 
             <!-- STEP 2: Configure -->
             @if (isConfigStep && selectedType && cfg) {
-            <div class="step-heading">Configure data source and appearance</div>
-            <div class="step-hint">Connect a live query, then fine-tune labels, colors, and chart options.</div>
-
-            <!-- Title -->
-            <div class="title-field" [formGroup]="titleForm">
-                <label class="field-label" for="wiz-title">Widget Title</label>
-                <input id="wiz-title" class="title-inp" formControlName="title" placeholder="e.g. Monthly Revenue"
-                    [class.is-invalid]="titleForm.get('title')?.invalid && titleForm.get('title')?.touched" />
-                @if (titleForm.get('title')?.invalid && titleForm.get('title')?.touched) {
-                <span class="error-msg">Title is required</span>
-                }
+            <div class="config-intro">
+                <div class="type-badge" [style.--badge-color]="cat?.color || 'var(--acc)'">
+                    {{ cat?.icon }}
+                </div>
+                <div>
+                    <div class="step-heading">Configure {{ cat?.label }}</div>
+                    <div class="step-hint">Connect a live query, then fine-tune labels, colors, and chart options.</div>
+                </div>
             </div>
+
+            <section class="form-section">
+                <div class="form-section-header">
+                    <div class="form-section-kicker">Basics</div>
+                    <div class="form-section-title">Identity</div>
+                    <div class="form-section-hint">Set the name users will see once this widget is added to the dashboard.</div>
+                </div>
+
+                <div class="form-section-body">
+                    <div class="title-field" [formGroup]="titleForm">
+                        <label class="field-label" for="wiz-title">Widget Title</label>
+                        <input id="wiz-title" class="title-inp" formControlName="title" placeholder="e.g. Monthly Revenue"
+                            [class.is-invalid]="titleForm.get('title')?.invalid && titleForm.get('title')?.touched" />
+                        @if (titleForm.get('title')?.invalid && titleForm.get('title')?.touched) {
+                        <span class="error-msg">Title is required</span>
+                        }
+                    </div>
+                </div>
+            </section>
 
             <!-- Query Builder (data widgets only) -->
             @if (hasQuery) {
-              <app-query-builder
-                [widgetType]="selectedType"
-                [queryConfig]="queryCfg"
-                (queryConfigChange)="onQueryCfgChange($event)" />
-              <div class="panel-divider"></div>
+            <section class="form-section">
+                <div class="form-section-header">
+                    <div class="form-section-kicker">Data</div>
+                    <div class="form-section-title">Source Query</div>
+                    <div class="form-section-hint">Choose the product, entities, fields, and filters that should feed this widget.</div>
+                </div>
+
+                <div class="form-section-body">
+                    <app-query-builder
+                        [widgetType]="selectedType"
+                        [queryConfig]="queryCfg"
+                        (queryConfigChange)="onQueryCfgChange($event)" />
+                </div>
+            </section>
             }
 
             <!-- Display config panel -->
-            @switch (selectedType) {
-            @case ('stat') {
-              <app-edit-stat-config [cfg]="cfgAsStat" (cfgChange)="onCfgChange($event)" />
-            }
-            @case ('analytics') {
-              <app-edit-analytics-config [cfg]="cfgAsAnalytics" (cfgChange)="onCfgChange($event)" />
-            }
-            @case ('bar') {
-              <app-edit-series-config [cfg]="cfgAsSeries" typeLabel="bar" (cfgChange)="onCfgChange($event)" />
-            }
-            @case ('line') {
-              <app-edit-series-config [cfg]="cfgAsSeries" typeLabel="line" (cfgChange)="onCfgChange($event)" />
-            }
-            @case ('pie') {
-              <app-edit-pie-config [cfg]="cfgAsPie" (cfgChange)="onCfgChange($event)" />
-            }
-            @case ('table') {
-              <app-edit-table-config [cfg]="cfgAsTable" (cfgChange)="onCfgChange($event)" />
-            }
-            @case ('progress') {
-              <app-edit-progress-config [cfg]="cfgAsProgress" (cfgChange)="onCfgChange($event)" />
-            }
-            @case ('note') {
-              <app-edit-note-config [cfg]="cfgAsNote" (cfgChange)="onCfgChange($event)" />
-            }
-            @case ('section') {
-              <app-edit-section-config [cfg]="cfgAsSection" (cfgChange)="onCfgChange($event)" />
-            }
-            }
+            <section class="form-section">
+                <div class="form-section-header">
+                    <div class="form-section-kicker">Appearance</div>
+                    <div class="form-section-title">Presentation</div>
+                    <div class="form-section-hint">Fine-tune labels, layout, colors, and widget-specific display options.</div>
+                </div>
+
+                <div class="form-section-body">
+                    @switch (selectedType) {
+                    @case ('stat') {
+                      <app-edit-stat-config [cfg]="cfgAsStat" (cfgChange)="onCfgChange($event)" />
+                    }
+                    @case ('analytics') {
+                      <app-edit-analytics-config [cfg]="cfgAsAnalytics" (cfgChange)="onCfgChange($event)" />
+                    }
+                    @case ('bar') {
+                      <app-edit-series-config [cfg]="cfgAsSeries" typeLabel="bar" (cfgChange)="onCfgChange($event)" />
+                    }
+                    @case ('line') {
+                      <app-edit-series-config [cfg]="cfgAsSeries" typeLabel="line" (cfgChange)="onCfgChange($event)" />
+                    }
+                    @case ('pie') {
+                      <app-edit-pie-config [cfg]="cfgAsPie" (cfgChange)="onCfgChange($event)" />
+                    }
+                    @case ('table') {
+                      <app-edit-table-config [cfg]="cfgAsTable" (cfgChange)="onCfgChange($event)" />
+                    }
+                    @case ('progress') {
+                      <app-edit-progress-config [cfg]="cfgAsProgress" (cfgChange)="onCfgChange($event)" />
+                    }
+                    @case ('note') {
+                      <app-edit-note-config [cfg]="cfgAsNote" (cfgChange)="onCfgChange($event)" />
+                    }
+                    @case ('section') {
+                      <app-edit-section-config [cfg]="cfgAsSection" (cfgChange)="onCfgChange($event)" />
+                    }
+                    }
+                </div>
+            </section>
             }
 
         </div><!-- /wizard-left -->
 
         <!-- RIGHT: Live preview -->
         <div class="wizard-right">
-            <div class="preview-label">Live Preview</div>
+            <div class="preview-header">
+                <div class="preview-label">Live Preview</div>
+                <div class="preview-sub">Updates as you configure</div>
+            </div>
 
-            <app-widget-mini-preview
-                [type]="selectedType"
-                [config]="cfg"
-                [title]="previewTitle"
-                [contentH]="previewContentH" />
-
-            <!-- Setup summary -->
-            @if (selectedType && cfg) {
-            <div class="summary">
-                <div class="summary-label">Setup Summary</div>
-                @for (row of summaryRows; track row.k) {
-                <div class="summary-row">
-                    <span class="summary-key">{{ row.k }}</span>
-                    <span class="summary-val">{{ row.v }}</span>
+            <div class="preview-section">
+                <div class="preview-card">
+                    <div class="preview-card-header">
+                        <span class="preview-card-icon">{{ cat?.icon }}</span>
+                        <span class="preview-card-title">{{ previewTitle || cat?.label }}</span>
+                        @if (previewWidget) {
+                        <span class="preview-card-size">{{ previewWidget.w }}×{{ previewWidget.h }}</span>
+                        }
+                    </div>
+                    <div class="preview-content" [style.height.px]="previewH">
+                        @if (previewWidget) {
+                            @switch (selectedType) {
+                            @case (WidgetType.Stat) {
+                            <app-stat-widget [widget]="previewWidget" [contentH]="previewH" />
+                            }
+                            @case (WidgetType.Analytics) {
+                            <app-analytics-widget [widget]="previewWidget" [contentH]="previewH" />
+                            }
+                            @case (WidgetType.Bar) {
+                            <app-bar-widget [widget]="previewWidget" [contentH]="previewH" />
+                            }
+                            @case (WidgetType.Line) {
+                            <app-line-widget [widget]="previewWidget" [contentH]="previewH" />
+                            }
+                            @case (WidgetType.Pie) {
+                            <app-pie-widget [widget]="previewWidget" [contentH]="previewH" />
+                            }
+                            @case (WidgetType.Progress) {
+                            <app-progress-widget [widget]="previewWidget" [contentH]="previewH" />
+                            }
+                            @case (WidgetType.Note) {
+                            <app-note-widget [widget]="previewWidget" [contentH]="previewH" />
+                            }
+                            @case (WidgetType.Section) {
+                            <app-section-widget [widget]="previewWidget" [contentH]="previewH" />
+                            }
+                            }
+                        }
+                    </div>
                 </div>
+            </div>
+
+            @if (queryCfg) {
+            <button class="debug-toggle"
+                [class.is-open]="showDebugTools"
+                (click)="showDebugTools = !showDebugTools">
+                <span class="debug-toggle__label">
+                    {{ showDebugTools ? 'Hide debug data' : 'Show debug data' }}
+                </span>
+                <span class="debug-toggle__state">{{ debugStateLabel }}</span>
+            </button>
+            }
+
+            @if (queryCfg && showDebugTools) {
+            <div class="dev-panel">
+                <div class="dev-panel-title">Dev Tools</div>
+
+                <button class="dev-section-toggle" (click)="queryJsonOpen = !queryJsonOpen">
+                    <span class="dev-section-label">Query Config</span>
+                    <span class="dev-section-meta">{{ resultCategory }}</span>
+                    <span class="dev-chevron">{{ queryJsonOpen ? '▲' : '▼' }}</span>
+                </button>
+                @if (queryJsonOpen) {
+                <pre class="dev-json dev-json--query">{{ queryCfg | json }}</pre>
                 }
+
+                <button class="dev-section-toggle" (click)="resultJsonOpen = !resultJsonOpen">
+                    <span class="dev-section-label">Query Result</span>
+                    <span class="dev-section-meta">
+                        @if (queryError) {
+                        <span class="dev-badge dev-badge--err">ERROR</span>
+                        } @else if (queryResult) {
+                            @if (queryResult.warnings.length) {
+                            <span class="dev-badge dev-badge--warn">
+                                ⚠ {{ queryResult.warnings.length }}
+                            </span>
+                            } @else {
+                            <span class="dev-badge dev-badge--ok">✓ OK</span>
+                            }
+                        } @else {
+                        <span class="dev-badge dev-badge--idle">no query</span>
+                        }
+                    </span>
+                    <span class="dev-chevron">{{ resultJsonOpen ? '▲' : '▼' }}</span>
+                </button>
+                @if (resultJsonOpen) {
+                    @if (queryError) {
+                    <div class="dev-error-block">{{ queryError }}</div>
+                    } @else if (queryResult) {
+                    <pre class="dev-json dev-json--result">{{ queryResult | json }}</pre>
+                    } @else {
+                    <div class="dev-idle-block">Configure a query above to see results</div>
+                    }
+                }
+            </div>
+            }
+
+            <!-- Summary -->
+            @if (selectedType && cfg) {
+            <div class="settings-section">
+                <div class="settings-label">Summary</div>
+                <div class="settings-list">
+                    @for (row of settingsRows; track row.k) {
+                    <div class="settings-row">
+                        <span class="settings-key">{{ row.k }}</span>
+                        <span class="settings-val">
+                            @if (row.isColor) {
+                            <span class="color-dot" [style.background]="row.v"></span>
+                            }
+                            {{ row.v }}
+                        </span>
+                    </div>
+                    }
+                </div>
             </div>
             }
         </div>
