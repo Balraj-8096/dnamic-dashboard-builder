@@ -479,6 +479,16 @@ export class WidgetCard implements OnDestroy {
       this.svc.setActive(this.widget.id);
     }
 
+    // C25 fix: clamp translateX so the dragged card stays within canvas X boundaries.
+    // translateX is the raw pixel offset used for transform: translate3d — without clamping
+    // the card can visually drift past the left/right canvas edges even though snappedX
+    // (the grid commit position) is already bounded. Canvas pixel bounds: [GAP, canvasW - GAP].
+    const canvasW = this.svc.canvasW();
+    const baseRect = this.pixelRect;
+    const minTranslateX = GAP - baseRect.left;
+    const maxTranslateX = (canvasW - GAP) - (baseRect.left + baseRect.width);
+    ref.translateX = clamp(dx, minTranslateX, maxTranslateX);
+
     const colW = this.svc.colW();
     const snappedX = clamp(
       ref.origX + Math.round(dx / (colW + GAP)),

@@ -96,6 +96,11 @@ function buildEpx(): Widget[] {
           filters: [{ entity: 'appointment', field: 'status', operator: FilterOperator.Eq, value: 'no_show' }],
           periodLabel: 'All time',
         },
+        // Color Thresholds: accent shifts amber at 3+, red at 6+
+        colorThresholds: [
+          { threshold: 6, color: '#ef4444' },
+          { threshold: 3, color: '#f59e0b' },
+        ],
       },
     },
     {
@@ -112,6 +117,11 @@ function buildEpx(): Widget[] {
           agg: { entity: 'appointment_patient', field: 'price', function: AggregationFunction.Sum },
           periodLabel: 'All time',
         },
+        // Color Thresholds: accent shifts green once revenue exceeds target
+        colorThresholds: [
+          { threshold: 3000, color: '#10b981' },
+          { threshold: 1500, color: '#f59e0b' },
+        ],
       },
     },
 
@@ -130,6 +140,11 @@ function buildEpx(): Widget[] {
           valueAgg: { entity: 'appointment_patient', field: 'appointment_id', function: AggregationFunction.Count },
           dateRangeField: { entity: 'appointment', field: 'start_date' },
         },
+        // Reference Lines: monthly target + warning threshold
+        referenceLines: [
+          { label: 'Monthly Target', value: 5, color: '#22c55e', dash: true  },
+          { label: 'Min Threshold',  value: 2, color: '#f59e0b', dash: false },
+        ],
       },
     },
     {
@@ -164,6 +179,12 @@ function buildEpx(): Widget[] {
           periodLabel: 'Monthly trend',
           trend: { entity: 'appointment', field: 'start_date', interval: DateInterval.Month, periods: 12 },
         },
+        // Color Thresholds: accent shifts green once volume hits target
+        colorThresholds: [
+          { threshold: 30, color: '#10b981' },
+          { threshold: 20, color: '#3b82f6' },
+          { threshold: 10, color: '#f59e0b' },
+        ],
       },
     },
     {
@@ -177,6 +198,12 @@ function buildEpx(): Widget[] {
           { label: 'Confirmed', value: 0, max: 50, color: '#22c55e' },
           { label: 'Cancelled', value: 0, max: 50, color: '#6b7280' },
           { label: 'No Shows',  value: 0, max: 50, color: '#ef4444' },
+        ],
+        // Color Rules: bar fill shifts by fill-percentage (value/max)
+        colorRules: [
+          { minPercent: 70, color: '#10b981' },
+          { minPercent: 40, color: '#f59e0b' },
+          { minPercent: 0,  color: '#ef4444' },
         ],
         progressQueries: [
           {
@@ -308,6 +335,11 @@ Track appointment activity, revenue, and patient attendance across all sites.
           valueAgg: { entity: 'appointment_patient', field: 'appointment_id', function: AggregationFunction.Count },
           dateRangeField: { entity: 'appointment', field: 'start_date' },
         },
+        // Reference Lines: target and historical average
+        referenceLines: [
+          { label: 'Target',   value: 5, color: '#22c55e', dash: true  },
+          { label: 'Avg',      value: 3, color: '#f59e0b', dash: false },
+        ],
       },
     },
     {
@@ -470,6 +502,11 @@ function buildAccounting(): Widget[] {
           filters: [{ entity: 'invoice', field: 'is_void', operator: FilterOperator.Eq, value: 'false' }],
           periodLabel: 'All time',
         },
+        // Color Thresholds: green above revenue target, amber approaching it
+        colorThresholds: [
+          { threshold: 8000, color: '#10b981' },
+          { threshold: 4000, color: '#f59e0b' },
+        ],
       },
     },
     {
@@ -487,6 +524,12 @@ function buildAccounting(): Widget[] {
           filters: [{ entity: 'invoice', field: 'status', operator: FilterOperator.Eq, value: 'overdue' }],
           periodLabel: 'All time',
         },
+        // Color Thresholds: accent escalates from amber to red as overdue count grows
+        colorThresholds: [
+          { threshold: 8,  color: '#ef4444' },
+          { threshold: 4,  color: '#f59e0b' },
+          { threshold: 1,  color: '#f97316' },
+        ],
       },
     },
     {
@@ -522,6 +565,11 @@ function buildAccounting(): Widget[] {
           valueAgg: { entity: 'invoice', field: 'total_amount', function: AggregationFunction.Sum },
           dateRangeField: { entity: 'invoice', field: 'invoice_date' },
         },
+        // Reference Lines: monthly revenue target and break-even
+        referenceLines: [
+          { label: 'Monthly Target', value: 2000, color: '#22c55e', dash: true  },
+          { label: 'Break-even',     value:  800, color: '#f59e0b', dash: false },
+        ],
       },
     },
     {
@@ -556,6 +604,12 @@ function buildAccounting(): Widget[] {
           periodLabel: 'Monthly trend',
           trend: { entity: 'invoice', field: 'invoice_date', interval: DateInterval.Month, periods: 12 },
         },
+        // Color Thresholds: green once invoice volume hits target
+        colorThresholds: [
+          { threshold: 15, color: '#10b981' },
+          { threshold: 8,  color: '#3b82f6' },
+          { threshold: 3,  color: '#f59e0b' },
+        ],
       },
     },
     {
@@ -569,6 +623,12 @@ function buildAccounting(): Widget[] {
           { label: 'Sent',    value: 0, max: 50, color: '#3b82f6' },
           { label: 'Overdue', value: 0, max: 50, color: '#ef4444' },
           { label: 'Partial', value: 0, max: 50, color: '#f59e0b' },
+        ],
+        // Color Rules: high fill = green, mid = amber, low = red
+        colorRules: [
+          { minPercent: 60, color: '#22c55e' },
+          { minPercent: 30, color: '#f59e0b' },
+          { minPercent: 0,  color: '#ef4444' },
         ],
         progressQueries: [
           {
@@ -683,6 +743,11 @@ Monitor invoice lifecycle, revenue collection, and claim status.
           filters: [{ entity: 'claim', field: 'status', operator: FilterOperator.Eq, value: 'accepted' }],
           periodLabel: 'All time',
         },
+        // Color Thresholds: green once approved amount hits collection target
+        colorThresholds: [
+          { threshold: 5000, color: '#10b981' },
+          { threshold: 2000, color: '#f59e0b' },
+        ],
       },
     },
 
@@ -701,6 +766,11 @@ Monitor invoice lifecycle, revenue collection, and claim status.
           valueAgg: { entity: 'invoice', field: 'total_amount', function: AggregationFunction.Sum },
           dateRangeField: { entity: 'invoice', field: 'invoice_date' },
         },
+        // Reference Lines: monthly target and last-year average
+        referenceLines: [
+          { label: 'Annual Target /12', value: 2000, color: '#22c55e', dash: true  },
+          { label: 'Prior Year Avg',    value: 1200, color: '#6b7280', dash: false },
+        ],
       },
     },
     {
@@ -906,6 +976,12 @@ function buildPrescriptions(): Widget[] {
           filters: [{ entity: 'medication', field: 'is_controlled', operator: FilterOperator.Eq, value: 'true' }],
           periodLabel: 'All time',
         },
+        // Color Thresholds: escalates as controlled-substance volume grows
+        colorThresholds: [
+          { threshold: 10, color: '#ef4444' },
+          { threshold:  5, color: '#f97316' },
+          { threshold:  2, color: '#f59e0b' },
+        ],
       },
     },
     {
@@ -934,6 +1010,11 @@ function buildPrescriptions(): Widget[] {
       config: {
         accent: '#a78bfa', stacked: false, horizontal: false,
         showGrid: true, showLegend: false, series: [], selectedFields: [],
+        // Reference Lines: monthly volume targets
+        referenceLines: [
+          { label: 'Monthly Target', value: 8,  color: '#22c55e', dash: true  },
+          { label: 'Min Threshold',  value: 3,  color: '#f59e0b', dash: false },
+        ],
         queryConfig: {
           product: 'prescriptions',
           entities: ['prescription'],
@@ -969,6 +1050,12 @@ function buildPrescriptions(): Widget[] {
         value: '–', changeValue: '', changeLabel: 'vs previous period',
         trendUp: true, accent: '#a78bfa', data: [], period: '',
         selectedFields: [],
+        // Color Thresholds: accent shifts with prescription volume
+        colorThresholds: [
+          { threshold: 20, color: '#10b981' },
+          { threshold: 10, color: '#3b82f6' },
+          { threshold:  5, color: '#f59e0b' },
+        ],
         queryConfig: {
           product: 'prescriptions',
           entities: ['prescription'],
@@ -989,6 +1076,12 @@ function buildPrescriptions(): Widget[] {
           { label: 'Dispensed', value: 0, max: 50, color: '#10b981' },
           { label: 'Partial',   value: 0, max: 50, color: '#f59e0b' },
           { label: 'Expired',   value: 0, max: 50, color: '#f97316' },
+        ],
+        // Color Rules: bar fill shifts by completion percentage
+        colorRules: [
+          { minPercent: 60, color: '#10b981' },
+          { minPercent: 30, color: '#f59e0b' },
+          { minPercent: 0,  color: '#ef4444' },
         ],
         progressQueries: [
           {
@@ -1068,6 +1161,12 @@ Monitor prescription activity, controlled substances, and dispensing rates.
           filters: [{ entity: 'prescription', field: 'status', operator: FilterOperator.Eq, value: 'expired' }],
           periodLabel: 'All time',
         },
+        // Color Thresholds: escalates as expired volume rises
+        colorThresholds: [
+          { threshold: 8,  color: '#ef4444' },
+          { threshold: 4,  color: '#f97316' },
+          { threshold: 1,  color: '#f59e0b' },
+        ],
       },
     },
     {
@@ -1085,6 +1184,12 @@ Monitor prescription activity, controlled substances, and dispensing rates.
           filters: [{ entity: 'prescription', field: 'priority', operator: FilterOperator.Eq, value: 'emergency' }],
           periodLabel: 'All time',
         },
+        // Color Thresholds: red escalation as emergency count grows
+        colorThresholds: [
+          { threshold: 5,  color: '#ef4444' },
+          { threshold: 2,  color: '#f97316' },
+          { threshold: 1,  color: '#f59e0b' },
+        ],
       },
     },
     {
@@ -1113,6 +1218,11 @@ Monitor prescription activity, controlled substances, and dispensing rates.
       config: {
         areaFill: true, smooth: true, showGrid: true, showDots: false, showLegend: false,
         series: [], selectedFields: [],
+        // Reference Lines: dispensing performance bands
+        referenceLines: [
+          { label: 'Target',   value: 10, color: '#22c55e', dash: true  },
+          { label: 'Baseline', value:  4, color: '#6b7280', dash: false },
+        ],
         queryConfig: {
           product: 'prescriptions',
           entities: ['prescription', 'dispense'],
