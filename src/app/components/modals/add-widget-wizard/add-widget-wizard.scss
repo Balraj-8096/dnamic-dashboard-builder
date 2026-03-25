@@ -490,6 +490,7 @@
   border: 1px solid color-mix(in srgb, var(--acc) 20%, var(--bdr));
   border-radius: var(--radius-md);
   overflow: hidden;
+  flex-shrink: 0;  // prevent flexbox from squishing the panel to zero height
 }
 
 .dev-panel-title {
@@ -575,6 +576,12 @@
     color: var(--txt2);
     border: 1px solid color-mix(in srgb, var(--txt2) 20%, transparent);
   }
+
+  &--payload {
+    background: color-mix(in srgb, #a78bfa 12%, transparent);
+    color: #a78bfa;
+    border: 1px solid color-mix(in srgb, #a78bfa 30%, transparent);
+  }
 }
 
 .dev-json {
@@ -600,6 +607,11 @@
   &--result {
     max-height: 220px;
     color: #86efac;
+  }
+
+  &--payload {
+    max-height: 260px;
+    color: #c4b5fd;   // purple tint for payload
   }
 }
 
@@ -800,7 +812,7 @@
   .wizard-right {
     width: auto;
     min-width: 0;
-    max-height: min(24dvh, 220px);
+    max-height: min(55dvh, 520px);
     border-left: none;
     border-top: 1px solid var(--bdr);
     padding: 0;
@@ -841,7 +853,7 @@
 
   .wizard-right {
     padding: 0;
-    max-height: min(22dvh, 180px);
+    max-height: min(50dvh, 420px);
   }
 
   .summary-row {

@@ -208,18 +208,7 @@
                 </div>
             </div>
 
-            @if (queryCfg) {
-            <button class="debug-toggle"
-                [class.is-open]="showDebugTools"
-                (click)="showDebugTools = !showDebugTools">
-                <span class="debug-toggle__label">
-                    {{ showDebugTools ? 'Hide debug data' : 'Show debug data' }}
-                </span>
-                <span class="debug-toggle__state">{{ debugStateLabel }}</span>
-            </button>
-            }
-
-            @if (queryCfg && showDebugTools) {
+            @if (hasQuery) {
             <div class="dev-panel">
                 <div class="dev-panel-title">Dev Tools</div>
 
@@ -258,6 +247,26 @@
                     <pre class="dev-json dev-json--result">{{ queryResult | json }}</pre>
                     } @else {
                     <div class="dev-idle-block">Configure a query above to see results</div>
+                    }
+                }
+
+                <!-- ── 3. Widget Payload JSON ──────────────────── -->
+                <button class="dev-section-toggle" (click)="payloadJsonOpen = !payloadJsonOpen">
+                    <span class="dev-section-label">Widget Payload</span>
+                    <span class="dev-section-meta">
+                        @if (selectedType) {
+                        <span class="dev-badge dev-badge--payload">{{ selectedType }}</span>
+                        } @else {
+                        <span class="dev-badge dev-badge--idle">no type</span>
+                        }
+                    </span>
+                    <span class="dev-chevron">{{ payloadJsonOpen ? '▲' : '▼' }}</span>
+                </button>
+                @if (payloadJsonOpen) {
+                    @if (previewWidget) {
+                    <pre class="dev-json dev-json--payload">{{ previewWidget | json }}</pre>
+                    } @else {
+                    <div class="dev-idle-block">Select a widget type to see the payload</div>
                     }
                 }
             </div>

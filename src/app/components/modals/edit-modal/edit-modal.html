@@ -156,18 +156,7 @@
       </div>
 
       <!-- ── DEV TOOLS PANEL ─────────────────────────────── -->
-      @if (queryCfg) {
-        <button class="debug-toggle"
-          [class.is-open]="showDebugTools"
-          (click)="showDebugTools = !showDebugTools">
-          <span class="debug-toggle__label">
-            {{ showDebugTools ? 'Hide debug data' : 'Show debug data' }}
-          </span>
-          <span class="debug-toggle__state">{{ debugStateLabel }}</span>
-        </button>
-      }
-
-      @if (queryCfg && showDebugTools) {
+      @if (hasQuery) {
         <div class="dev-panel">
 
           <!-- Panel title -->
@@ -213,6 +202,19 @@
             } @else {
               <div class="dev-idle-block">Configure a query above to see results</div>
             }
+          }
+
+          <!-- ── 3. Widget Payload JSON ────────────────────── -->
+          <button class="dev-section-toggle"
+            (click)="payloadJsonOpen = !payloadJsonOpen">
+            <span class="dev-section-label">Widget Payload</span>
+            <span class="dev-section-meta">
+              <span class="dev-badge dev-badge--payload">{{ widget.type }}</span>
+            </span>
+            <span class="dev-chevron">{{ payloadJsonOpen ? '▲' : '▼' }}</span>
+          </button>
+          @if (payloadJsonOpen) {
+            <pre class="dev-json dev-json--payload">{{ previewWidget | json }}</pre>
           }
 
         </div>

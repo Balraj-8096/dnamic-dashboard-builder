@@ -61,9 +61,9 @@ export class AddWidgetWizard implements OnInit {
   step = 1;
   selectedType: WidgetType | null = null;
   cfg: WidgetConfig | null = null;
-  showDebugTools = false;
-  queryJsonOpen  = true;
-  resultJsonOpen = true;
+  queryJsonOpen   = true;
+  resultJsonOpen  = true;
+  payloadJsonOpen = true;
   queryResult: StatQueryResult | ChartQueryResult | PieQueryResult | TableQueryResult | null = null;
   queryError: string | null = null;
   resultCategory: 'stat' | 'chart' | 'pie' | 'table' | null = null;
@@ -100,9 +100,9 @@ export class AddWidgetWizard implements OnInit {
     const base = FACTORIES[type]?.(0, 0);
     this.cfg = base?.config ?? null;
     this.titleForm.setValue({ title: base?.title ?? '' });
-    this.showDebugTools = false;
-    this.queryJsonOpen = true;
-    this.resultJsonOpen = true;
+    this.queryJsonOpen   = true;
+    this.resultJsonOpen  = true;
+    this.payloadJsonOpen = true;
     this.runQuery();
   }
 
@@ -205,14 +205,6 @@ export class AddWidgetWizard implements OnInit {
     if (this.viewportWidth <= 720) return 120;
     if (this.viewportWidth <= 1024) return 140;
     return 180;
-  }
-
-  get debugStateLabel(): string {
-    if (this.queryError) return 'error';
-    const warnings = (this.queryResult as { warnings?: unknown[] } | null)?.warnings?.length ?? 0;
-    if (warnings) return `${warnings} warning${warnings === 1 ? '' : 's'}`;
-    if (this.queryResult) return 'ready';
-    return 'idle';
   }
 
   get summaryRows(): { k: string; v: string }[] {

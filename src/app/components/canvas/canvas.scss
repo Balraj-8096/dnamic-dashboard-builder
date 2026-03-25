@@ -149,7 +149,6 @@
 }
 
 .empty-title {
-  max-width: 18ch;
   font-size: clamp(26px, 4vw, 36px);
   line-height: 1.06;
   font-weight: 700;
@@ -157,7 +156,6 @@
 }
 
 .empty-hint {
-  max-width: 58ch;
   font-size: 14px;
   line-height: 1.7;
   color: var(--txt1);

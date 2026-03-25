@@ -419,6 +419,7 @@
   border: 1px solid color-mix(in srgb, var(--acc) 20%, var(--bdr));
   border-radius: var(--radius-md);
   overflow: hidden;
+  flex-shrink: 0;  // prevent flexbox from squishing the panel to zero height
 }
 
 // Panel title bar
@@ -503,6 +504,12 @@
     color: var(--txt2);
     border: 1px solid color-mix(in srgb, var(--txt2) 20%, transparent);
   }
+
+  &--payload {
+    background: color-mix(in srgb, #a78bfa 12%, transparent);
+    color: #a78bfa;
+    border: 1px solid color-mix(in srgb, #a78bfa 30%, transparent);
+  }
 }
 
 // JSON pre block
@@ -531,6 +538,12 @@
   &--result {
     max-height: 220px;
     color: #86efac;   // green tint for result
+  }
+
+  // Widget payload: purple tint, tall to show full config
+  &--payload {
+    max-height: 260px;
+    color: #c4b5fd;   // purple tint for payload
   }
 }
 
