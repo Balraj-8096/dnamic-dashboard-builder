@@ -26,6 +26,7 @@ import { FilterCondition } from '../../../core/query-types';
 
 import {
   ApexAxisChartSeries,
+  ApexAnnotations,
   ApexChart,
   ApexXAxis,
   ApexYAxis,
@@ -37,7 +38,7 @@ import {
   ApexStroke,
   ApexFill,
 } from 'ng-apexcharts';
-import { BarConfig, Widget } from '../../../core/interfaces';
+import { BarConfig, NumberFormatProfile, Widget } from '../../../core/interfaces';
 import { CHART_COLORS } from '../../../core/constants';
 
 
@@ -55,6 +56,8 @@ export interface BarChartOptions {
   stroke: ApexStroke;
   fill: ApexFill;
   colors: string[];
+  /** E3: horizontal reference/target line annotations */
+  annotations: ApexAnnotations;
 }
 
 
@@ -95,6 +98,66 @@ export class BarWidget implements OnChanges {
   // ── Config accessor ──────────────────────────────────────────
   get cfg(): BarConfig {
     return this.widget.config as BarConfig;
+  }
+
+  // ── E2: value formatter ───────────────────────────────────────
+  /**
+   * Formats a numeric value for Y-axis labels and tooltips.
+   * When no numberFormat is configured (existing widgets) the original
+   * compact behaviour is preserved exactly:
+   *   axis:    >=1000 → Xk (0 dp)   e.g. 42000 → "42k"
+   *   tooltip: >=1000 → X.Xk (1 dp) e.g. 42000 → "42.0k"
+   */
+  // ── E3: annotation builder ────────────────────────────────────
+  /**
+   * Converts cfg.referenceLines into ApexAnnotations.yaxis entries.
+   * Returns undefined (not an empty object) when no lines are defined
+   * so the ApexCharts annotations key is omitted entirely for existing widgets.
+   */
+  private buildAnnotations(): ApexAnnotations {
+    const lines = this.cfg.referenceLines;
+    if (!lines?.length) return {};
+    return {
+      yaxis: lines.map(rl => ({
+        y: rl.value,
+        borderColor: rl.color,
+        strokeDashArray: rl.dash === false ? 0 : 6,
+        label: {
+          text: rl.label,
+          style: {
+            color: rl.color,
+            background: 'transparent',
+            fontSize: '10px',
+            fontFamily: 'JetBrains Mono, monospace',
+          },
+          position: 'right',
+          offsetX: -8,
+        },
+      })),
+    };
+  }
+
+  // ── E2: value formatter ───────────────────────────────────────
+  private formatVal(val: number, fmt: NumberFormatProfile | undefined, tooltipMode = false): string {
+    if (!fmt) {
+      // Existing behaviour — untouched
+      if (val >= 1_000) return `${(val / 1_000).toFixed(tooltipMode ? 1 : 0)}k`;
+      return `${val}`;
+    }
+    const dec = fmt.decimals ?? (fmt.notation === 'fixed' || fmt.notation === 'currency' ? 2 : 0);
+    switch (fmt.notation) {
+      case 'currency':
+        return `${fmt.currencySymbol ?? '$'}${val.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec })}`;
+      case 'percent':
+        return `${val.toFixed(dec)}%`;
+      case 'fixed':
+        return val.toFixed(dec);
+      case 'compact':
+      default:
+        if (val >= 1_000_000) return `${(val / 1_000_000).toFixed(1)}M`;
+        if (val >= 1_000)     return `${(val / 1_000).toFixed(dec)}k`;
+        return `${val}`;
+    }
   }
 
   ngOnChanges(): void {
@@ -200,10 +263,8 @@ export class BarWidget implements OnChanges {
             fontSize: '10px',
             fontFamily: 'JetBrains Mono, monospace',
           },
-          formatter: (val: number) => {
-            if (val >= 1000) return `${(val / 1000).toFixed(0)}k`;
-            return `${val}`;
-          },
+          // E2: delegates to formatVal — falls back to original compact logic when numberFormat absent
+          formatter: (val: number) => this.formatVal(val, cfg.numberFormat),
         },
       },
 
@@ -223,12 +284,13 @@ export class BarWidget implements OnChanges {
           fontFamily: 'JetBrains Mono, monospace',
         },
         y: {
-          formatter: (val: number) =>
-            val >= 1000
-              ? `${(val / 1000).toFixed(1)}k`
-              : `${val}`,
+          // E2: tooltipMode=true preserves the original 1dp compact style for tooltips
+          formatter: (val: number) => this.formatVal(val, cfg.numberFormat, true),
         },
       },
+
+      // E3: undefined when no referenceLines defined — key is omitted entirely
+      annotations: this.buildAnnotations(),
     };
   }
 }

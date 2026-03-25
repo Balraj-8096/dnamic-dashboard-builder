@@ -12,7 +12,7 @@
           @if (cfg.showValues) {
             <span
               class="progress-item__value"
-              [style.color]="item.color">
+              [style.color]="resolveItemColor(item)">
               {{ getPercent(item) }}%
             </span>
           }
@@ -23,8 +23,8 @@
           <div
             class="progress-fill"
             [style.width.%]="getPercent(item)"
-            [style.background]="item.color"
-            [style.box-shadow]="'0 0 6px ' + item.color + '66'">
+            [style.background]="resolveItemColor(item)"
+            [style.box-shadow]="'0 0 6px ' + resolveItemColor(item) + '66'">
           </div>
         </div>
 

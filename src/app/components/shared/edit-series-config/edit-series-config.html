@@ -67,3 +67,75 @@
     </div>
   </div>
 </div>
+
+<!-- E2: Value Format — controls Y-axis labels and tooltip number display -->
+<div class="section-hdr">Value Format</div>
+<div class="two-col">
+  <div class="field-row">
+    <label class="field-label">Notation</label>
+    <select class="sel" [value]="formatNotation"
+      (change)="updateFormat('notation', $any($event.target).value)">
+      <option value="compact">Compact (1k, 2M)</option>
+      <option value="fixed">Fixed decimal</option>
+      <option value="currency">Currency</option>
+      <option value="percent">Percent (%)</option>
+    </select>
+  </div>
+
+  @if (formatNotation === 'fixed' || formatNotation === 'currency' || formatNotation === 'percent') {
+    <div class="field-row">
+      <label class="field-label" for="fmt-decimals">Decimals</label>
+      <input id="fmt-decimals" class="inp" type="number" min="0" max="4"
+        [value]="$any(cfg).numberFormat?.decimals ?? (formatNotation === 'fixed' || formatNotation === 'currency' ? 2 : 0)"
+        (change)="updateFormat('decimals', +$any($event.target).value)">
+    </div>
+  }
+
+  @if (formatNotation === 'currency') {
+    <div class="field-row">
+      <label class="field-label" for="fmt-currency-symbol">Symbol</label>
+      <input id="fmt-currency-symbol" class="inp" type="text" maxlength="3" placeholder="$"
+        [value]="$any(cfg).numberFormat?.currencySymbol ?? '$'"
+        (change)="updateFormat('currencySymbol', $any($event.target).value)">
+    </div>
+  }
+</div>
+
+<!-- E3: Reference Lines — horizontal annotations drawn across the chart -->
+<div class="section-hdr">
+  Reference Lines
+  <button class="btn-ghost-sm" (click)="addRefLine()">+ Add</button>
+</div>
+
+@if (refLines.length === 0) {
+  <p class="empty-hint">No reference lines. Click <strong>+ Add</strong> to mark a target or threshold.</p>
+}
+
+@for (rl of refLines; track $index) {
+  <div class="ref-line-row">
+    <div class="ref-line-swatch" [style.background]="rl.color"></div>
+
+    <input class="inp ref-line-label" type="text" placeholder="Label"
+      [value]="rl.label"
+      (change)="updateRefLine($index, 'label', $any($event.target).value)">
+
+    <input class="inp ref-line-value" type="number" placeholder="Value"
+      [value]="rl.value"
+      (change)="updateRefLine($index, 'value', +$any($event.target).value)">
+
+    <input class="inp ref-line-color" type="color"
+      [value]="rl.color"
+      (change)="updateRefLine($index, 'color', $any($event.target).value)">
+
+    <button class="toggle-wrap ref-line-dash"
+      type="button"
+      title="Toggle dashed / solid"
+      (click)="updateRefLine($index, 'dash', !rl.dash)">
+      <div class="toggle-box" [class.is-on]="rl.dash !== false"></div>
+      <span class="toggle-label">Dashed</span>
+    </button>
+
+    <button class="btn-remove-sm" (click)="removeRefLine($index)" title="Remove">✕</button>
+  </div>
+}
+

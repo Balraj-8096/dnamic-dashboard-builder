@@ -21,7 +21,7 @@ import {
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AnalyticsConfig, Widget } from '../../../core/interfaces';
+import { AnalyticsConfig, ColorThreshold, Widget } from '../../../core/interfaces';
 import { QueryService } from '../../../services/query.service';
 import { mapStatResult } from '../../../core/query-result-mapper';
 import { WidgetDatePickerComponent, DatePickerChange } from '../../shared/widget-date-picker/widget-date-picker';
@@ -56,6 +56,10 @@ export class AnalyticsWidget implements OnChanges {
   displayTrendUp     = true;
   displayData:       number[] = [];
   displayPeriod      = '';
+  /** E1: raw numeric value used for threshold evaluation */
+  private rawValue     = 0;
+  /** E1: resolved accent after threshold evaluation */
+  private resolvedAccent = '';
 
   // ── Per-widget date filter ────────────────────────────────────
   localDatePreset = '';
@@ -90,8 +94,11 @@ export class AnalyticsWidget implements OnChanges {
         this.displayTrendUp     = mapped.trendUp;
         this.displayData        = mapped.sparkData;
         this.displayPeriod      = mapped.periodLabel;
+        // E1: use raw numeric result for accurate threshold evaluation
+        this.rawValue = result.value ?? 0;
       } catch {
         this.displayValue = 'Error';
+        this.rawValue = 0;
       }
     } else {
       this.displayValue       = this.cfg?.value       ?? '';
@@ -100,7 +107,25 @@ export class AnalyticsWidget implements OnChanges {
       this.displayTrendUp     = this.cfg?.trendUp     ?? true;
       this.displayData        = this.cfg?.data        ?? [];
       this.displayPeriod      = this.cfg?.period      ?? '';
+      // E1: parse static value string for threshold evaluation
+      this.rawValue = parseFloat((this.cfg?.value ?? '').replace(/[^0-9.-]/g, '')) || 0;
     }
+    // E1: resolve accent after value is known
+    this.resolvedAccent = this.evalThresholds(this.rawValue);
+  }
+
+  // ── E1: threshold evaluator ───────────────────────────────────
+  /**
+   * Same logic as stat-widget — see stat-widget.ts for full commentary.
+   * Returns cfg.accent unchanged when colorThresholds is absent or empty.
+   */
+  private evalThresholds(val: number): string {
+    const rules = this.cfg?.colorThresholds;
+    if (!rules?.length) return this.cfg?.accent ?? '';
+    const matched = [...rules]
+      .sort((a: ColorThreshold, b: ColorThreshold) => b.threshold - a.threshold)
+      .find((r: ColorThreshold) => val >= r.threshold);
+    return matched?.color ?? this.cfg?.accent ?? '';
   }
 
   // ── SVG area chart ───────────────────────────────────────────
@@ -145,16 +170,19 @@ export class AnalyticsWidget implements OnChanges {
 
   /**
    * Gradient ID — unique per widget to prevent SVG conflicts.
+   * E1: uses resolvedAccent so gradient colour matches the threshold colour.
    */
   get gradientId(): string {
-    const color = (this.cfg?.accent || '#22c55e').replace('#', '');
+    const color = (this.resolvedAccent || this.cfg?.accent || '#22c55e').replace('#', '');
     return `ag_${color}_${this.widget.id}`;
   }
 
   /**
    * Accent color with fallback.
+   * E1: returns resolvedAccent (post-threshold evaluation) instead of raw cfg.accent.
+   * Falls back to cfg.accent when resolvedAccent is empty (before first refresh).
    */
   get accent(): string {
-    return this.cfg?.accent || '#22c55e';
+    return this.resolvedAccent || this.cfg?.accent || '#22c55e';
   }
 }

@@ -21,7 +21,7 @@ import {
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StatConfig, Widget } from '../../../core/interfaces';
+import { ColorThreshold, StatConfig, Widget } from '../../../core/interfaces';
 import { DATA_SCHEMA } from '../../../core/data-schema';
 import { QueryService } from '../../../services/query.service';
 import { mapStatResult, StatDisplayData } from '../../../core/query-result-mapper';
@@ -57,6 +57,10 @@ export class StatWidget implements OnChanges {
   displayTrendUp   = true;
   displaySparkData: number[] = [];
   displayPeriod    = '';
+  /** E1: raw numeric value used for threshold evaluation */
+  private rawValue   = 0;
+  /** E1: resolved accent after threshold evaluation — used in template instead of cfg.accent */
+  resolvedAccent   = '';
 
   // ── Per-widget date filter ────────────────────────────────────
   localDatePreset = '';
@@ -90,16 +94,38 @@ export class StatWidget implements OnChanges {
         this.displayTrendUp   = mapped.trendUp;
         this.displaySparkData = mapped.sparkData;
         this.displayPeriod    = mapped.periodLabel;
+        // E1: use raw numeric result for accurate threshold evaluation
+        this.rawValue = result.value ?? 0;
       } catch {
         this.displayValue = 'Error';
         this.displayTrend = '';
+        this.rawValue = 0;
       }
     } else {
       this.displayValue     = this.cfg?.value       ?? '';
       this.displayTrend     = this.cfg?.trend        ?? '';
       this.displayTrendUp   = this.cfg?.trendUp      ?? true;
       this.displaySparkData = this.cfg?.sparkData    ?? [];
+      // E1: parse static value string for threshold evaluation
+      this.rawValue = parseFloat((this.cfg?.value ?? '').replace(/[^0-9.-]/g, '')) || 0;
     }
+    // E1: resolve accent after value is known — falls back to cfg.accent when no thresholds set
+    this.resolvedAccent = this.evalThresholds(this.rawValue);
+  }
+
+  // ── E1: threshold evaluator ───────────────────────────────────
+  /**
+   * Walks thresholds descending — highest matching threshold wins.
+   * Returns cfg.accent unchanged when colorThresholds is absent or empty,
+   * so all existing widgets with no thresholds are completely unaffected.
+   */
+  private evalThresholds(val: number): string {
+    const rules = this.cfg?.colorThresholds;
+    if (!rules?.length) return this.cfg?.accent ?? '';
+    const matched = [...rules]
+      .sort((a: ColorThreshold, b: ColorThreshold) => b.threshold - a.threshold)
+      .find((r: ColorThreshold) => val >= r.threshold);
+    return matched?.color ?? this.cfg?.accent ?? '';
   }
 
   // ── Multi-field mode ─────────────────────────────────────────

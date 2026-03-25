@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AnalyticsConfig } from '../../../core/interfaces';
+import { AnalyticsConfig, ColorThreshold } from '../../../core/interfaces';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -22,6 +22,29 @@ export class EditAnalyticsConfig {
   }
 
   setData(raw: string): void {
-    this.upd('data', raw.split(',').map(n => parseFloat(n.trim()) || 0));
+    this.upd('data', raw.split(',').map(n => Number.parseFloat(n.trim()) || 0));
+  }
+
+  // ── E1: Color threshold helpers ───────────────────────────────
+
+  get thresholds(): ColorThreshold[] {
+    return this.cfg.colorThresholds ?? [];
+  }
+
+  addThreshold(): void {
+    this.upd('colorThresholds', [
+      ...this.thresholds,
+      { threshold: 0, color: '#22c55e' } satisfies ColorThreshold,
+    ]);
+  }
+
+  removeThreshold(i: number): void {
+    this.upd('colorThresholds', this.thresholds.filter((_, ti) => ti !== i));
+  }
+
+  updateThreshold(i: number, key: keyof ColorThreshold, value: any): void {
+    this.upd('colorThresholds', this.thresholds.map((t, ti) =>
+      ti === i ? { ...t, [key]: value } : t
+    ));
   }
 }

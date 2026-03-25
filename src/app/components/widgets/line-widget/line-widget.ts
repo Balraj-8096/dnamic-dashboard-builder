@@ -18,14 +18,10 @@ import {
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgApexchartsModule } from 'ng-apexcharts';
-import { QueryService } from '../../../services/query.service';
-import { mapChartResult } from '../../../core/query-result-mapper';
-import { WidgetDatePickerComponent, DatePickerChange } from '../../shared/widget-date-picker/widget-date-picker';
-import { FilterCondition } from '../../../core/query-types';
-
 import {
+  NgApexchartsModule,
   ApexAxisChartSeries,
+  ApexAnnotations,
   ApexChart,
   ApexXAxis,
   ApexYAxis,
@@ -37,7 +33,11 @@ import {
   ApexFill,
   ApexMarkers,
 } from 'ng-apexcharts';
-import { LineConfig, Widget } from '../../../core/interfaces';
+import { QueryService } from '../../../services/query.service';
+import { mapChartResult } from '../../../core/query-result-mapper';
+import { WidgetDatePickerComponent, DatePickerChange } from '../../shared/widget-date-picker/widget-date-picker';
+import { FilterCondition } from '../../../core/query-types';
+import { LineConfig, NumberFormatProfile, Widget } from '../../../core/interfaces';
 import { CHART_COLORS } from '../../../core/constants';
 
 
@@ -55,6 +55,8 @@ export interface LineChartOptions {
   fill: ApexFill;
   markers: ApexMarkers;
   colors: string[];
+  /** E3: horizontal reference/target line annotations */
+  annotations: ApexAnnotations;
 }
 
 
@@ -94,6 +96,54 @@ export class LineWidget implements OnChanges {
 
   get cfg(): LineConfig {
     return this.widget.config as LineConfig;
+  }
+
+  // ── E3: annotation builder ────────────────────────────────────
+  /** Same logic as bar-widget — see bar-widget.ts for full commentary. */
+  private buildAnnotations(): ApexAnnotations {
+    const lines = this.cfg.referenceLines;
+    if (!lines?.length) return {};
+    return {
+      yaxis: lines.map(rl => ({
+        y: rl.value,
+        borderColor: rl.color,
+        strokeDashArray: rl.dash === false ? 0 : 6,
+        label: {
+          text: rl.label,
+          style: {
+            color: rl.color,
+            background: 'transparent',
+            fontSize: '10px',
+            fontFamily: 'JetBrains Mono, monospace',
+          },
+          position: 'right',
+          offsetX: -8,
+        },
+      })),
+    };
+  }
+
+  // ── E2: value formatter ───────────────────────────────────────
+  /** Same logic as bar-widget — see bar-widget.ts for full commentary. */
+  private formatVal(val: number, fmt: NumberFormatProfile | undefined, tooltipMode = false): string {
+    if (!fmt) {
+      if (val >= 1_000) return `${(val / 1_000).toFixed(tooltipMode ? 1 : 0)}k`;
+      return `${val}`;
+    }
+    const dec = fmt.decimals ?? (fmt.notation === 'fixed' || fmt.notation === 'currency' ? 2 : 0);
+    switch (fmt.notation) {
+      case 'currency':
+        return `${fmt.currencySymbol ?? '$'}${val.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec })}`;
+      case 'percent':
+        return `${val.toFixed(dec)}%`;
+      case 'fixed':
+        return val.toFixed(dec);
+      case 'compact':
+      default:
+        if (val >= 1_000_000) return `${(val / 1_000_000).toFixed(1)}M`;
+        if (val >= 1_000)     return `${(val / 1_000).toFixed(dec)}k`;
+        return `${val}`;
+    }
   }
 
   ngOnChanges(): void {
@@ -198,10 +248,8 @@ export class LineWidget implements OnChanges {
             fontSize: '10px',
             fontFamily: 'JetBrains Mono, monospace',
           },
-          formatter: (val: number) => {
-            if (val >= 1000) return `${(val / 1000).toFixed(0)}k`;
-            return `${val}`;
-          },
+          // E2: delegates to formatVal — falls back to original compact logic when numberFormat absent
+          formatter: (val: number) => this.formatVal(val, cfg.numberFormat),
         },
       },
 
@@ -221,12 +269,13 @@ export class LineWidget implements OnChanges {
           fontFamily: 'JetBrains Mono, monospace',
         },
         y: {
-          formatter: (val: number) =>
-            val >= 1000
-              ? `${(val / 1000).toFixed(1)}k`
-              : `${val}`,
+          // E2: tooltipMode=true preserves the original 1dp compact style for tooltips
+          formatter: (val: number) => this.formatVal(val, cfg.numberFormat, true),
         },
       },
+
+      // E3: undefined when no referenceLines defined — key omitted entirely for existing widgets
+      annotations: this.buildAnnotations(),
     };
   }
 }

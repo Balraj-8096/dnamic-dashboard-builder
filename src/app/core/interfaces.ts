@@ -83,6 +83,19 @@ export interface PixelRect {
 // ───────────────────────────────────────────────────────────────
 
 /**
+ * A single color threshold rule for Stat and Analytics widgets.
+ * E1: when the live value >= threshold, the accent color is overridden.
+ * Rules are evaluated in descending threshold order so the highest
+ * matching rule wins. All fields optional on existing widgets.
+ */
+export interface ColorThreshold {
+  /** Numeric value at or above which this color applies */
+  threshold: number;
+  /** Accent color to use when the rule matches (any valid CSS colour) */
+  color: string;
+}
+
+/**
  * Stat Card config
  * Single KPI with trend indicator and optional sparkline
  */
@@ -101,6 +114,8 @@ export interface StatConfig {
   // ── Query integration ──
   queryConfig?:   StatQueryConfig;
   queryWarnings?: QueryWarning[];
+  /** E1: optional threshold rules — absent on all existing widgets, no regression */
+  colorThresholds?: ColorThreshold[];
 }
 
 /**
@@ -124,6 +139,8 @@ export interface AnalyticsConfig {
   // ── Query integration ──
   queryConfig?:   StatQueryConfig;
   queryWarnings?: QueryWarning[];
+  /** E1: optional threshold rules — absent on all existing widgets, no regression */
+  colorThresholds?: ColorThreshold[];
 }
 
 /**
@@ -146,6 +163,36 @@ export interface ChartSeries {
 }
 
 /**
+ * Value formatting profile for bar and line charts.
+ * Controls how numeric values appear on the Y-axis and in tooltips.
+ * All fields are optional — when absent the chart uses the existing
+ * compact (1k / 2M) default so no existing widget is affected.
+ */
+export interface NumberFormatProfile {
+  /** Display style: compact = 1k/2M, fixed = 1234.56, currency = $1,234.56, percent = 42% */
+  notation: 'compact' | 'fixed' | 'currency' | 'percent';
+  /** Decimal places to show (default: 0 for compact/percent, 2 for fixed/currency) */
+  decimals?: number;
+  /** Currency prefix symbol, e.g. '$', '£', '€' (only used when notation = 'currency') */
+  currencySymbol?: string;
+}
+
+/**
+ * A single horizontal reference/target line drawn across the full chart.
+ * E3: optional — absent on all existing widgets so no regression is possible.
+ */
+export interface ReferenceLine {
+  /** Display label shown next to the line (e.g. "Target", "Budget") */
+  label: string;
+  /** Y-axis value at which the line is drawn */
+  value: number;
+  /** Line colour — any valid CSS colour string */
+  color: string;
+  /** true = dashed line (default), false = solid line */
+  dash?: boolean;
+}
+
+/**
  * Bar Chart config
  */
 export interface BarConfig {
@@ -165,6 +212,10 @@ export interface BarConfig {
   queryWarnings?: QueryWarning[];
   /** X-axis labels from query result (parallel to series[].data) */
   queryLabels?:   string[];
+  /** E2: optional value format — absent = existing compact (1k) behaviour */
+  numberFormat?:  NumberFormatProfile;
+  /** E3: horizontal reference/target lines drawn as annotations on the chart */
+  referenceLines?: ReferenceLine[];
 }
 
 /**
@@ -186,6 +237,10 @@ export interface LineConfig {
   queryConfig?:   ChartQueryConfig;
   queryWarnings?: QueryWarning[];
   queryLabels?:   string[];
+  /** E2: optional value format — absent = existing compact (1k) behaviour */
+  numberFormat?:  NumberFormatProfile;
+  /** E3: horizontal reference/target lines drawn as annotations on the chart */
+  referenceLines?: ReferenceLine[];
 }
 
 /**
@@ -259,6 +314,18 @@ export interface TableConfig {
 }
 
 /**
+ * A single color rule for progress bars.
+ * E6: when value/max >= minPercent the bar uses this color instead of item.color.
+ * Rules are evaluated in descending minPercent order so the highest match wins.
+ */
+export interface ProgressColorRule {
+  /** Percentage (0–100) at or above which this color applies */
+  minPercent: number;
+  /** Bar fill color when the rule matches */
+  color: string;
+}
+
+/**
  * Single progress bar item
  */
 export interface ProgressItem {
@@ -283,6 +350,8 @@ export interface ProgressConfig {
   // ── Query integration ──
   progressQueries?: StatQueryConfig[];  // one per item
   queryWarnings?:   QueryWarning[];
+  /** E6: global color rules applied to all bars — absent on existing widgets, no regression */
+  colorRules?: ProgressColorRule[];
 }
 
 /**

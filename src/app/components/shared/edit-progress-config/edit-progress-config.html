@@ -3,19 +3,53 @@
   <div class="field-row">
     <label class="field-label">Show Values</label>
     <div class="toggle-row">
-      <div class="toggle-wrap" (click)="upd('showValues', !cfg.showValues)">
+      <button type="button" class="toggle-wrap" (click)="upd('showValues', !cfg.showValues)">
         <div class="toggle-box" [class.is-on]="cfg.showValues"></div>
         <span class="toggle-label">Show numbers</span>
-      </div>
+      </button>
     </div>
   </div>
   <div class="field-row">
     <label class="field-label">Animated</label>
     <div class="toggle-row">
-      <div class="toggle-wrap" (click)="upd('animated', !cfg.animated)">
+      <button type="button" class="toggle-wrap" (click)="upd('animated', !cfg.animated)">
         <div class="toggle-box" [class.is-on]="cfg.animated"></div>
         <span class="toggle-label">Animate bars</span>
-      </div>
+      </button>
     </div>
   </div>
 </div>
+
+<!-- E6: Global Color Rules -->
+<div class="section-hdr">
+  Color Rules
+  <button class="btn-ghost-sm" (click)="addColorRule()">+ Add</button>
+</div>
+
+@if (colorRules.length === 0) {
+  <p class="empty-hint">No rules. Each bar uses its own color. Add a rule to change all bars based on their completion percentage.</p>
+}
+
+@for (r of colorRules; track $index) {
+  <div class="ref-line-row">
+    <div class="ref-line-swatch" [style.background]="r.color"></div>
+
+    <div class="threshold-label">≥</div>
+
+    <input class="inp ref-line-value" type="number" min="0" max="100" placeholder="0"
+      [value]="r.minPercent"
+      (change)="updateColorRule($index, 'minPercent', +$any($event.target).value)">
+
+    <span class="threshold-label">%</span>
+
+    <input class="inp ref-line-color" type="color"
+      [value]="r.color"
+      (change)="updateColorRule($index, 'color', $any($event.target).value)">
+
+    <button class="btn-remove-sm" (click)="removeColorRule($index)" title="Remove">✕</button>
+  </div>
+}
+
+@if (colorRules.length > 0) {
+  <p class="empty-hint" style="margin-top:4px">Highest matching rule wins. Each bar's own color is the fallback.</p>
+}

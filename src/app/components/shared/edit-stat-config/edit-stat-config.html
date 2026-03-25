@@ -1,28 +1,60 @@
 <div class="section-hdr" style="padding-top:0">Display Options</div>
 <div class="two-col">
   <div class="field-row">
-    <label class="field-label">Prefix (e.g. $)</label>
-    <input class="inp" [value]="cfg.prefix || ''" (input)="upd('prefix', $any($event.target).value)" />
+    <label class="field-label" for="stat-prefix">Prefix (e.g. $)</label>
+    <input id="stat-prefix" class="inp" [value]="cfg.prefix || ''" (input)="upd('prefix', $any($event.target).value)" />
   </div>
   <div class="field-row">
-    <label class="field-label">Suffix (e.g. %)</label>
-    <input class="inp" [value]="cfg.suffix || ''" (input)="upd('suffix', $any($event.target).value)" />
+    <label class="field-label" for="stat-suffix">Suffix (e.g. %)</label>
+    <input id="stat-suffix" class="inp" [value]="cfg.suffix || ''" (input)="upd('suffix', $any($event.target).value)" />
   </div>
   <div class="field-row">
-    <label class="field-label">Accent Color</label>
-    <input type="color" class="inp" [value]="cfg.accent || '#3b82f6'" (input)="upd('accent', $any($event.target).value)" />
+    <label class="field-label" for="stat-accent">Accent Color</label>
+    <input id="stat-accent" type="color" class="inp" [value]="cfg.accent || '#3b82f6'" (input)="upd('accent', $any($event.target).value)" />
   </div>
   <div class="field-row">
     <label class="field-label">Show Sparkline</label>
     <div class="toggle-row">
-      <div class="toggle-wrap" (click)="upd('showSparkline', !cfg.showSparkline)">
+      <button type="button" class="toggle-wrap" (click)="upd('showSparkline', !cfg.showSparkline)">
         <div class="toggle-box" [class.is-on]="cfg.showSparkline"></div>
         <span class="toggle-label">Enabled</span>
-      </div>
+      </button>
     </div>
   </div>
 </div>
 <div class="field-row">
-  <label class="field-label">Description</label>
-  <input class="inp" [value]="cfg.description || ''" (input)="upd('description', $any($event.target).value)" />
+  <label class="field-label" for="stat-description">Description</label>
+  <input id="stat-description" class="inp" [value]="cfg.description || ''" (input)="upd('description', $any($event.target).value)" />
 </div>
+
+<!-- E1: Color Thresholds -->
+<div class="section-hdr">
+  Color Thresholds
+  <button class="btn-ghost-sm" (click)="addThreshold()">+ Add</button>
+</div>
+
+@if (thresholds.length === 0) {
+  <p class="empty-hint">No thresholds. The static <strong>Accent Color</strong> is used. Add a rule to change color based on the live value.</p>
+}
+
+@for (t of thresholds; track $index) {
+  <div class="ref-line-row">
+    <div class="ref-line-swatch" [style.background]="t.color"></div>
+
+    <div class="threshold-label">≥</div>
+
+    <input class="inp ref-line-value" type="number" placeholder="0"
+      [value]="t.threshold"
+      (change)="updateThreshold($index, 'threshold', +$any($event.target).value)">
+
+    <input class="inp ref-line-color" type="color"
+      [value]="t.color"
+      (change)="updateThreshold($index, 'color', $any($event.target).value)">
+
+    <button class="btn-remove-sm" (click)="removeThreshold($index)" title="Remove">✕</button>
+  </div>
+}
+
+@if (thresholds.length > 0) {
+  <p class="empty-hint" style="margin-top:4px">Rules evaluated highest-first. The static accent is the fallback when no rule matches.</p>
+}

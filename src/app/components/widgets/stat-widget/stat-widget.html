@@ -51,19 +51,19 @@
           @if (cfg.prefix) {
             <span
               class="value-prefix"
-              [style.color]="cfg.accent">
+              [style.color]="resolvedAccent">
               {{ cfg.prefix }}
             </span>
           }
           <span
             class="value-main"
-            [style.color]="cfg.accent">
+            [style.color]="resolvedAccent">
             {{ displayValue }}
           </span>
           @if (cfg.suffix) {
             <span
               class="value-suffix"
-              [style.color]="cfg.accent">
+              [style.color]="resolvedAccent">
               {{ cfg.suffix }}
             </span>
           }
@@ -122,7 +122,7 @@
                 class="sparkline-bar"
                 [style.height]="bar.height"
                 [style.opacity]="bar.opacity"
-                [style.background]="cfg.accent">
+                [style.background]="resolvedAccent">
               </div>
             }
           </div>

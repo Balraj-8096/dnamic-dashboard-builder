@@ -15,7 +15,7 @@ import {
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProgressConfig, ProgressItem, Widget } from '../../../core/interfaces';
+import { ProgressColorRule, ProgressConfig, ProgressItem, Widget } from '../../../core/interfaces';
 import { QueryService } from '../../../services/query.service';
 import { mapProgressResults } from '../../../core/query-result-mapper';
 
@@ -69,5 +69,23 @@ export class ProgressWidget implements OnChanges {
 
   getPercent(item: ProgressItem): number {
     return Math.min(100, Math.round((item.value / item.max) * 100));
+  }
+
+  // ── E6: color rule resolver ───────────────────────────────────
+  /**
+   * Returns the bar fill color after evaluating global color rules.
+   * Rules are sorted descending by minPercent — highest matching rule wins.
+   * Falls back to item.color (existing behaviour) when:
+   *   - cfg.colorRules is absent or empty (all existing widgets)
+   *   - no rule matches the current percentage
+   */
+  resolveItemColor(item: ProgressItem): string {
+    const rules = this.cfg?.colorRules;
+    if (!rules?.length) return item.color;
+    const pct = this.getPercent(item);
+    const matched = [...rules]
+      .sort((a: ProgressColorRule, b: ProgressColorRule) => b.minPercent - a.minPercent)
+      .find((r: ProgressColorRule) => pct >= r.minPercent);
+    return matched?.color ?? item.color;
   }
 }

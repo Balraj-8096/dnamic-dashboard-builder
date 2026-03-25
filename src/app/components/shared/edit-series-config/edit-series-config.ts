@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BarConfig, LineConfig } from '../../../core/interfaces';
+import { BarConfig, LineConfig, NumberFormatProfile, ReferenceLine } from '../../../core/interfaces';
 import { CHART_COLORS } from '../../../core/constants';
 
 type SeriesConfig = BarConfig | LineConfig;
@@ -55,7 +55,7 @@ export class EditSeriesConfig {
   updateSeriesData(i: number, raw: string): void {
     const data = raw
       .split('\n')
-      .map(l => { const [n, v] = l.split(':'); return { n: (n || '').trim(), v: parseFloat(v) || 0 }; })
+      .map(l => { const [n, v] = l.split(':'); return { n: (n || '').trim(), v: Number.parseFloat(v) || 0 }; })
       .filter(d => d.n);
     this.updateSeriesField(i, 'data', data);
   }
@@ -63,4 +63,50 @@ export class EditSeriesConfig {
   chartColor(i: number, override?: string): string {
     return override || CHART_COLORS[i % CHART_COLORS.length];
   }
+
+  // ── E2: Number format helpers ─────────────────────────────────
+
+  /** Current format notation, falling back to 'compact' (existing default) */
+  get formatNotation(): NumberFormatProfile['notation'] {
+    return (this.cfg as any).numberFormat?.notation ?? 'compact';
+  }
+
+  /**
+   * Updates a single key inside numberFormat.
+   * When notation is 'compact', the numberFormat object is cleared entirely
+   * so existing widgets with no numberFormat continue to work identically.
+   */
+  updateFormat(key: keyof NumberFormatProfile, value: any): void {
+    if (key === 'notation' && value === 'compact') {
+      // Compact is the default — store undefined so no-format widgets are unaffected
+      this.upd('numberFormat', undefined);
+      return;
+    }
+    const current: NumberFormatProfile = (this.cfg as any).numberFormat ?? { notation: 'compact' };
+    this.upd('numberFormat', { ...current, [key]: value });
+  }
+
+  // ── E3: Reference line helpers ────────────────────────────────
+
+  get refLines(): ReferenceLine[] {
+    return (this.cfg as any).referenceLines ?? [];
+  }
+
+  addRefLine(): void {
+    this.upd('referenceLines', [
+      ...this.refLines,
+      { label: 'Target', value: 0, color: '#f59e0b', dash: true } satisfies ReferenceLine,
+    ]);
+  }
+
+  removeRefLine(i: number): void {
+    this.upd('referenceLines', this.refLines.filter((_, ri) => ri !== i));
+  }
+
+  updateRefLine(i: number, key: keyof ReferenceLine, value: any): void {
+    this.upd('referenceLines', this.refLines.map((rl, ri) =>
+      ri === i ? { ...rl, [key]: value } : rl
+    ));
+  }
+
 }

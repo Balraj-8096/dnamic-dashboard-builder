@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { StatConfig } from '../../../core/interfaces';
+import { ColorThreshold, StatConfig } from '../../../core/interfaces';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -22,7 +22,30 @@ export class EditStatConfig {
   }
 
   setSparkData(raw: string): void {
-    this.upd('sparkData', raw.split(',').map(n => parseFloat(n.trim()) || 0));
+    this.upd('sparkData', raw.split(',').map(n => Number.parseFloat(n.trim()) || 0));
+  }
+
+  // ── E1: Color threshold helpers ───────────────────────────────
+
+  get thresholds(): ColorThreshold[] {
+    return this.cfg.colorThresholds ?? [];
+  }
+
+  addThreshold(): void {
+    this.upd('colorThresholds', [
+      ...this.thresholds,
+      { threshold: 0, color: '#22c55e' } satisfies ColorThreshold,
+    ]);
+  }
+
+  removeThreshold(i: number): void {
+    this.upd('colorThresholds', this.thresholds.filter((_, ti) => ti !== i));
+  }
+
+  updateThreshold(i: number, key: keyof ColorThreshold, value: any): void {
+    this.upd('colorThresholds', this.thresholds.map((t, ti) =>
+      ti === i ? { ...t, [key]: value } : t
+    ));
   }
 
 }

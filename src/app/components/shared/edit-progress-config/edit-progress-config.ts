@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ProgressConfig, ProgressItem } from '../../../core/interfaces';
+import { ProgressColorRule, ProgressConfig, ProgressItem } from '../../../core/interfaces';
 import { CHART_COLORS } from '../../../core/constants';
 
 
@@ -34,5 +34,28 @@ export class EditProgressConfig {
  
   updateItem(i: number, key: keyof ProgressItem, value: any): void {
     this.upd('items', this.items.map((item, ii) => ii === i ? { ...item, [key]: value } : item));
+  }
+
+  // ── E6: Global color rule helpers ─────────────────────────────
+
+  get colorRules(): ProgressColorRule[] {
+    return this.cfg.colorRules ?? [];
+  }
+
+  addColorRule(): void {
+    this.upd('colorRules', [
+      ...this.colorRules,
+      { minPercent: 0, color: '#ef4444' } satisfies ProgressColorRule,
+    ]);
+  }
+
+  removeColorRule(i: number): void {
+    this.upd('colorRules', this.colorRules.filter((_, ri) => ri !== i));
+  }
+
+  updateColorRule(i: number, key: keyof ProgressColorRule, value: any): void {
+    this.upd('colorRules', this.colorRules.map((r, ri) =>
+      ri === i ? { ...r, [key]: value } : r
+    ));
   }
 }
