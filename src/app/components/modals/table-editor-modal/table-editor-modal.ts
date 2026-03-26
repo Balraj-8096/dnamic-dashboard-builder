@@ -19,11 +19,12 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 
 import { Widget, TableConfig, TableColumn } from '../../../core/interfaces';
 import {
-  DerivedColumnDef, FieldType, FilterGroup, SortDirection, TableQueryConfig,
+  DerivedColumnDef, FieldType, FilterGroup, SortDirection, TableQueryConfig, TableQueryResult,
 } from '../../../core/query-types';
 import { QueryService } from '../../../services/query.service';
 import { STATUS_MAP } from '../../../core/constants';
 import { FilterBuilder } from '../../shared/query-builder/filter-builder/filter-builder';
+import { generateTableSql } from '../../../core/sql-generator';
 
 /** Internal column model used only inside this editor. */
 interface EditorColumn {
@@ -101,6 +102,15 @@ export class TableEditorModal implements OnInit {
   // ── Live preview data ─────────────────────────────────────────────────────
   previewRows: Record<string, unknown>[] = [];
   rowCount     = 0;
+
+  // ── Dev Tools ─────────────────────────────────────────────────────────────
+  showDevPanel       = false;
+  devQueryJsonOpen   = true;
+  devResultJsonOpen  = true;
+  devSqlOpen         = true;
+  devPayloadJsonOpen = true;
+  devQueryResult:    TableQueryResult | null = null;
+  devQueryError:     string | null = null;
 
   // ── Local undo ────────────────────────────────────────────────────────────
   private localHistory: EditorColumn[][] = [];
@@ -620,27 +630,71 @@ export class TableEditorModal implements OnInit {
   refreshPreview(): void {
     const qcfg = this.buildQueryConfig();
     if (!qcfg || !qcfg.entities.length || !qcfg.columns.length) {
-      this.previewRows = [];
-      this.rowCount    = 0;
+      this.previewRows    = [];
+      this.rowCount       = 0;
+      this.devQueryResult = null;
+      this.devQueryError  = null;
       this.cdr.markForCheck();
       return;
     }
     try {
-      const result     = this.qsvc.executeTableQuery({ ...qcfg, pageSize: 6 });
-      this.previewRows = result.rows;
-      this.rowCount    = result.totalRows;
-    } catch {
-      this.previewRows = [];
-      this.rowCount    = 0;
+      const result        = this.qsvc.executeTableQuery({ ...qcfg, pageSize: 6 });
+      this.previewRows    = result.rows;
+      this.rowCount       = result.totalRows;
+      this.devQueryResult = result;
+      this.devQueryError  = null;
+    } catch (e) {
+      this.previewRows    = [];
+      this.rowCount       = 0;
+      this.devQueryResult = null;
+      this.devQueryError  = (e as Error).message;
     }
     this.cdr.markForCheck();
+  }
+
+  // ── Dev Tools getters ─────────────────────────────────────────────────────
+
+  get devQueryConfig(): TableQueryConfig | null {
+    return this.buildQueryConfig();
+  }
+
+  get generatedSql(): string {
+    const qcfg = this.buildQueryConfig();
+    if (!qcfg?.product) return '-- Configure a product and entities to see the equivalent SQL.';
+    try {
+      const pc = this.qsvc.getConfig(qcfg.product);
+      const gf = this.qsvc.globalFilters();
+      return generateTableSql(qcfg, pc, gf);
+    } catch (e) {
+      return `-- Error generating SQL: ${(e as Error).message}`;
+    }
+  }
+
+  /** Widget as it would be saved — used by Widget Payload dev section. */
+  get devWidget(): Widget {
+    const qcfg    = this.buildQueryConfig();
+    const columns = this.buildTableColumns();
+    return {
+      ...this.widget,
+      title: this.title,
+      config: {
+        ...(this.widget.config as TableConfig),
+        columns,
+        rows:          [],
+        striped:       this.striped,
+        compact:       this.compact,
+        statusColumn:  this.statusColumn,
+        selectedFields: [],
+        queryConfig:   qcfg ?? undefined,
+      } as TableConfig,
+    };
   }
 
   // ─────────────────────────────────────────────────────────────────────────
   //  Config builders
   // ─────────────────────────────────────────────────────────────────────────
 
-  private buildQueryConfig(): TableQueryConfig | null {
+  buildQueryConfig(): TableQueryConfig | null {
     if (!this.product || !this.entityList.length) return null;
 
     const normalCols  = this.visibleEditorCols.filter(c => !c.derived && c.entity);
@@ -671,7 +725,7 @@ export class TableEditorModal implements OnInit {
     };
   }
 
-  private buildTableColumns(): TableColumn[] {
+  buildTableColumns(): TableColumn[] {
     return this.visibleEditorCols.map(c => ({
       key:     c.key,
       label:   c.label,

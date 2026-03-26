@@ -130,6 +130,8 @@
         title="Create a derived column combining multiple fields">⊕ Derived</button>
       <button class="te-icon-btn" [class.is-on]="showFilters"
         (click)="showFilters = !showFilters" title="Toggle filters">⊿ Filters</button>
+      <button class="te-icon-btn" [class.is-on]="showDevPanel"
+        (click)="showDevPanel = !showDevPanel" title="Toggle Dev Tools">🔧 Dev</button>
       @if (canLocalUndo) {
         <button class="te-icon-btn te-icon-btn--undo"
           (click)="localUndo()" title="Undo last column change">↩ Undo</button>
@@ -393,7 +395,94 @@
     }
   </div>
 
-  <!-- ── 7. FOOTER ──────────────────────────────────────────────── -->
+  <!-- ── 7. DEV TOOLS (collapsible) ───────────────────────────── -->
+  @if (showDevPanel) {
+    <div class="te-dev-panel">
+
+      <div class="te-dev-panel__title">🔧 Dev Tools</div>
+
+      <!-- ── 1. Query Config JSON ──────────────────────────────── -->
+      <button class="te-dev-toggle"
+        (click)="devQueryJsonOpen = !devQueryJsonOpen">
+        <span class="te-dev-label">Query Config</span>
+        <span class="te-dev-meta">
+          <span class="te-dev-badge te-dev-badge--sql">TABLE</span>
+        </span>
+        <span class="te-dev-chevron">{{ devQueryJsonOpen ? '▲' : '▼' }}</span>
+      </button>
+      @if (devQueryJsonOpen) {
+        @if (devQueryConfig) {
+          <pre class="te-dev-json te-dev-json--query">{{ devQueryConfig | json }}</pre>
+        } @else {
+          <div class="te-dev-idle">Configure a product and entity to see the query config</div>
+        }
+      }
+
+      <!-- ── 2. Query Result JSON ───────────────────────────────── -->
+      <button class="te-dev-toggle"
+        (click)="devResultJsonOpen = !devResultJsonOpen">
+        <span class="te-dev-label">Query Result</span>
+        <span class="te-dev-meta">
+          @if (devQueryError) {
+            <span class="te-dev-badge te-dev-badge--err">ERROR</span>
+          } @else if (devQueryResult) {
+            @if (devQueryResult.warnings.length) {
+              <span class="te-dev-badge te-dev-badge--warn">
+                ⚠ {{ devQueryResult.warnings.length }}
+              </span>
+            } @else {
+              <span class="te-dev-badge te-dev-badge--ok">✓ OK</span>
+            }
+          } @else {
+            <span class="te-dev-badge te-dev-badge--idle">no query</span>
+          }
+        </span>
+        <span class="te-dev-chevron">{{ devResultJsonOpen ? '▲' : '▼' }}</span>
+      </button>
+      @if (devResultJsonOpen) {
+        @if (devQueryError) {
+          <div class="te-dev-error">{{ devQueryError }}</div>
+        } @else if (devQueryResult) {
+          <pre class="te-dev-json te-dev-json--result">{{ devQueryResult | json }}</pre>
+        } @else {
+          <div class="te-dev-idle">Configure a query above to see results</div>
+        }
+      }
+
+      <!-- ── 3. Equivalent SQL ──────────────────────────────────── -->
+      <button class="te-dev-toggle"
+        (click)="devSqlOpen = !devSqlOpen">
+        <span class="te-dev-label">Equivalent SQL</span>
+        <span class="te-dev-meta">
+          <span class="te-dev-badge te-dev-badge--sql">SQL</span>
+        </span>
+        <span class="te-dev-chevron">{{ devSqlOpen ? '▲' : '▼' }}</span>
+      </button>
+      @if (devSqlOpen) {
+        @if (devQueryConfig?.product) {
+          <pre class="te-dev-json te-dev-json--sql">{{ generatedSql }}</pre>
+        } @else {
+          <div class="te-dev-idle">Configure a product and entities to see the equivalent SQL</div>
+        }
+      }
+
+      <!-- ── 4. Widget Payload JSON ─────────────────────────────── -->
+      <button class="te-dev-toggle"
+        (click)="devPayloadJsonOpen = !devPayloadJsonOpen">
+        <span class="te-dev-label">Widget Payload</span>
+        <span class="te-dev-meta">
+          <span class="te-dev-badge te-dev-badge--payload">table</span>
+        </span>
+        <span class="te-dev-chevron">{{ devPayloadJsonOpen ? '▲' : '▼' }}</span>
+      </button>
+      @if (devPayloadJsonOpen) {
+        <pre class="te-dev-json te-dev-json--payload">{{ devWidget | json }}</pre>
+      }
+
+    </div>
+  }
+
+  <!-- ── 8. FOOTER ──────────────────────────────────────────────── -->
   <div class="te-footer">
     <button class="te-btn-back" (click)="cancel()">← Back</button>
     <button class="te-btn-save" [class.is-disabled]="!canSave" (click)="save()">
