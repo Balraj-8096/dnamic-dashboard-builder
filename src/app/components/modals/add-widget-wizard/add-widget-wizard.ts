@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { CATALOG } from '../../../core/catalog';
-import { FACTORIES } from '../../../core/factories';
+import { BLANK_CONFIGS, FACTORIES } from '../../../core/factories';
 import { Widget, WidgetType, WidgetConfig } from '../../../core/interfaces';
 import { DashboardService } from '../../../services/dashboard.service';
 import { QueryService } from '../../../services/query.service';
@@ -97,9 +97,12 @@ export class AddWidgetWizard implements OnInit {
 
   private _initForType(type: WidgetType): void {
     this.selectedType = type;
-    const base = FACTORIES[type]?.(0, 0);
-    this.cfg = base?.config ?? null;
-    this.titleForm.setValue({ title: base?.title ?? '' });
+    // Use blank configs so users configure from scratch (no pre-filled data).
+    // FACTORIES still used by templates/demo which need realistic content.
+    const blankCfg = BLANK_CONFIGS[type];
+    this.cfg = blankCfg ? { ...blankCfg } : null;
+    const cat = this.catalog.find(c => c.type === type);
+    this.titleForm.setValue({ title: cat?.label ?? '' });
     this.queryJsonOpen   = true;
     this.resultJsonOpen  = true;
     this.payloadJsonOpen = true;

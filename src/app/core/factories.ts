@@ -17,7 +17,7 @@
 //  Direct port from React FACTORIES object
 // ═══════════════════════════════════════════════════════════════
 
-import { Widget, WidgetType, TextAlign } from './interfaces';
+import { Widget, WidgetType, WidgetConfig, TextAlign, StatConfig, AnalyticsConfig, BarConfig, LineConfig, PieConfig, TableConfig, ProgressConfig, NoteConfig, SectionConfig } from './interfaces';
 import { uid } from './constants';
 
 
@@ -355,6 +355,64 @@ export const FACTORIES: Record<WidgetType, (x: number, y: number) => Widget> = {
     [WidgetType.Progress]:  createProgress,
     [WidgetType.Note]:      createNote,
     [WidgetType.Section]:   createSection,
+};
+
+
+// ───────────────────────────────────────────────────────────────
+//  BLANK CONFIGS
+//  Minimal starting configs for the Add Widget Wizard.
+//  Keeps display/behaviour settings but has no pre-filled data,
+//  so users configure the widget from scratch.
+//
+//  Templates and demo still use FACTORIES (full data included).
+//  The wizard uses BLANK_CONFIGS so users see an empty canvas.
+// ───────────────────────────────────────────────────────────────
+
+export const BLANK_CONFIGS: Record<WidgetType, WidgetConfig> = {
+
+  [WidgetType.Stat]: {
+    value: '', subValue: '', trend: '', trendUp: true,
+    accent: '#3b82f6', prefix: '', suffix: '', description: '',
+    showSparkline: true, sparkData: [], selectedFields: [],
+  } satisfies StatConfig,
+
+  [WidgetType.Analytics]: {
+    value: '', changeValue: '', changeLabel: '', trendUp: true,
+    accent: '#22c55e', data: [], period: '', selectedFields: [],
+  } satisfies AnalyticsConfig,
+
+  [WidgetType.Bar]: {
+    accent: '#3b82f6', stacked: false, horizontal: false,
+    showGrid: true, showLegend: false, series: [], selectedFields: [],
+  } satisfies BarConfig,
+
+  [WidgetType.Line]: {
+    areaFill: true, smooth: true, showGrid: true,
+    showDots: false, showLegend: false, series: [], selectedFields: [],
+  } satisfies LineConfig,
+
+  [WidgetType.Pie]: {
+    innerRadius: 55, showLabels: false, showLegend: true,
+    data: [], selectedFields: [],
+  } satisfies PieConfig,
+
+  [WidgetType.Table]: {
+    striped: true, compact: false, statusColumn: false,
+    columns: [], rows: [], selectedFields: [],
+  } satisfies TableConfig,
+
+  [WidgetType.Progress]: {
+    showValues: true, animated: true, items: [], selectedFields: [],
+  } satisfies ProgressConfig,
+
+  [WidgetType.Note]: {
+    content: '', accent: '#94a3b8', fontSize: '13', bgColor: '#0d1219',
+  } satisfies NoteConfig,
+
+  [WidgetType.Section]: {
+    label: '', accent: '#3b82f6', showLine: true, align: TextAlign.Left,
+  } satisfies SectionConfig,
+
 };
 
 

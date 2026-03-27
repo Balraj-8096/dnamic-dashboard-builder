@@ -34,7 +34,7 @@ import {
   uid,
   toFilename,
 } from '../core/constants';
-import { computeCanvasH, computeColW, findAdjacentPlacement, getNextY, packLayout } from '../core/layout.utils';
+import { computeCanvasH, computeColW, findAdjacentPlacement, findFirstFreeSlot, getNextY, packLayout } from '../core/layout.utils';
 import { buildSalesDemo, TEMPLATES } from '../core/Templates';
 
 @Injectable({
@@ -791,8 +791,7 @@ export class DashboardService {
    * Add a new widget to the canvas.
    *
    * Behavior:
-   * - Always placed at x=0 (M2 audit — intentional)
-   * - Placed at getNextY() — bottom of canvas
+   * - Placed at findFirstFreeSlot() — first gap that fits, falls back to bottom (P1)
    * - New ID generated (ignores any ID in the passed widget)
    * - Auto-scrolls to the new widget after DOM commit
    * - Selects the new widget immediately
@@ -800,14 +799,16 @@ export class DashboardService {
    * - Undoable — goes through pushHistory
    */
   addWidget(widget: Partial<Widget>): void {
-    const newId  = uid();
-    const nextY  = getNextY(this.widgets());
+    const newId = uid();
+    const w     = (widget as Widget).w ?? 3;
+    const h     = (widget as Widget).h ?? 2;
+    const slot  = findFirstFreeSlot(w, h, this.widgets()); // P1: fill gaps before appending at bottom
 
     const placed: Widget = {
       ...(widget as Widget),
-      id:     newId,
-      x:      0,        // always at x=0 (M2 audit)
-      y:      nextY,
+      id: newId,
+      x:  slot.x,
+      y:  slot.y,
     };
 
     this.updateWidgets(prev => [...prev, placed], `Added "${placed.title}" (${placed.type})`);

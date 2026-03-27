@@ -746,6 +746,48 @@ export function getNextY(
 
 
 /**
+ * Find the first free grid slot that fits a widget of size (w × h).
+ *
+ * Scans the existing canvas area row-by-row (top → bottom),
+ * left-to-right within each row, returning the first position
+ * where the candidate rectangle does not overlap any existing widget.
+ * Falls back to { x:0, y:getNextY() } when no gap is found.
+ *
+ * This ensures new widgets fill empty space before expanding the
+ * canvas downward.
+ *
+ * @param w       - Widget width in grid columns
+ * @param h       - Widget height in grid rows
+ * @param widgets - Current widget array
+ * @returns       - Best available { x, y } grid position
+ *
+ * @example
+ * // Canvas has one 3×2 widget at (0,0); placing another 3×2
+ * findFirstFreeSlot(3, 2, [{ x:0, y:0, w:3, h:2 }])
+ * // → { x:3, y:0 }  (gap to the right on same row)
+ */
+export function findFirstFreeSlot(
+  w:       number,
+  h:       number,
+  widgets: Pick<Widget, 'x' | 'y' | 'w' | 'h'>[]
+): { x: number; y: number } {
+  const maxY = getNextY(widgets);
+
+  for (let y = 0; y <= maxY; y++) {
+    for (let x = 0; x <= COLS - w; x++) {
+      const candidate = { x, y, w, h };
+      if (!widgets.some(existing => collides(candidate, existing))) {
+        return { x, y };
+      }
+    }
+  }
+
+  // No gap found inside the current canvas — append at bottom
+  return { x: 0, y: maxY };
+}
+
+
+/**
  * Find the best placement position for a duplicate of `source`.
  *
  * Priority (first free slot wins):

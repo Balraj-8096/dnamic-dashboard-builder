@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WidgetCard } from './widget-card.smooth';
+import { WidgetCard } from './widget-card';
 
 describe('WidgetCard', () => {
   let component: WidgetCard;
