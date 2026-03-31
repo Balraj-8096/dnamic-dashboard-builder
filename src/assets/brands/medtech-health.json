@@ -1,0 +1,88 @@
+{
+  "_comment": "MedTech Health — healthcare/clinical brand. Rounded, teal accent, deep navy custom backgrounds. Tests: shape=rounded, full background scale override, DM Sans font.",
+
+  "clientId":    "medtech-health",
+  "displayName": "MedTech Health",
+
+  "logoUrl":    "/assets/brands/logos/medtech-health.svg",
+  "faviconUrl": "/assets/brands/logos/medtech-health-favicon.svg",
+
+  "fontFamily": "DM Sans",
+  "fontUrl":    "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap",
+
+  "shape": "rounded",
+
+  "dark": {
+    "_comment": "Deep clinical navy backgrounds with teal accent. Tighter bg scale than default for a more premium feel.",
+    "accent":     "#0d9488",
+    "accentSoft": "#2dd4bf",
+    "success":    "#059669",
+    "danger":     "#e11d48",
+    "warning":    "#d97706",
+    "emphasis":   "#7c3aed",
+
+    "backgrounds": [
+      "#050d12",
+      "#091520",
+      "#0e1f2e",
+      "#152a3d",
+      "#1c3650"
+    ],
+
+    "text": [
+      "#e2eff8",
+      "#7aadc4",
+      "#4a7a96"
+    ],
+
+    "border": "#1a3a52",
+
+    "chartPalette": [
+      "#0d9488",
+      "#059669",
+      "#0284c7",
+      "#7c3aed",
+      "#d97706",
+      "#e11d48",
+      "#06b6d4",
+      "#84cc16"
+    ]
+  },
+
+  "light": {
+    "_comment": "Clean clinical white with accessible teal. Greenish-white bg scale for a fresh medical feel.",
+    "accent":     "#0f766e",
+    "accentSoft": "#0d9488",
+    "success":    "#047857",
+    "danger":     "#be123c",
+    "warning":    "#b45309",
+    "emphasis":   "#6d28d9",
+
+    "backgrounds": [
+      "#f0faf9",
+      "#ffffff",
+      "#f0fdfa",
+      "#ccfbf1",
+      "#99f6e4"
+    ],
+
+    "text": [
+      "#0c2a35",
+      "#2e6575",
+      "#6b9ea8"
+    ],
+
+    "border": "#99d6ce",
+
+    "chartPalette": [
+      "#0f766e",
+      "#047857",
+      "#0369a1",
+      "#6d28d9",
+      "#b45309",
+      "#be123c",
+      "#0891b2",
+      "#4d7c0f"
+    ]
+  }
+}

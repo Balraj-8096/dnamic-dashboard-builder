@@ -1,0 +1,9 @@
+[
+  { "clientId": "default",         "displayName": "DASHCRAFT (Default)"   },
+  { "clientId": "acme-corp",       "displayName": "Acme Corporation"       },
+  { "clientId": "medtech-health",  "displayName": "MedTech Health"         },
+  { "clientId": "finance-pro",     "displayName": "Finance Pro"            },
+  { "clientId": "ocean-breeze",    "displayName": "Ocean Breeze"           },
+  { "clientId": "ember-dark",      "displayName": "Ember Dark"             },
+  { "clientId": "chc-healthcode",  "displayName": "HealthCode CHC"         }
+]

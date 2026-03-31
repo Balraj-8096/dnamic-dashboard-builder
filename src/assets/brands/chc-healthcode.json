@@ -1,0 +1,115 @@
+{
+  "_source": "Mapped from E:\\Projects\\HealthCode\\chc-repo-accounting — light.scss, dark.scss, user-branding.scss",
+
+  "clientId":    "chc-healthcode",
+  "displayName": "HealthCode CHC",
+
+  "logoUrl":    "/assets/brands/logos/chc-healthcode.svg",
+  "faviconUrl": "/assets/brands/logos/chc-healthcode-favicon.svg",
+
+  "fontFamily": "Manrope",
+  "fontUrl":    "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap",
+
+  "shape": "rounded",
+
+  "dark": {
+    "_source_tokens": {
+      "--background":         "#0F172A   (--background)",
+      "--surface":            "#0c1019   (--surface)",
+      "--surface-hover":      "#3e4c63   (--surface-hover)",
+      "--border-color":       "#3e4c63   (--border-color)",
+      "--text-primary":       "#a1aabd   (--text-primary)",
+      "--text-secondary":     "#9ca3af   (--text-secondary)",
+      "--btn-primary-color":  "#7ADBEE   (--btn-primary-color dark)",
+      "--green-text-color":   "#4bdc75",
+      "--red-text-color":     "#ff6b6b",
+      "--orange-text-color":  "#ff9f50",
+      "--purple-text-color":  "#b69fff"
+    },
+
+    "accent":     "#7ADBEE",
+    "accentSoft": "#4cd3ce",
+    "success":    "#4bdc75",
+    "danger":     "#ff6b6b",
+    "warning":    "#ff9f50",
+    "emphasis":   "#b69fff",
+
+    "backgrounds": [
+      "#07101f",
+      "#0c1019",
+      "#101624",
+      "#1a2336",
+      "#3e4c63"
+    ],
+
+    "text": [
+      "#a1aabd",
+      "#9ca3af",
+      "#6b7a90"
+    ],
+
+    "border": "#3e4c63",
+
+    "chartPalette": [
+      "#7ADBEE",
+      "#4bdc75",
+      "#ff9f50",
+      "#ff6b6b",
+      "#b69fff",
+      "#4cd3ce",
+      "#c59e3f",
+      "#ff9fd0"
+    ]
+  },
+
+  "light": {
+    "_source_tokens": {
+      "--background-color":        "#f6f9fa  (--background-color)",
+      "--surface":                 "#ffffff  (--surface)",
+      "--surface-hover":           "#f6f9fa  (--surface-hover)",
+      "--border-color":            "#D8D8D8  (--border-color)",
+      "--text-primary":            "#444444  (--text-primary)",
+      "--text-secondary":          "#666666  (--text-secondary)",
+      "--btn-gradient-end":        "#2c2569  (from --btn-primary-color gradient)",
+      "--green-text-color":        "#04C98C",
+      "--red-text-color":          "#FF576E",
+      "--orange-text-color":       "#FF9626",
+      "--purple-text-color":       "#a98bff",
+      "--hc-deep-blue":            "#120D3D"
+    },
+
+    "accent":     "#2c2569",
+    "accentSoft": "#4a3f8a",
+    "success":    "#04C98C",
+    "danger":     "#FF576E",
+    "warning":    "#FF9626",
+    "emphasis":   "#a98bff",
+
+    "backgrounds": [
+      "#eef1f5",
+      "#ffffff",
+      "#f6f9fa",
+      "#edf0f5",
+      "#e2e7ef"
+    ],
+
+    "text": [
+      "#444444",
+      "#666666",
+      "#a6a6a6"
+    ],
+
+    "border": "#D8D8D8",
+
+    "chartPalette": [
+      "#2c2569",
+      "#04C98C",
+      "#FF9626",
+      "#FF576E",
+      "#a98bff",
+      "#4cd3ce",
+      "#F5CF02",
+      "#ff80c0"
+    ]
+  }
+}

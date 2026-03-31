@@ -1,6 +1,8 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter }                                         from '@angular/router';
-import { provideHttpClient, withInterceptors }                   from '@angular/common/http';
+import { ApplicationConfig, provideAppInitializer, inject, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideRouter }          from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
+import { BrandService } from './services/brand.service';
 
 import { routes }                from './app.routes';
 import {
@@ -27,6 +29,10 @@ export const appConfig: ApplicationConfig = {
         errorInterceptor,
       ]),
     ),
+
+    // Brand system — reads ?brand= param (or localStorage) and applies
+    // CSS token overrides before the first component renders.
+    provideAppInitializer(() => inject(BrandService).init()),
 
     // Data-source abstraction — inject QUERY_SERVICE_TOKEN instead of
     // QueryService in all components.  The facade reads AppConfigService

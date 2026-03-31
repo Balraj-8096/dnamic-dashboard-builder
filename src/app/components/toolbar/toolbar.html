@@ -72,6 +72,20 @@
       </button>
       }
 
+      <!-- Brand picker (dev/test builds only) -->
+      @if (showBrandPicker) {
+      <select class="btn-brand-picker"
+              title="Preview client brand"
+              (change)="brandSvc.selectBrand($any($event.target).value)">
+        @for (b of brandSvc.availableBrands(); track b.clientId) {
+          <option [value]="b.clientId"
+                  [selected]="b.clientId === brandSvc.activeBrandId()">
+            {{ b.displayName }}
+          </option>
+        }
+      </select>
+      }
+
       <!-- Theme toggle -->
       <button class="btn-icon btn-theme"
         [title]="themeSvc.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
@@ -100,6 +114,20 @@
     <button class="toolbar-menu__item" (click)="toggleTheme()">
       {{ themeSvc.theme() === 'dark' ? 'Light Mode' : 'Dark Mode' }}
     </button>
+    @if (showBrandPicker) {
+    <div class="toolbar-menu__item toolbar-menu__item--brand">
+      <span class="toolbar-menu__brand-label">Brand</span>
+      <select class="toolbar-menu__brand-select"
+              (change)="brandSvc.selectBrand($any($event.target).value)">
+        @for (b of brandSvc.availableBrands(); track b.clientId) {
+          <option [value]="b.clientId"
+                  [selected]="b.clientId === brandSvc.activeBrandId()">
+            {{ b.displayName }}
+          </option>
+        }
+      </select>
+    </div>
+    }
     @if (showDataSourceToggle) {
     <button
       class="toolbar-menu__item toolbar-menu__item--datasource"

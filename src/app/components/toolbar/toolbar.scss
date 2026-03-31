@@ -159,6 +159,87 @@
 }
 
 
+// ── Brand picker (dev/test builds only) ──────────────────────
+.btn-brand-picker {
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid var(--bdr);
+  background: transparent;
+  color: var(--acc);
+  cursor: pointer;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  outline: none;
+  transition: all var(--transition-fast);
+
+  option {
+    background: var(--bg1);
+    color: var(--txt0);
+  }
+
+  &:hover {
+    background: var(--bg3);
+    border-color: var(--bdrH);
+  }
+
+  &:focus-visible {
+    border-color: var(--acc);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--acc) 25%, transparent);
+  }
+}
+
+// ── Compact overflow menu — brand picker row ──────────────────
+.toolbar-menu__item--brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid var(--bdr);
+  margin-top: 2px;
+  padding-top: 10px;
+  cursor: default;
+
+  &:hover {
+    background: transparent;
+    border-top-color: var(--bdr);
+    color: var(--txt1);
+  }
+}
+
+.toolbar-menu__brand-label {
+  font-size: 11px;
+  color: var(--txt2);
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+}
+
+.toolbar-menu__brand-select {
+  flex: 1;
+  min-width: 0;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--bdr);
+  background: var(--bg3);
+  color: var(--txt0);
+  font-size: 11px;
+  font-family: var(--font-mono);
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+
+  option {
+    background: var(--bg1);
+    color: var(--txt0);
+  }
+
+  &:focus-visible {
+    border-color: var(--acc);
+  }
+}
+
 // ── Theme toggle button ───────────────────────────────────────
 .btn-theme {
   font-size: 16px;

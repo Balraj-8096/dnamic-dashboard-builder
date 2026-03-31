@@ -2,6 +2,7 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DashboardService }  from '../../services/dashboard.service';
 import { ThemeService }      from '../../services/theme.service';
+import { BrandService }      from '../../services/brand.service';
 import { AppConfigService }           from '../../services/app-config.service';
 import { DashboardPersistenceService } from '../../services/dashboard-persistence.service';
 import { environment }                from '../../../environments/environment';
@@ -15,12 +16,16 @@ import { environment }                from '../../../environments/environment';
 export class Toolbar {
   readonly svc         = inject(DashboardService);
   readonly themeSvc    = inject(ThemeService);
+  readonly brandSvc    = inject(BrandService);
   readonly configSvc   = inject(AppConfigService);
   readonly persistence = inject(DashboardPersistenceService);
   private readonly router = inject(Router);
 
   /** Only show the data-source toggle in non-production builds. */
   readonly showDataSourceToggle = !environment.production;
+
+  /** Only show the brand picker in non-production builds. */
+  readonly showBrandPicker = !environment.production;
 
   @ViewChild('titleInput') titleInputRef?: ElementRef<HTMLInputElement>;
 

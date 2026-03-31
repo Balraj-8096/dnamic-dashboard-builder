@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 32" fill="none">
+  <!-- Acme Corp — geometric diamond mark + wordmark -->
+  <polygon points="14,4 24,16 14,28 4,16" fill="#e63946"/>
+  <polygon points="14,4 24,16 19,16 14,10" fill="#ff6b74" opacity="0.6"/>
+  <text x="32" y="22" font-family="Inter, sans-serif" font-size="16" font-weight="700" fill="#e63946" letter-spacing="0.5">ACME</text>
+  <text x="80" y="22" font-family="Inter, sans-serif" font-size="16" font-weight="400" fill="#888" letter-spacing="0.5">CORP</text>
+</svg>

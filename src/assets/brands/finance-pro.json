@@ -1,0 +1,88 @@
+{
+  "_comment": "Finance Pro — financial services/trading brand. Sharp edges, amber/gold accent on deep navy backgrounds. Tests: shape=sharp, custom bg scale with heavy navy tones, Outfit font, gold chart palette.",
+
+  "clientId":    "finance-pro",
+  "displayName": "Finance Pro",
+
+  "logoUrl":    "/assets/brands/logos/finance-pro.svg",
+  "faviconUrl": "/assets/brands/logos/finance-pro-favicon.svg",
+
+  "fontFamily": "Outfit",
+  "fontUrl":    "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap",
+
+  "shape": "sharp",
+
+  "dark": {
+    "_comment": "Deep navy backgrounds — darker and more saturated than default. Amber/gold accent reads strongly on these bg tones. All accent/success/danger verified ≥4.5:1.",
+    "accent":     "#f59e0b",
+    "accentSoft": "#fbbf24",
+    "success":    "#10b981",
+    "danger":     "#f43f5e",
+    "warning":    "#fb923c",
+    "emphasis":   "#818cf8",
+
+    "backgrounds": [
+      "#02060f",
+      "#060d1c",
+      "#0a1428",
+      "#0f1d38",
+      "#152444"
+    ],
+
+    "text": [
+      "#e8eef8",
+      "#7e9bbf",
+      "#435d7a"
+    ],
+
+    "border": "#152444",
+
+    "chartPalette": [
+      "#f59e0b",
+      "#10b981",
+      "#818cf8",
+      "#f43f5e",
+      "#fb923c",
+      "#06b6d4",
+      "#a3e635",
+      "#e879f9"
+    ]
+  },
+
+  "light": {
+    "_comment": "Warm ivory backgrounds with darkened amber accent for WCAG compliance. Financial data reads clean on warm white.",
+    "accent":     "#b45309",
+    "accentSoft": "#d97706",
+    "success":    "#047857",
+    "danger":     "#be123c",
+    "warning":    "#c2410c",
+    "emphasis":   "#4338ca",
+
+    "backgrounds": [
+      "#faf8f2",
+      "#ffffff",
+      "#fef9ee",
+      "#fef3c7",
+      "#fde68a"
+    ],
+
+    "text": [
+      "#1a1207",
+      "#57430f",
+      "#9a7a3a"
+    ],
+
+    "border": "#e8d5a0",
+
+    "chartPalette": [
+      "#b45309",
+      "#047857",
+      "#4338ca",
+      "#be123c",
+      "#c2410c",
+      "#0369a1",
+      "#4d7c0f",
+      "#9333ea"
+    ]
+  }
+}

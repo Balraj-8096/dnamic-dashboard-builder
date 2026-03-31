@@ -1,0 +1,88 @@
+{
+  "_comment": "Ember Dark — bold/creative brand. Vivid orange accent on deep charcoal-slate backgrounds. Tests: shape=default, orange accent pushing the contrast boundary, Nunito font, warm-toned text scale.",
+
+  "clientId":    "ember-dark",
+  "displayName": "Ember Dark",
+
+  "logoUrl":    "/assets/brands/logos/ember-dark.svg",
+  "faviconUrl": "/assets/brands/logos/ember-dark-favicon.svg",
+
+  "fontFamily": "Nunito",
+  "fontUrl":    "https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap",
+
+  "shape": "default",
+
+  "dark": {
+    "_comment": "Warm charcoal backgrounds — slight warmth vs default's cool-blue blacks. Orange accent verified ≥4.5:1 on --bg1 (#121018).",
+    "accent":     "#f97316",
+    "accentSoft": "#fb923c",
+    "success":    "#22c55e",
+    "danger":     "#f43f5e",
+    "warning":    "#eab308",
+    "emphasis":   "#d946ef",
+
+    "backgrounds": [
+      "#09080c",
+      "#121018",
+      "#1a1724",
+      "#252132",
+      "#2e293e"
+    ],
+
+    "text": [
+      "#f0ece8",
+      "#9e8f84",
+      "#5e5047"
+    ],
+
+    "border": "#2e293e",
+
+    "chartPalette": [
+      "#f97316",
+      "#22c55e",
+      "#d946ef",
+      "#eab308",
+      "#f43f5e",
+      "#06b6d4",
+      "#84cc16",
+      "#a78bfa"
+    ]
+  },
+
+  "light": {
+    "_comment": "Warm cream/parchment backgrounds — gives a distinct editorial feel. Orange darkened to deep burnt for WCAG compliance.",
+    "accent":     "#c2410c",
+    "accentSoft": "#ea580c",
+    "success":    "#15803d",
+    "danger":     "#be123c",
+    "warning":    "#a16207",
+    "emphasis":   "#a21caf",
+
+    "backgrounds": [
+      "#fdf6ee",
+      "#ffffff",
+      "#fef5e7",
+      "#fde8cc",
+      "#fcd5a0"
+    ],
+
+    "text": [
+      "#1c0e04",
+      "#6b3a1a",
+      "#b07050"
+    ],
+
+    "border": "#f0c898",
+
+    "chartPalette": [
+      "#c2410c",
+      "#15803d",
+      "#a21caf",
+      "#a16207",
+      "#be123c",
+      "#0369a1",
+      "#3f6212",
+      "#6b21a8"
+    ]
+  }
+}

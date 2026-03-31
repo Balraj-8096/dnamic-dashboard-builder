@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 32" fill="none">
+  <!-- Ember Dark — flame mark + wordmark -->
+  <path d="M16 28 C10 28 5 23 5 17 C5 13 7 10 10 8 C10 11 12 13 14 13 C14 9 17 5 20 3 C21 7 20 10 19 12 C21 10 23 9 24 6 C26 9 27 13 27 17 C27 23 22 28 16 28Z" fill="#f97316"/>
+  <path d="M16 28 C13 28 10 25 10 21 C10 18 12 16 14 16 C14 18 15 20 16 21 C17 19 18 17 18 15 C20 17 21 19 21 21 C21 25 19 28 16 28Z" fill="#fbbf24"/>
+  <text x="34" y="22" font-family="Nunito, sans-serif" font-size="16" font-weight="800" fill="#f97316" letter-spacing="0.5">Ember</text>
+  <text x="91" y="22" font-family="Nunito, sans-serif" font-size="16" font-weight="400" fill="#888" letter-spacing="0.5">Dark</text>
+</svg>

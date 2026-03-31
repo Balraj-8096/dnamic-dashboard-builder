@@ -1,0 +1,6 @@
+{
+  "_comment": "Default DASHCRAFT appearance. No token overrides — all values are inherited from _tokens.scss.",
+  "clientId":    "default",
+  "displayName": "DASHCRAFT (Default)",
+  "shape":       "default"
+}

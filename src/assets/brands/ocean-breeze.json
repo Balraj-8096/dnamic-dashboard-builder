@@ -1,0 +1,88 @@
+{
+  "_comment": "Ocean Breeze — SaaS/consumer brand. Soft sky-blue accent, highly rounded, light-mode-forward with a matching dark variant. Tests: shape=rounded, light-biased brand, Plus Jakarta Sans, cool-toned backgrounds.",
+
+  "clientId":    "ocean-breeze",
+  "displayName": "Ocean Breeze",
+
+  "logoUrl":    "/assets/brands/logos/ocean-breeze.svg",
+  "faviconUrl": "/assets/brands/logos/ocean-breeze-favicon.svg",
+
+  "fontFamily": "Plus Jakarta Sans",
+  "fontUrl":    "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap",
+
+  "shape": "rounded",
+
+  "dark": {
+    "_comment": "Cool slate-blue backgrounds — warmer than pure black. Sky accent stands out cleanly.",
+    "accent":     "#0ea5e9",
+    "accentSoft": "#38bdf8",
+    "success":    "#22c55e",
+    "danger":     "#f87171",
+    "warning":    "#fbbf24",
+    "emphasis":   "#c084fc",
+
+    "backgrounds": [
+      "#040d18",
+      "#071525",
+      "#0b1d30",
+      "#102540",
+      "#152d4e"
+    ],
+
+    "text": [
+      "#e0f0fc",
+      "#6ea8cc",
+      "#3d6f8f"
+    ],
+
+    "border": "#163352",
+
+    "chartPalette": [
+      "#0ea5e9",
+      "#22c55e",
+      "#c084fc",
+      "#fbbf24",
+      "#f87171",
+      "#2dd4bf",
+      "#fb923c",
+      "#a3e635"
+    ]
+  },
+
+  "light": {
+    "_comment": "Airy blue-tinted white backgrounds — primary light-mode showcase. Sky blue darkened for WCAG 4.5:1 on white.",
+    "accent":     "#0284c7",
+    "accentSoft": "#0ea5e9",
+    "success":    "#16a34a",
+    "danger":     "#dc2626",
+    "warning":    "#d97706",
+    "emphasis":   "#9333ea",
+
+    "backgrounds": [
+      "#eff6ff",
+      "#ffffff",
+      "#f0f9ff",
+      "#e0f2fe",
+      "#bae6fd"
+    ],
+
+    "text": [
+      "#0c1a2e",
+      "#2c5f7a",
+      "#6b9db5"
+    ],
+
+    "border": "#93c5fd",
+
+    "chartPalette": [
+      "#0284c7",
+      "#16a34a",
+      "#9333ea",
+      "#d97706",
+      "#dc2626",
+      "#0891b2",
+      "#c2410c",
+      "#4d7c0f"
+    ]
+  }
+}

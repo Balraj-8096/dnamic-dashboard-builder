@@ -1,0 +1,54 @@
+{
+  "_comment": "Acme Corporation — enterprise/corporate brand. Sharp edges, crimson accent, Inter font. Tests: shape=sharp, custom accent + status colors, logo swap, per-variant tokens.",
+
+  "clientId":    "acme-corp",
+  "displayName": "Acme Corporation",
+
+  "logoUrl":    "/assets/brands/logos/acme-corp.svg",
+  "faviconUrl": "/assets/brands/logos/acme-corp-favicon.svg",
+
+  "fontFamily": "Inter",
+  "fontUrl":    "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+
+  "shape": "sharp",
+
+  "dark": {
+    "_comment": "Dark variant — crimson on near-black. All accents verified ≥4.5:1 contrast on --bg1 (#0d1219).",
+    "accent":      "#e63946",
+    "accentSoft":  "#ff6b74",
+    "success":     "#2a9d8f",
+    "danger":      "#e76f51",
+    "warning":     "#e9c46a",
+    "emphasis":    "#9b72cf",
+    "chartPalette": [
+      "#e63946",
+      "#2a9d8f",
+      "#e9c46a",
+      "#e76f51",
+      "#9b72cf",
+      "#264653",
+      "#f4a261",
+      "#a8dadc"
+    ]
+  },
+
+  "light": {
+    "_comment": "Light variant — darkened tokens to meet WCAG 4.5:1 on white (#ffffff).",
+    "accent":      "#c1121f",
+    "accentSoft":  "#e63946",
+    "success":     "#1d7a70",
+    "danger":      "#b5451b",
+    "warning":     "#b5850a",
+    "emphasis":    "#7c3aed",
+    "chartPalette": [
+      "#c1121f",
+      "#1d7a70",
+      "#b5850a",
+      "#b5451b",
+      "#7c3aed",
+      "#1b4f5a",
+      "#c2651a",
+      "#2a6b82"
+    ]
+  }
+}
