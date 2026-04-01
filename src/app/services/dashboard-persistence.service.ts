@@ -5,9 +5,12 @@ import {
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
-import { DashboardService }   from './dashboard.service';
-import { AppConfigService }   from './app-config.service';
-import { DashboardApiService } from './api/dashboard-api.service';
+import { DashboardService }          from './dashboard.service';
+import { AppConfigService }          from './app-config.service';
+import { DashboardApiService }       from './api/dashboard-api.service';
+import { DashboardRegistryService }  from './dashboard-registry.service';
+import { MOCK_DASHBOARD_PAYLOADS }   from '../test-cases/mock-dashboards';
+import { Widget } from '../core/interfaces';
 
 // ── Save status ───────────────────────────────────────────────────────────────
 
@@ -54,6 +57,7 @@ export class DashboardPersistenceService implements OnDestroy {
   private readonly svc       = inject(DashboardService);
   private readonly configSvc = inject(AppConfigService);
   private readonly api       = inject(DashboardApiService);
+  private readonly registry  = inject(DashboardRegistryService);
 
   // ── Dashboard identity ────────────────────────────────────────────────────
 
@@ -109,11 +113,22 @@ export class DashboardPersistenceService implements OnDestroy {
   // ── Public API ────────────────────────────────────────────────────────────
 
   /**
-   * Load a dashboard from the server and replace current state.
-   * Resets history (same behaviour as importLayout / loadTemplate).
+   * Load a dashboard by ID and replace current canvas state.
+   * Preserves original widget IDs (uses loadLayout, not importLayout).
+   *
+   * @param id          Dashboard UUID to load.
+   * @param onNotFound  Optional callback invoked when the server returns 404.
+   *                    Use this to redirect to /dashboards in the caller.
    */
-  load(id: string): void {
-    if (!this.configSvc.useRealApi()) return;
+  load(id: string, onNotFound?: () => void): void {
+    if (!this.configSvc.useRealApi()) {
+      // Mock mode: load from MOCK_DASHBOARD_PAYLOADS if available.
+      const payload = MOCK_DASHBOARD_PAYLOADS[id];
+      if (!payload || !Array.isArray(payload.widgets)) { onNotFound?.(); return; }
+      this._dashboardId.set(id);
+      this.svc.loadLayout({ title: payload.title, widgets: payload.widgets as Widget[] });
+      return;
+    }
 
     this._saveStatus.set('saving'); // reuse "saving" as "loading" indicator
     this.saveSub?.unsubscribe();
@@ -122,16 +137,26 @@ export class DashboardPersistenceService implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: payload => {
+          // Guard against malformed API response — treat as not-found.
+          if (!payload || !Array.isArray(payload.widgets)) {
+            onNotFound?.();
+            return;
+          }
           this._dashboardId.set(payload.id);
           localStorage.setItem(DASHBOARD_ID_KEY, payload.id);
-          // importLayout resets history and regenerates IDs — use it as the
-          // canonical "replace everything" operation.
-          this.svc.importLayout(
-            JSON.stringify({ title: payload.title, widgets: payload.widgets })
-          );
+          // loadLayout preserves original widget IDs (unlike importLayout which
+          // regenerates them — C19 fix was for file import only, not API loads).
+          this.svc.loadLayout({ title: payload.title, widgets: payload.widgets });
           this.setStatus('saved');
         },
-        error: () => this.setStatus('error'),
+        error: err => {
+          const status = (err as { status?: number }).status;
+          if (status === 404) {
+            onNotFound?.();
+          } else {
+            this.setStatus('error');
+          }
+        },
       });
   }
 
@@ -161,10 +186,17 @@ export class DashboardPersistenceService implements OnDestroy {
       .subscribe({
         next: result => {
           // Server may have assigned or normalised the ID — honour it.
-          if (result.id && result.id !== id) {
-            this._dashboardId.set(result.id);
-            localStorage.setItem(DASHBOARD_ID_KEY, result.id);
+          const finalId = (result.id && result.id !== id) ? result.id : id;
+          if (finalId !== id) {
+            this._dashboardId.set(finalId);
+            localStorage.setItem(DASHBOARD_ID_KEY, finalId);
           }
+          this.registry.upsert({
+            id:          finalId,
+            title,
+            updatedAt:   Date.now(),
+            widgetCount: widgets.length,
+          });
           this.setStatus('saved');
         },
         error: err => {
@@ -194,10 +226,17 @@ export class DashboardPersistenceService implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: result => {
-          if (result.id && result.id !== clientId) {
-            this._dashboardId.set(result.id);
-            localStorage.setItem(DASHBOARD_ID_KEY, result.id);
+          const finalId = (result.id && result.id !== clientId) ? result.id : clientId;
+          if (finalId !== clientId) {
+            this._dashboardId.set(finalId);
+            localStorage.setItem(DASHBOARD_ID_KEY, finalId);
           }
+          this.registry.upsert({
+            id:          finalId,
+            title,
+            updatedAt:   Date.now(),
+            widgetCount: widgets.length,
+          });
           this.setStatus('saved');
         },
         error: () => this.setStatus('error'),

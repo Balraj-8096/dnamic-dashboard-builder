@@ -12,7 +12,7 @@ import {
   HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   fromEvent,
@@ -22,6 +22,7 @@ import {
 
 import { DashboardService }             from '../../services/dashboard.service';
 import { DashboardPersistenceService }  from '../../services/dashboard-persistence.service';
+import { DashboardRegistryService }     from '../../services/dashboard-registry.service';
 import { AlignmentGuide, Widget, WidgetType } from '../../core/interfaces';
 import { gridToPixel, nudgeWidget } from '../../core/layout.utils';
 import { COLS, GAP, KB_BLOCKED_TAGS, ZOOM_MAX, ZOOM_MIN, clamp } from '../../core/constants';
@@ -51,8 +52,10 @@ export class Canvas implements OnInit, OnDestroy {
   readonly svc = inject(DashboardService);
   // Injected to bootstrap the auto-save effect for the full app session.
   readonly persistence = inject(DashboardPersistenceService);
-  private readonly router = inject(Router);
-  private readonly dialog = inject(MatDialog);
+  private readonly route    = inject(ActivatedRoute);
+  private readonly router   = inject(Router);
+  private readonly registry = inject(DashboardRegistryService);
+  private readonly dialog   = inject(MatDialog);
 
   @ViewChild('mainRef', { static: true }) mainRef!: ElementRef<HTMLElement>;
   @ViewChild('canvasRef', { static: true }) canvasRef!: ElementRef<HTMLElement>;
@@ -144,6 +147,15 @@ export class Canvas implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Load dashboard by route :id param if present.
+    // load() handles both real-API and mock modes; redirects to /dashboards on 404.
+    const routeId = this.route.snapshot.paramMap.get('id');
+    if (routeId) {
+      this.persistence.load(routeId, () => this.router.navigate(['/dashboards']));
+    }
+    // Track which dashboard is open so the list page can highlight it.
+    this.registry.setActive(routeId);
+
     const main = this.mainRef.nativeElement;
     const canvas = this.canvasRef.nativeElement;
     this.syncResponsiveUi();
@@ -175,6 +187,11 @@ export class Canvas implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // Flush any pending debounced save before leaving the builder so edits
+    // made within the debounce window are not silently discarded.
+    this.persistence.forceSave();
+    // Clear active dashboard when leaving the builder.
+    this.registry.setActive(null);
     // Step 32: complete destroy$ — kills all takeUntil subscriptions
     this.destroy$.next();
     this.destroy$.complete();

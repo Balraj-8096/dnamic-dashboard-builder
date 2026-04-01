@@ -188,7 +188,7 @@ export class DashboardView implements OnInit, OnDestroy {
   }
 
   // ── Navigation ────────────────────────────────────────────────
-  goBack(): void { this.router.navigate(['/builder']); }
+  goBack(): void { this.router.navigate(['/dashboards']); }
 
   trackWidget(_: number, widget: { id: string }): string { return widget.id; }
 }

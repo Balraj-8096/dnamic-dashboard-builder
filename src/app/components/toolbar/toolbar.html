@@ -17,6 +17,15 @@
 
     <div class="vdivider desktop-only"></div>
 
+    <!-- Breadcrumb: compact = back-arrow only; desktop = "All Dashboards >" -->
+    <button class="breadcrumb-back desktop-only" (click)="goToDashboards()" title="All Dashboards">
+      <span class="breadcrumb-label">All Dashboards</span>
+      <span class="breadcrumb-sep" aria-hidden="true">›</span>
+    </button>
+    <button class="breadcrumb-back-arrow compact-only" (click)="goToDashboards()" aria-label="Back to all dashboards" title="All Dashboards">
+      ‹
+    </button>
+
     <!-- Dashboard title (editable) -->
     @if (svc.editingTitle()) {
     <input #titleInput class="title-input" type="text" [value]="svc.dashTitle()"

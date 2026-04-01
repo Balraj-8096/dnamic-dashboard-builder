@@ -41,7 +41,9 @@ export const PRESCRIPTIONS_MOCK_DATA = {
         { "id": "rx-032", "prescriptionnumber": "RX-2026-004", "prescribeddate": "2026-02-10",  "expirydate": "2026-05-10",  "status": "partial",   "patientid": "pat-004", "prescriberid": "prscbr-003", "siteid": "SITE-002", "isrepeat": true,  "repeatcount": 5, "priority": "emergency", "notes": "Partial supply — controlled substance quota limit reached for month",  "createdon": "2026-02-10T10:00:00", "lastupdatedon": "2026-02-11T10:00:00" },
         { "id": "rx-033", "prescriptionnumber": "RX-2026-005", "prescribeddate": "2026-03-04",  "expirydate": "2026-06-04",  "status": "dispensed", "patientid": "pat-001", "prescriberid": "prscbr-001", "siteid": "SITE-001", "isrepeat": true,  "repeatcount": 3, "priority": "routine",   "notes": null,                                                                "createdon": "2026-03-04T09:00:00", "lastupdatedon": "2026-03-05T10:00:00" },
         { "id": "rx-034", "prescriptionnumber": "RX-2026-006", "prescribeddate": "2026-03-08",  "expirydate": "2026-09-08",  "status": "active",    "patientid": "pat-006", "prescriberid": "prscbr-001", "siteid": "SITE-001", "isrepeat": true,  "repeatcount": 6, "priority": "routine",   "notes": null,                                                                "createdon": "2026-03-08T10:00:00", "lastupdatedon": "2026-03-08T10:00:00" },
-        { "id": "rx-035", "prescriptionnumber": "RX-2026-007", "prescribeddate": "2026-03-13",  "expirydate": "2026-09-13",  "status": "active",    "patientid": "pat-007", "prescriberid": "prscbr-002", "siteid": "SITE-001", "isrepeat": true,  "repeatcount": 12,"priority": "routine",   "notes": "Max repeats authorised — requires annual review before further renewal. Take with food and water. Avoid grapefruit juice. Do not crush or chew tablets. Contact prescriber immediately if side effects occur.", "createdon": "2026-03-13T11:00:00", "lastupdatedon": "2026-03-13T11:00:00" }
+        { "id": "rx-035", "prescriptionnumber": "RX-2026-007", "prescribeddate": "2026-03-13",  "expirydate": "2026-09-13",  "status": "active",    "patientid": "pat-007", "prescriberid": "prscbr-002", "siteid": "SITE-001", "isrepeat": true,  "repeatcount": 12,"priority": "routine",   "notes": "Max repeats authorised — requires annual review before further renewal. Take with food and water. Avoid grapefruit juice. Do not crush or chew tablets. Contact prescriber immediately if side effects occur.", "createdon": "2026-03-13T11:00:00", "lastupdatedon": "2026-03-13T11:00:00" },
+        { "id": "rx-036", "prescriptionnumber": "RX-2026-008", "prescribeddate": "2026-03-18",  "expirydate": "2026-04-18",  "status": "dispensed", "patientid": "pat-004", "prescriberid": "prscbr-007", "siteid": "SITE-002", "isrepeat": false, "repeatcount": 0, "priority": "routine",   "notes": null,                                                                "createdon": "2026-03-18T10:00:00", "lastupdatedon": "2026-03-19T11:00:00" },
+        { "id": "rx-037", "prescriptionnumber": "RX-2026-009", "prescribeddate": "2026-03-20",  "expirydate": "2026-04-20",  "status": "active",    "patientid": "pat-008", "prescriberid": "prscbr-007", "siteid": "SITE-002", "isrepeat": false, "repeatcount": 0, "priority": "urgent",    "notes": "Acute eye infection — commence immediately",                        "createdon": "2026-03-20T09:00:00", "lastupdatedon": "2026-03-20T09:00:00" }
       ],
 
       "prescription_item": [
@@ -79,7 +81,9 @@ export const PRESCRIPTIONS_MOCK_DATA = {
         { "id": "rxitem-032", "prescriptionid": "rx-032", "medicationid": "med-005", "quantity": 20,  "unit": "tablet",    "durationdays": 10, "status": "active",       "dosage": "50mg twice daily",               "instructions": "Do not exceed 4 per day. Do not drive or operate machinery. Controlled drug — patient ID required at dispensing.", "createdon": "2026-02-10T10:00:00" },
         { "id": "rxitem-033", "prescriptionid": "rx-033", "medicationid": "med-001", "quantity": 30,  "unit": "tablet",    "durationdays": 28, "status": "active",       "dosage": "10mg once daily",                "instructions": "Take in the morning with water",                        "createdon": "2026-03-04T09:00:00" },
         { "id": "rxitem-034", "prescriptionid": "rx-034", "medicationid": "med-008", "quantity": 28,  "unit": "capsule",   "durationdays": 28, "status": "active",       "dosage": "20mg once daily",                "instructions": "Take before breakfast",                                 "createdon": "2026-03-08T10:00:00" },
-        { "id": "rxitem-035", "prescriptionid": "rx-035", "medicationid": "med-004", "quantity": 30,  "unit": "tablet",    "durationdays": 30, "status": "active",       "dosage": "20mg once daily",                "instructions": "Take at night",                                         "createdon": "2026-03-13T11:00:00" }
+        { "id": "rxitem-035", "prescriptionid": "rx-035", "medicationid": "med-004", "quantity": 30,  "unit": "tablet",    "durationdays": 30, "status": "active",       "dosage": "20mg once daily",                "instructions": "Take at night",                                                                                                           "createdon": "2026-03-13T11:00:00" },
+        { "id": "rxitem-036", "prescriptionid": "rx-036", "medicationid": "med-014", "quantity": 30,  "unit": "ml",        "durationdays": 14, "status": "active",       "dosage": "Apply thinly to affected area twice daily", "instructions": "For external use only. Do not apply to face or broken skin. Wash hands before and after use. Discontinue if irritation occurs.", "createdon": "2026-03-18T10:00:00" },
+        { "id": "rxitem-037", "prescriptionid": "rx-037", "medicationid": "med-015", "quantity": 5,   "unit": "drops",     "durationdays": 5,  "status": "active",       "dosage": "1-2 drops into affected eye(s) every 2 hours for first 24h, then 4 hourly", "instructions": "Wash hands before use. Tilt head back. Do not touch dropper tip to eye. Discard 4 weeks after opening.",              "createdon": "2026-03-20T09:00:00" }
       ],
 
       "medication": [
@@ -95,7 +99,9 @@ export const PRESCRIPTIONS_MOCK_DATA = {
         { "id": "med-010", "name": "fentanyl",        "brandname": "Durogesic",    "drugclass": "Opioid Analgesic",    "form": "patch",     "strength": "25mcg/h", "iscontrolled": true,  "isactive": true,  "createdon": "2020-01-01T00:00:00" },
         { "id": "med-011", "name": "insulin glargine","brandname": "Lantus",       "drugclass": "Antidiabetic",        "form": "injection", "strength": "100U/ml", "iscontrolled": false, "isactive": true,  "createdon": "2021-03-01T00:00:00" },
         { "id": "med-012", "name": "morphine",        "brandname": "Oramorph",     "drugclass": "Opioid Analgesic",    "form": "liquid",    "strength": "10mg/5ml","iscontrolled": true,  "isactive": true,  "createdon": "2020-01-01T00:00:00" },
-        { "id": "med-013", "name": "codeine",         "brandname": "Codeine Linctus","drugclass": "Opioid Analgesic",  "form": "liquid",    "strength": "15mg/5ml","iscontrolled": true,  "isactive": false, "createdon": "2020-01-01T00:00:00" }
+        { "id": "med-013", "name": "codeine",         "brandname": "Codeine Linctus","drugclass": "Opioid Analgesic",  "form": "liquid",    "strength": "15mg/5ml","iscontrolled": true,  "isactive": false, "createdon": "2020-01-01T00:00:00" },
+        { "id": "med-014", "name": "hydrocortisone",  "brandname": "Hydrocortisone Cream", "drugclass": "Corticosteroid",   "form": "cream",     "strength": "1%",      "iscontrolled": false, "isactive": true,  "createdon": "2020-01-01T00:00:00" },
+        { "id": "med-015", "name": "chloramphenicol", "brandname": "Chloramphenicol Eye Drops", "drugclass": "Antibiotic", "form": "drops",    "strength": "0.5%",    "iscontrolled": false, "isactive": true,  "createdon": "2020-01-01T00:00:00" }
       ],
 
       "dispense": [
@@ -127,7 +133,8 @@ export const PRESCRIPTIONS_MOCK_DATA = {
         { "id": "disp-026", "prescriptionid": "rx-031", "dispenseddate": "2026-02-05",  "dispensedquantity": 28, "status": "dispensed", "siteid": "SITE-001", "dispensedby": "stf-001", "createdon": "2026-02-05T10:00:00"  },
         { "id": "disp-027", "prescriptionid": "rx-032", "dispenseddate": "2026-02-11",  "dispensedquantity": 10, "status": "partial",   "siteid": "SITE-002", "dispensedby": "stf-003", "createdon": "2026-02-11T10:00:00"  },
         { "id": "disp-028", "prescriptionid": "rx-033", "dispenseddate": "2026-03-05",  "dispensedquantity": 30, "status": "dispensed", "siteid": "SITE-001", "dispensedby": "stf-002", "createdon": "2026-03-05T10:00:00"  },
-        { "id": "disp-029", "prescriptionid": "rx-009", "dispenseddate": "2024-07-19",  "dispensedquantity": 1,  "status": "returned",  "siteid": "SITE-003", "dispensedby": "stf-004", "createdon": "2024-07-19T14:00:00"  }
+        { "id": "disp-029", "prescriptionid": "rx-009", "dispenseddate": "2024-07-19",  "dispensedquantity": 1,  "status": "returned",  "siteid": "SITE-003", "dispensedby": "stf-004", "createdon": "2024-07-19T14:00:00"  },
+        { "id": "disp-030", "prescriptionid": "rx-036", "dispenseddate": "2026-03-19",  "dispensedquantity": 30, "status": "dispensed", "siteid": "SITE-002", "dispensedby": "stf-003", "createdon": "2026-03-19T11:00:00"  }
       ]
 
     },
@@ -140,14 +147,15 @@ export const PRESCRIPTIONS_MOCK_DATA = {
         { "id": "prscbr-003", "firstname": "Emma",     "lastname": "Clarke",    "prescribertype": "doctor",             "specialty": "Endocrinology",   "registrationnumber": "GMC9876543", "isactive": true,  "siteid": "SITE-002", "createdon": "2020-03-01T00:00:00" },
         { "id": "prscbr-004", "firstname": "Raj",      "lastname": "Mehta",     "prescribertype": "nurse_practitioner", "specialty": "General Practice","registrationnumber": "NMC4567890", "isactive": true,  "siteid": "SITE-002", "createdon": "2021-09-01T00:00:00" },
         { "id": "prscbr-005", "firstname": "Yvonne",   "lastname": "Dubois",    "prescribertype": "specialist",         "specialty": "Oncology",        "registrationnumber": "GMC3456789", "isactive": true,  "siteid": "SITE-003", "createdon": "2017-04-01T00:00:00" },
-        { "id": "prscbr-006", "firstname": "Kevin",    "lastname": "O'Sullivan", "prescribertype": "dentist",           "specialty": "Dental Surgery",  "registrationnumber": "GDC1122334", "isactive": false, "siteid": "SITE-001", "createdon": "2016-02-01T00:00:00" }
+        { "id": "prscbr-006", "firstname": "Kevin",    "lastname": "O'Sullivan", "prescribertype": "dentist",           "specialty": "Dental Surgery",  "registrationnumber": "GDC1122334", "isactive": false, "siteid": "SITE-001", "createdon": "2016-02-01T00:00:00" },
+        { "id": "prscbr-007", "firstname": "Lucy",     "lastname": "Fernandez",  "prescribertype": "pharmacist",        "specialty": "Community Pharmacy", "registrationnumber": "GPhC1234567", "isactive": true,  "siteid": "SITE-002", "createdon": "2022-05-01T00:00:00" }
       ]
 
     }
   },
 
   "_edge_cases_in_data": {
-    "EC-RX1_LEFT_JOIN_no_dispense": "rx-002 (expired), rx-006 (cancelled), rx-013 (expired), rx-017 (expired), rx-026 (cancelled), rx-034 (active), rx-035 (active) have NO rows in dispense — LEFT JOIN produces NULL for all dispense columns",
+    "EC-RX1_LEFT_JOIN_no_dispense": "rx-002 (expired), rx-006 (cancelled), rx-013 (expired), rx-017 (expired), rx-026 (cancelled), rx-034 (active), rx-035 (active), rx-037 (active, not yet dispensed) have NO rows in dispense — LEFT JOIN produces NULL for all dispense columns",
     "EC-RX1_EFFECTIVE_INNER": "Adding filter dispense.status='dispensed' converts LEFT JOIN to effective INNER JOIN — also excludes rx-008 (partial), rx-022 (partial), rx-032 (partial)",
     "EC-RX2_CONTROLLED_SUBSTANCES": "med-005 (tramadol), med-007 (diazepam), med-010 (fentanyl), med-012 (morphine), med-013 (codeine) have iscontrolled=true. rx-005, rx-019, rx-026 (tramadol/diazepam) demonstrate controlled prescribing.",
     "EC-RX2_INACTIVE_MEDICATION": "med-013 (codeine) has isactive=false — on formulary but withdrawn; filter isactive=true for current formulary reports",
@@ -164,7 +172,10 @@ export const PRESCRIPTIONS_MOCK_DATA = {
     "EC-RX_LONG_INSTRUCTIONS": "rxitem-032 and rxitem-035 have long instructions text to test UI text wrapping.",
     "EC-RX_BRAND_SPLIT": "med-003 (amoxicillin/Amoxil, capsule) and med-009 (amoxicillin/Trimox, liquid) share the same generic name but different brand names and forms — grouping by name combines both, grouping by brandname splits them",
     "EC-RX_REPEAT_CHAIN": "pat-001 has repeat chain: rx-001 (Jan 2024), rx-011 (Jul 2024), rx-016 (Jan 2025), rx-028 (Dec 2025), rx-033 (Mar 2026) — all lisinopril via prscbr-001",
-    "EC-RX4_HIGH_CARDINALITY": "6 prescribers across 4 specialty types here. Production sites typically have 15-30+ specialties.",
+    "EC-RX_PHARMACIST": "prscbr-007 (Lucy Fernandez) is the only pharmacist prescriber type — all 5 prescriber types (doctor, nurse_practitioner, dentist, specialist, pharmacist) now covered. rx-036 and rx-037 are prescribed by a pharmacist.",
+    "EC-RX_CREAM_FORM": "med-014 (hydrocortisone, Hydrocortisone Cream) has form='cream' — first use of the cream medication form. rx-036 / rxitem-036 use unit='ml' (30ml tube). Together they cover the topical treatment workflow.",
+    "EC-RX_DROPS_FORM": "med-015 (chloramphenicol, Chloramphenicol Eye Drops) has form='drops' — first use of the drops medication form. rx-037 / rxitem-037 use unit='drops'. rx-037 has no dispense row (status=active, not yet collected) — a further LEFT JOIN null case.",
+    "EC-RX4_HIGH_CARDINALITY": "7 prescribers across 5 prescriber types: doctor(3), nurse_practitioner(1), specialist(1), dentist(1), pharmacist(1). prscbr-006 (Kevin O'Sullivan) is isactive=false. Production sites typically have 15-30+ specialties.",
     "EC-RX_CROSS_SCHEMA": "prescriber is in schema 'staff', all other entities in schema 'rx' — the join prescription→prescriber crosses schemas",
     "EC-XP3_CROSS_PRODUCT_PATIENT": "prescription.patientid uses same IDs as EPX (pat-001 to pat-015) but cross-product joins are NOT supported in a single widget",
     "EC-RX_PRIORITY_ALL": "All 3 priority values present: routine(25), urgent(7 — rx-002/006/010/013/017/022/024/026), emergency(3 — rx-005/019/032) — use for IN/NOT_IN and groupBy filter demos",

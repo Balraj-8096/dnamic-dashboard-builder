@@ -47,7 +47,8 @@ export const EPX_MOCK_DATA = {
         { "id": "appt-040", "siteid": "SITE-001", "startdate": "2026-03-12T09:00:00", "enddate": "2026-03-12T10:00:00", "status": "confirmed",  "isremoteappointment": false, "invoiced": false, "identifier": "APT-20260312-040", "durationminutes": 60, "appointmenttype": "emergency",    "createdon": "2026-03-04T09:00:00", "lastupdatedon": "2026-03-04T09:00:00" },
         { "id": "appt-041", "siteid": "SITE-002", "startdate": "2026-03-24T10:00:00", "enddate": "2026-03-24T10:30:00", "status": "scheduled",  "isremoteappointment": true,  "invoiced": false, "identifier": "APT-20260324-041", "durationminutes": 30, "appointmenttype": "follow_up",    "createdon": "2026-03-06T10:00:00", "lastupdatedon": "2026-03-06T10:00:00" },
         { "id": "appt-042", "siteid": "SITE-001", "startdate": "2026-03-18T09:00:00", "enddate": "2026-03-18T10:00:00", "status": "confirmed",  "isremoteappointment": false, "invoiced": false, "identifier": "APT-20260318-042", "durationminutes": 60, "appointmenttype": "screening",    "createdon": "2026-03-10T09:00:00", "lastupdatedon": "2026-03-10T09:00:00" },
-        { "id": "appt-043", "siteid": "SITE-003", "startdate": "2026-03-18T14:30:00", "enddate": "2026-03-18T15:00:00", "status": "confirmed",  "isremoteappointment": true,  "invoiced": false, "identifier": "APT-20260318-043", "durationminutes": 30, "appointmenttype": "consultation", "createdon": "2026-03-11T10:00:00", "lastupdatedon": "2026-03-11T10:00:00" }
+        { "id": "appt-043", "siteid": "SITE-003", "startdate": "2026-03-18T14:30:00", "enddate": "2026-03-18T15:00:00", "status": "confirmed",  "isremoteappointment": true,  "invoiced": false, "identifier": "APT-20260318-043", "durationminutes": 30, "appointmenttype": "consultation", "createdon": "2026-03-11T10:00:00", "lastupdatedon": "2026-03-11T10:00:00" },
+        { "id": "appt-044", "siteid": "SITE-001", "startdate": "2026-03-20T11:00:00", "enddate": "2026-03-20T12:00:00", "status": "completed",  "isremoteappointment": false, "invoiced": true,  "identifier": "APT-20260320-044", "durationminutes": 60, "appointmenttype": "consultation", "createdon": "2026-03-12T09:00:00", "lastupdatedon": "2026-03-20T12:15:00" }
       ],
       "appointment_patient": [
         { "appointmentid": "appt-001", "patientid": "pat-001", "price": 120.00, "payortype": "insurance", "status": "attended",  "videoconsultationurl": null,                                "rating": 4,    "notes": "Excellent service",          "createdon": "2024-01-03T08:00:00" },
@@ -92,7 +93,8 @@ export const EPX_MOCK_DATA = {
         { "appointmentid": "appt-040", "patientid": "pat-005", "price": 120.00, "payortype": "insurance", "status": "booked",    "videoconsultationurl": null,                                "rating": null, "notes": null,                         "createdon": "2026-03-04T09:00:00" },
         { "appointmentid": "appt-041", "patientid": "pat-007", "price": 85.00,  "payortype": "self_pay",  "status": "booked",    "videoconsultationurl": "https://meet.example.com/appt-041", "rating": null, "notes": null,                         "createdon": "2026-03-06T10:00:00" },
         { "appointmentid": "appt-042", "patientid": "pat-003", "price": 120.00, "payortype": "insurance", "status": "booked",    "videoconsultationurl": null,                                "rating": null, "notes": null,                         "createdon": "2026-03-10T09:00:00" },
-        { "appointmentid": "appt-043", "patientid": "pat-009", "price": 150.00, "payortype": "corporate", "status": "booked",    "videoconsultationurl": "https://meet.example.com/appt-043", "rating": null, "notes": null,                         "createdon": "2026-03-11T10:00:00" }
+        { "appointmentid": "appt-043", "patientid": "pat-009", "price": 150.00, "payortype": "corporate", "status": "booked",    "videoconsultationurl": "https://meet.example.com/appt-043", "rating": null, "notes": null,                         "createdon": "2026-03-11T10:00:00" },
+        { "appointmentid": "appt-044", "patientid": "pat-016", "price": 120.00, "payortype": "self_pay",  "status": "attended",  "videoconsultationurl": null,                                "rating": 4,    "notes": "First visit — new patient",  "createdon": "2026-03-12T09:00:00" }
       ]
     },
     "patient": {
@@ -111,7 +113,9 @@ export const EPX_MOCK_DATA = {
         { "id": "pat-012", "dateofbirth": "1983-09-04", "sex": "F", "deceased": false, "status": "active",   "mrn": "MRN-10012", "createdon": "2020-07-19T09:00:00" },
         { "id": "pat-013", "dateofbirth": "1950-12-17", "sex": "M", "deceased": false, "status": "active",   "mrn": "MRN-10013", "createdon": "2011-11-08T08:00:00" },
         { "id": "pat-014", "dateofbirth": "2003-03-28", "sex": "F", "deceased": false, "status": "active",   "mrn": "MRN-10014", "createdon": "2023-04-01T09:00:00" },
-        { "id": "pat-015", "dateofbirth": "1939-06-11", "sex": "M", "deceased": true,  "status": "deceased", "mrn": "MRN-10015", "createdon": "2008-09-15T09:00:00" }
+        { "id": "pat-015", "dateofbirth": "1939-06-11", "sex": "M", "deceased": true,  "status": "deceased", "mrn": "MRN-10015", "createdon": "2008-09-15T09:00:00" },
+        { "id": "pat-016", "dateofbirth": "1993-07-15", "sex": "O", "deceased": false, "status": "active",   "mrn": "MRN-10016", "createdon": "2023-11-01T09:00:00" },
+        { "id": "pat-017", "dateofbirth": "1978-04-22", "sex": "F", "deceased": false, "status": "merged",   "mrn": "MRN-10017", "createdon": "2021-06-15T09:00:00" }
       ],
       "contact": [
         { "id": "pat-001", "title": "Mr",   "firstname": "James",    "lastname": "Mitchell",  "status": "active",   "createdon": "2018-03-01T09:00:00" },
@@ -128,7 +132,9 @@ export const EPX_MOCK_DATA = {
         { "id": "pat-012", "title": "Ms",   "firstname": "Fatima",   "lastname": "Al-Hassan", "status": "active",   "createdon": "2020-07-19T09:00:00" },
         { "id": "pat-013", "title": "Mr",   "firstname": "Derek",    "lastname": "Fletcher",  "status": "active",   "createdon": "2011-11-08T08:00:00" },
         { "id": "pat-014", "title": "Miss", "firstname": "Chloe",    "lastname": "Reynolds",  "status": "active",   "createdon": "2023-04-01T09:00:00" },
-        { "id": "pat-015", "title": "Mr",   "firstname": "Arthur",   "lastname": "Pemberton", "status": "inactive", "createdon": "2008-09-15T09:00:00" }
+        { "id": "pat-015", "title": "Mr",   "firstname": "Arthur",   "lastname": "Pemberton", "status": "deceased", "createdon": "2008-09-15T09:00:00" },
+        { "id": "pat-016", "title": "Mx",   "firstname": "Alex",     "lastname": "Jordan",    "status": "active",   "createdon": "2023-11-01T09:00:00" },
+        { "id": "pat-017", "title": "Ms",   "firstname": "Nina",     "lastname": "Kapoor",    "status": "merged",   "createdon": "2021-06-15T09:00:00" }
       ],
       "contact_telecom": [
         { "contactid": "pat-001", "telecomid": "tlcm-001", "isprimary": true },
@@ -145,7 +151,8 @@ export const EPX_MOCK_DATA = {
         { "contactid": "pat-012", "telecomid": "tlcm-011", "isprimary": false },
         { "contactid": "pat-013", "telecomid": "tlcm-012", "isprimary": true },
         { "contactid": "pat-014", "telecomid": "tlcm-013", "isprimary": true },
-        { "contactid": "pat-015", "telecomid": "tlcm-014", "isprimary": true }
+        { "contactid": "pat-015", "telecomid": "tlcm-014", "isprimary": true },
+        { "contactid": "pat-016", "telecomid": "tlcm-017", "isprimary": true }
       ],
       "telecom": [
         { "id": "tlcm-001", "value": "07912 345 678",            "telecomtypetype": "mobile" },
@@ -163,7 +170,8 @@ export const EPX_MOCK_DATA = {
         { "id": "tlcm-013", "value": "07788 123 456",            "telecomtypetype": "mobile" },
         { "id": "tlcm-014", "value": "01908 777 222",            "telecomtypetype": "phone"  },
         { "id": "tlcm-015", "value": "james.mitchell@mail.com",  "telecomtypetype": "email"  },
-        { "id": "tlcm-016", "value": "james.mitchell@mail.com",  "telecomtypetype": "email"  }
+        { "id": "tlcm-016", "value": "james.mitchell@mail.com",  "telecomtypetype": "email"  },
+        { "id": "tlcm-017", "value": "07654 321 098",            "telecomtypetype": "mobile" }
       ],
       "contact_address": [
         { "contactid": "pat-001", "addressid": "addr-001", "isprimary": true },
@@ -179,7 +187,9 @@ export const EPX_MOCK_DATA = {
         { "contactid": "pat-012", "addressid": "addr-011", "isprimary": true },
         { "contactid": "pat-013", "addressid": "addr-012", "isprimary": true },
         { "contactid": "pat-014", "addressid": "addr-013", "isprimary": true },
-        { "contactid": "pat-015", "addressid": "addr-014", "isprimary": true }
+        { "contactid": "pat-015", "addressid": "addr-014", "isprimary": true },
+        { "contactid": "pat-016", "addressid": "addr-015", "isprimary": true },
+        { "contactid": "pat-016", "addressid": "addr-016", "isprimary": false }
       ],
       "address": [
         { "id": "addr-001", "address1": "14 Meadow Lane",     "address2": null,               "address3": "Greenfield",  "postcode": "SW1A 1AA" },
@@ -195,17 +205,21 @@ export const EPX_MOCK_DATA = {
         { "id": "addr-011", "address1": "17 Jasmine Close",   "address2": "Flat 3",           "address3": "Northgate",   "postcode": "NG1 1LM"  },
         { "id": "addr-012", "address1": "5 Hawthorn Road",    "address2": null,               "address3": "Hillcrest",   "postcode": "DN1 1NP"  },
         { "id": "addr-013", "address1": "22 Bluebell Way",    "address2": null,               "address3": "Sunbury",     "postcode": "TW1 1QR"  },
-        { "id": "addr-014", "address1": "9 Rosemary Lane",    "address2": null,               "address3": "Westfield",   "postcode": "OX1 1ST"  }
+        { "id": "addr-014", "address1": "9 Rosemary Lane",    "address2": null,               "address3": "Westfield",   "postcode": "OX1 1ST"  },
+        { "id": "addr-015", "address1": "38 Foxglove Close",  "address2": "Flat 7",           "address3": "Northdale",   "postcode": "LS1 1UV"  },
+        { "id": "addr-016", "address1": "12 Heather Way",     "address2": null,               "address3": "Oldtown",     "postcode": "YO1 1WX"  }
       ]
     }
   },
   "_edge_cases_in_data": {
-    "EC-J3_LEFT_JOIN_NULL_telecom": "cont-008 (Laura Anderson) and cont-010 (Helen Carter) have NO rows in contact_telecom — LEFT JOIN produces NULL for telecom columns",
-    "EC-J3_LEFT_JOIN_NULL_address": "cont-005 (Michael O'Brien) has NO row in contact_address — LEFT JOIN produces NULL for address columns",
+    "EC-J3_LEFT_JOIN_NULL_telecom": "pat-008 (Laura Anderson), pat-010 (Helen Carter) and pat-017 (Nina Kapoor) have NO rows in contact_telecom — LEFT JOIN produces NULL for telecom columns",
+    "EC-J3_LEFT_JOIN_NULL_address": "pat-005 (Michael O'Brien) and pat-017 (Nina Kapoor) have NO row in contact_address — LEFT JOIN produces NULL for address columns",
     "EC-J4_DUPLICATE_ROWS_telecom": "cont-001 has TWO telecom rows (mobile + email, tlcm-001 and tlcm-016) but only tlcm-001 is isprimary=true; cont-012 similarly has mobile + email with one primary. Filter isprimary=true to avoid duplicate rows per patient.",
-    "EC-J4_DUPLICATE_ROWS_address": "All contact_address rows have isprimary=true — same pattern",
+    "EC-J4_DUPLICATE_ROWS_address": "pat-016 (Alex Jordan) has TWO address rows (addr-015 primary, addr-016 isprimary=false — former address). Filter isprimary=true to get only the current address. All other contacts have exactly one address row with isprimary=true.",
     "EC-PAT_INACTIVE": "pat-005 (Michael O'Brien) has status=inactive — reports on active patients should filter patient.status=active",
     "EC-PAT_DECEASED": "pat-015 (Arthur Pemberton) has deceased=true and status=deceased — active-patient reports should filter deceased=false AND status != 'deceased'",
+    "EC-PAT_MERGED": "pat-017 (Nina Kapoor) has status=merged — merged records should be excluded from all active-patient counts; filter status NOT IN ('deceased','merged','inactive') for strict active-only reports",
+    "EC-PAT_OTHER_SEX": "pat-016 (Alex Jordan) has sex='O' (Other/Non-binary) — all three sex values (M/F/O) are now present; GROUP BY sex returns three groups",
     "EC-TW5_BOOLEAN": "isremoteappointment and invoiced are booleans — render as Yes/No badges not true/false",
     "EC-STD1_STATUS_BADGE": "appointment.status has 5 values: scheduled/confirmed/completed/cancelled/no_show — all defined in config status_values",
     "EC-PAYOR_ALL_TYPES": "All four payortype values are present: self_pay, insurance, nhs, corporate",
@@ -215,7 +229,7 @@ export const EPX_MOCK_DATA = {
     "EC-YEAR_OVER_YEAR": "Records span 2024-01 through 2026-03 — Q4 2024 (appt-016 to appt-020) vs Q4 2025 (appt-031 to appt-035) supports year-over-year comparisons",
     "EC-XP3_CROSS_PRODUCT": "patient.id values (pat-001 to pat-015) are SHARED with prescriptions product (prescription.patientid) but cannot be joined in a single widget",
     "EC-AGG_RATING_NULLS": "appointment_patient.rating is null for dna/cancelled/booked rows and ~4 attended rows — IS_NULL / IS_NOT_NULL / AVG / MIN / MAX on this field demonstrate null-aware aggregation",
-    "EC-AGG_DISTINCT": "pat-001 appears 4 times in appointment_patient — COUNT(appointment_id)=43 vs COUNT_DISTINCT(patient_id)=15 demonstrates the difference between COUNT and COUNT_DISTINCT",
+    "EC-AGG_DISTINCT": "pat-001 appears 4 times in appointment_patient — COUNT(appointment_id)=44 vs COUNT_DISTINCT(patient_id)=16 demonstrates the difference between COUNT and COUNT_DISTINCT",
     "EC-AGG_DURATION": "appointment.duration_minutes is 30 or 60 (one 45-min exception: appt-012) — MIN=30, MAX=60, AVG~57 across all records",
     "EC-FILTER_PRICE_RANGE": "price values are 0.00 (dna/cancelled), 85.00 (self_pay short), 120.00 (standard), 150.00 (corporate) — GT/GTE/LT/LTE filters on price have well-defined expected counts",
     "EC-APPT_TYPE_ALL": "All 5 appointment_type values are present: consultation(17), follow_up(11), procedure(9), screening(5), emergency(1) — use for IN/NOT_IN and groupBy demos",

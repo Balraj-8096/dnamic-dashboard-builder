@@ -64,6 +64,50 @@
   color: var(--acc2);
 }
 
+// ── Breadcrumb ────────────────────────────────────────────────
+
+.breadcrumb-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  color: var(--txt2);
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color var(--transition-fast), background var(--transition-fast);
+
+  &:hover { color: var(--txt0); background: var(--bg3); }
+}
+
+.breadcrumb-back-arrow {
+  display: none;  // shown via compact-only
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--bdr);
+  background: transparent;
+  color: var(--txt1);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+
+  &:hover { background: var(--bg3); color: var(--txt0); }
+}
+
+.breadcrumb-sep {
+  color: var(--txt2);
+  font-size: 14px;
+}
+
+.compact-only { display: none; }
+
 // ── Title ─────────────────────────────────────────────────────
 .title-span {
   font-size: 13px;
@@ -505,6 +549,10 @@
 
   .toolbar.is-compact .desktop-only {
     display: none;
+  }
+
+  .toolbar.is-compact .compact-only {
+    display: flex;
   }
 
   .toolbar.is-compact .cluster {

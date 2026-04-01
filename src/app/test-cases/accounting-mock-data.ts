@@ -41,7 +41,8 @@ export const ACCOUNTING_MOCK_DATA = {
         { "id": "inv-032", "invoicenumber": "INV-2026-007", "invoicedate": "2026-03-07", "duedate": "2026-03-28", "status": "draft",   "totalamount": 85.00,  "taxamount": 0.00,  "discountamount": 0.00,  "netamount": 85.00,  "invoicetype": "consultation",   "writeoffamount": null,  "currencycode": "GBP", "siteid": "SITE-002", "isvoid": false, "notes": null,                              "createdon": "2026-03-07T13:00:00", "lastupdatedon": "2026-03-07T13:00:00" },
         { "id": "inv-033", "invoicenumber": "INV-2026-008", "invoicedate": "2026-03-10", "duedate": "2026-03-31", "status": "void",    "totalamount": 0.00,   "taxamount": 0.00,  "discountamount": 0.00,  "netamount": 0.00,   "invoicetype": "consultation",   "writeoffamount": null,  "currencycode": "USD", "siteid": "SITE-002", "isvoid": true,  "notes": "Voided — duplicate invoice raised", "createdon": "2026-03-10T09:00:00", "lastupdatedon": "2026-03-10T09:30:00" },
         { "id": "inv-034", "invoicenumber": "INV-2026-009", "invoicedate": "2026-03-12", "duedate": "2026-04-02", "status": "partial", "totalamount": 150.00, "taxamount": 0.00,  "discountamount": 0.00,  "netamount": 150.00, "invoicetype": "procedure",      "writeoffamount": null,  "currencycode": "GBP", "siteid": "SITE-003", "isvoid": false, "notes": null,                              "createdon": "2026-03-12T11:00:00", "lastupdatedon": "2026-03-15T09:00:00" },
-        { "id": "inv-035", "invoicenumber": "INV-2026-010", "invoicedate": "2026-03-16", "duedate": "2026-04-06", "status": "sent",    "totalamount": 0.00,   "taxamount": 0.00,  "discountamount": 0.00,  "netamount": 0.00,   "invoicetype": "nhs",            "writeoffamount": null,  "currencycode": "GBP", "siteid": "SITE-002", "isvoid": false, "notes": "Zero-amount invoice — NHS exempt", "createdon": "2026-03-16T10:00:00", "lastupdatedon": "2026-03-16T10:00:00" }
+        { "id": "inv-035", "invoicenumber": "INV-2026-010", "invoicedate": "2026-03-16", "duedate": "2026-04-06", "status": "sent",    "totalamount": 0.00,   "taxamount": 0.00,  "discountamount": 0.00,  "netamount": 0.00,   "invoicetype": "nhs",            "writeoffamount": null,  "currencycode": "GBP", "siteid": "SITE-002", "isvoid": false, "notes": "Zero-amount invoice — NHS exempt", "createdon": "2026-03-16T10:00:00", "lastupdatedon": "2026-03-16T10:00:00" },
+        { "id": "inv-036", "invoicenumber": "INV-2026-011", "invoicedate": "2026-03-18", "duedate": "2026-04-08", "status": "paid",    "totalamount": 600.00, "taxamount": 80.00, "discountamount": 0.00,  "netamount": 520.00, "invoicetype": "package",        "writeoffamount": null,  "currencycode": "GBP", "siteid": "SITE-001", "isvoid": false, "notes": "Clinical portal annual subscription + training pack", "createdon": "2026-03-18T11:00:00", "lastupdatedon": "2026-03-24T10:00:00" }
       ],
 
       "invoice_line": [
@@ -54,7 +55,7 @@ export const ACCOUNTING_MOCK_DATA = {
         { "id": "invl-007", "invoiceid": "inv-010",  "servicecode": "CONSULT-TELE-30",  "description": "Teleconsultation (30 min)",          "quantity": 1, "unitprice": 85.00,   "lineamount": 85.00,   "taxrate": 0, "servicedate": "2024-09-24",  "istaxable": false, "createdon": "2024-09-24T15:00:00"  },
         { "id": "invl-008", "invoiceid": "inv-011",  "servicecode": "CONSULT-SPEC-60",  "description": "Specialist Consultation (60 min)",  "quantity": 1, "unitprice": 150.00,  "lineamount": 150.00,  "taxrate": 0, "servicedate": "2024-10-08",  "istaxable": false, "createdon": "2024-10-08T11:00:00"  },
         { "id": "invl-009", "invoiceid": "inv-012",  "servicecode": "CONSULT-GP-60",    "description": "GP Consultation (60 min)",          "quantity": 1, "unitprice": 120.00,  "lineamount": 120.00,  "taxrate": 0, "servicedate": "2024-11-05",  "istaxable": false, "createdon": "2024-11-05T12:00:00"  },
-        { "id": "invl-010", "invoiceid": "inv-013",  "servicecode": "CORP-HEALTH-PKG",  "description": "Annual Corporate Health Assessment", "quantity": 1, "unitprice": 9500.00, "lineamount": 9500.00, "taxrate": 0, "servicedate": "2024-12-03",  "istaxable": true,  "createdon": "2024-12-03T11:00:00"  },
+        { "id": "invl-010", "invoiceid": "inv-013",  "servicecode": "CORP-HEALTH-PKG",  "description": "Annual Corporate Health Assessment", "quantity": 1, "unitprice": 9500.00, "lineamount": 9500.00, "taxrate": 20, "servicedate": "2024-12-03",  "istaxable": true,  "createdon": "2024-12-03T11:00:00"  },
         { "id": "invl-011", "invoiceid": "inv-014",  "servicecode": "CONSULT-GP-60",    "description": "GP Consultation (60 min)",          "quantity": 1, "unitprice": 120.00,  "lineamount": 120.00,  "taxrate": 0, "servicedate": "2025-01-09",  "istaxable": false, "createdon": "2025-01-09T11:00:00"  },
         { "id": "invl-012", "invoiceid": "inv-015",  "servicecode": "CONSULT-TELE-30",  "description": "Teleconsultation (30 min)",          "quantity": 1, "unitprice": 85.00,   "lineamount": 85.00,   "taxrate": 0, "servicedate": "2025-02-13",  "istaxable": false, "createdon": "2025-02-13T16:00:00"  },
         { "id": "invl-013", "invoiceid": "inv-017",  "servicecode": "CONSULT-GP-60",    "description": "GP Consultation (60 min)",          "quantity": 1, "unitprice": 120.00,  "lineamount": 120.00,  "taxrate": 0, "servicedate": "2025-04-10",  "istaxable": false, "createdon": "2025-04-10T12:00:00"  },
@@ -72,7 +73,9 @@ export const ACCOUNTING_MOCK_DATA = {
         { "id": "invl-025", "invoiceid": "inv-030",  "servicecode": "CONSULT-GP-60",    "description": "GP Consultation (60 min)",          "quantity": 1, "unitprice": 120.00,  "lineamount": 120.00,  "taxrate": 0, "servicedate": "2026-02-24",  "istaxable": false, "createdon": "2026-02-24T15:00:00"  },
         { "id": "invl-026", "invoiceid": "inv-031",  "servicecode": "CONSULT-GP-60",    "description": "GP Consultation (60 min)",          "quantity": 1, "unitprice": 120.00,  "lineamount": 120.00,  "taxrate": 0, "servicedate": "2026-03-03",  "istaxable": false, "createdon": "2026-03-03T11:00:00"  },
         { "id": "invl-027", "invoiceid": "inv-032",  "servicecode": "CONSULT-TELE-30",  "description": "Teleconsultation (30 min)",          "quantity": 1, "unitprice": 85.00,   "lineamount": 85.00,   "taxrate": 0, "servicedate": "2026-03-07",  "istaxable": false, "createdon": "2026-03-07T13:00:00"  },
-        { "id": "invl-028", "invoiceid": "inv-034",  "servicecode": "CONSULT-SPEC-60",  "description": "Specialist Consultation (60 min)",  "quantity": 1, "unitprice": 150.00,  "lineamount": 150.00,  "taxrate": 0, "servicedate": "2026-03-12",  "istaxable": false, "createdon": "2026-03-12T11:00:00"  }
+        { "id": "invl-028", "invoiceid": "inv-034",  "servicecode": "CONSULT-SPEC-60",  "description": "Specialist Consultation (60 min)",  "quantity": 1, "unitprice": 150.00,  "lineamount": 150.00,  "taxrate": 0,  "servicedate": "2026-03-12",  "istaxable": false, "createdon": "2026-03-12T11:00:00"  },
+        { "id": "invl-029", "invoiceid": "inv-036",  "servicecode": "PORTAL-ANNUAL-LIC", "description": "Clinical Portal — Annual Licence",    "quantity": 1, "unitprice": 400.00,  "lineamount": 400.00,  "taxrate": 20, "servicedate": "2026-03-18",  "istaxable": true,  "createdon": "2026-03-18T11:00:00"  },
+        { "id": "invl-030", "invoiceid": "inv-036",  "servicecode": "TRAINING-DOCS",     "description": "Training Documentation Pack (x3)",   "quantity": 3, "unitprice": 40.00,   "lineamount": 120.00,  "taxrate": 0,  "servicedate": "2026-03-18",  "istaxable": false, "createdon": "2026-03-18T11:00:00"  }
       ],
 
       "payment": [
@@ -100,7 +103,8 @@ export const ACCOUNTING_MOCK_DATA = {
         { "id": "pay-022", "paymentdate": "2026-01-15", "paymentmethod": "card",         "amount": 24.00,  "status": "cleared",  "reference": "TXN-20260115-001",  "siteid": "SITE-001", "createdon": "2026-01-15T14:00:00"  },
         { "id": "pay-023", "paymentdate": "2026-01-12", "paymentmethod": "card",         "amount": 85.00,  "status": "cleared",  "reference": "TXN-20260112-002",  "siteid": "SITE-001", "createdon": "2026-01-12T10:00:00"  },
         { "id": "pay-024", "paymentdate": "2026-02-07", "paymentmethod": "cash",         "amount": 110.00, "status": "cleared",  "reference": null,                 "siteid": "SITE-001", "createdon": "2026-02-07T09:00:00"  },
-        { "id": "pay-025", "paymentdate": "2026-02-20", "paymentmethod": "bank_transfer","amount": 85.00,  "status": "pending",  "reference": "BAC-20260220-004",  "siteid": "SITE-003", "createdon": "2026-02-20T11:00:00"  }
+        { "id": "pay-025", "paymentdate": "2026-02-20", "paymentmethod": "bank_transfer","amount": 85.00,  "status": "pending",  "reference": "BAC-20260220-004",  "siteid": "SITE-003", "createdon": "2026-02-20T11:00:00"  },
+        { "id": "pay-026", "paymentdate": "2026-03-24", "paymentmethod": "bank_transfer","amount": 600.00, "status": "cleared",  "reference": "BAC-20260324-005",  "siteid": "SITE-001", "createdon": "2026-03-24T10:00:00"  }
       ],
 
       "payment_allocation": [
@@ -127,7 +131,8 @@ export const ACCOUNTING_MOCK_DATA = {
         { "paymentid": "pay-022",  "invoiceid": "inv-026",  "allocatedamount": 24.00,  "allocatedon": "2026-01-15" },
         { "paymentid": "pay-023",  "invoiceid": "inv-027",  "allocatedamount": 85.00,  "allocatedon": "2026-01-12" },
         { "paymentid": "pay-024",  "invoiceid": "inv-028",  "allocatedamount": 110.00, "allocatedon": "2026-02-07" },
-        { "paymentid": "pay-025",  "invoiceid": "inv-029",  "allocatedamount": 85.00,  "allocatedon": "2026-02-20" }
+        { "paymentid": "pay-025",  "invoiceid": "inv-029",  "allocatedamount": 85.00,  "allocatedon": "2026-02-20" },
+        { "paymentid": "pay-026",  "invoiceid": "inv-036",  "allocatedamount": 600.00, "allocatedon": "2026-03-24" }
       ],
 
       "claim": [
@@ -161,7 +166,7 @@ export const ACCOUNTING_MOCK_DATA = {
   },
 
   "_edge_cases_in_data": {
-    "EC-ACC4_LEFT_JOIN_no_claim": "inv-002, inv-003, inv-006, inv-007, inv-008, inv-010, inv-015, inv-016, inv-017 (discount paid cash), inv-019, inv-020, inv-022, inv-025, inv-027, inv-028, inv-029, inv-030, inv-032, inv-033, inv-035 have NO rows in claim — LEFT JOIN on claim produces NULL for all claim columns",
+    "EC-ACC4_LEFT_JOIN_no_claim": "inv-002, inv-003, inv-006, inv-007, inv-008, inv-010, inv-015, inv-016, inv-017 (discount paid cash), inv-019, inv-020, inv-022, inv-025, inv-027, inv-028, inv-029, inv-030, inv-032, inv-033, inv-035, inv-036 have NO rows in claim — LEFT JOIN on claim produces NULL for all claim columns",
     "EC-ACC5_FAN_OUT_inv_011": "inv-011 has TWO rows in payment_allocation (pay-006=80, pay-007=70) — joining invoice→payment_allocation produces 2 rows; SUM(invoice.totalamount) over this join = £300 (WRONG). Use SUM(allocatedamount) = £150 instead.",
     "EC-ACC5_FAN_OUT_inv_026": "inv-026 has TWO rows in payment_allocation (pay-021=96, pay-022=24) — same double-count risk",
     "EC-ACC5_FAN_OUT_inv_018": "inv-018 has TWO rows in payment_allocation (pay-014=120, pay-015=30) and pay-015 has status='failed' — invoice marked paid but £30 of allocation failed",
@@ -173,6 +178,10 @@ export const ACCOUNTING_MOCK_DATA = {
     "EC-ACC_OVERDUE": "inv-009 (duedate 2024-10-02), inv-023 (duedate 2025-10-28), inv-030 (duedate 2026-03-17) all have status=overdue with no payment_allocation rows",
     "EC-ACC_PARTIAL": "inv-011 (2024) and inv-034 (2026) have status=partial — claim partially approved, remainder rejected",
     "EC-ACC_DISCOUNT": "inv-004 has discountamount=15 (totalamount 150, netamount 135); inv-017 has discountamount=10 (totalamount 120, netamount 110); inv-028 has discountamount=10 — use netamount for actual billed value",
+    "EC-ACC_TAX_MISMATCH": "invl-010 (CORP-HEALTH-PKG) has istaxable=true and taxrate=20 but inv-013.taxamount=0 — documents a real-world source-system inconsistency where the line taxrate was updated after the invoice was finalised. Use SUM(lineamount * taxrate / 100) on lines for correct tax, not invoice.taxamount.",
+    "EC-ACC_TAX_CORRECT": "inv-036 (portal subscription) is the canonical taxable invoice: invl-029 (400 × 20% = 80 tax, istaxable=true), invl-030 (120, istaxable=false, taxrate=0, qty=3). inv-036.taxamount=80 correctly matches SUM(line tax). Use this for taxrate / taxamount aggregation demos.",
+    "EC-ACC_MULTI_LINE": "inv-036 has TWO invoice_line rows (invl-029 and invl-030) — the only invoice with more than one line. lineamount 400+120=520 = netamount. JOIN invoice→invoice_line produces 2 rows for this invoice; SUM(lineamount) GROUP BY invoice_id is the correct pattern.",
+    "EC-ACC_QTY_GT_1": "invl-030 (Training Documentation Pack) has quantity=3, unitprice=40, lineamount=120 — the only line with quantity > 1. Tests quantity × unitprice → lineamount calculation.",
     "EC-ACC_MULTI_CURRENCY": "invoices span GBP, EUR, USD — SUM(totalamount) across all invoices is currency-mixed; always filter or group by currencycode before aggregating",
     "EC-ACC_MULTI_SITE": "invoices span SITE-001, SITE-002, SITE-003 — site filter reduces result set to one site",
     "EC-ACC_REJECTED_CLAIM": "clm-004 (inv-009): fully rejected claim (approvedamount=0, rejectedamount=120) explains why inv-009 is overdue — insurer refused, patient not yet billed directly",

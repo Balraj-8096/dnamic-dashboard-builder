@@ -1,0 +1,174 @@
+<div class="list-page">
+
+  <!-- ── TOP BAR ──────────────────────────────────────────────────── -->
+  <header class="list-header">
+    <div class="header-brand">
+      <span class="logo-diamond" aria-hidden="true">◈</span>
+      <span class="logo-text">dashcraft</span>
+    </div>
+
+    <div class="header-actions">
+      <!-- aria-label omitted — [title] provides the tooltip; visible icon is decorative -->
+      <button
+        class="btn-theme"
+        [title]="themeSvc.theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+        (click)="themeSvc.toggle()"
+      >
+        <span aria-hidden="true">{{ themeSvc.theme() === 'dark' ? '☀' : '☾' }}</span>
+        <span class="sr-only">{{ themeSvc.theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme' }}</span>
+      </button>
+
+      <button
+        class="btn-new"
+        [class.btn-new--loading]="creating()"
+        [disabled]="creating()"
+        (click)="createDashboard()"
+      >
+        @if (creating()) {
+          <span class="spinner" aria-hidden="true"></span> Creating…
+        } @else {
+          <span aria-hidden="true">＋</span> New Dashboard
+        }
+      </button>
+    </div>
+  </header>
+
+  <!-- ── CREATE ERROR ─────────────────────────────────────────────── -->
+  @if (createError()) {
+    <div class="banner banner--error" role="alert">
+      <span>{{ createError() }}</span>
+      <button class="banner-dismiss" (click)="createDashboard()">Retry</button>
+    </div>
+  }
+
+  <!-- ── PAGE TITLE ───────────────────────────────────────────────── -->
+  <div class="list-body">
+    <div class="list-title-row">
+      <h1 class="list-heading">My Dashboards</h1>
+    </div>
+
+    <!-- ── LOADING ────────────────────────────────────────────────── -->
+    @if (loadState() === 'loading') {
+      <output class="state-center">
+        <div class="spinner spinner--lg" aria-hidden="true"></div>
+        <p class="state-label">Loading dashboards…</p>
+      </output>
+    }
+
+    <!-- ── ERROR ──────────────────────────────────────────────────── -->
+    @else if (loadState() === 'error') {
+      <div class="state-center" role="alert">
+        @if (errorMsg() === 'UNAUTHORIZED') {
+          <div class="state-icon" aria-hidden="true">🔒</div>
+          <p class="state-label">You need to sign in to view your dashboards.</p>
+          <button class="btn-retry" (click)="retry()">Sign in</button>
+        } @else {
+          <div class="state-icon" aria-hidden="true">⚠</div>
+          <p class="state-label">Couldn't load your dashboards. Check your connection and try again.</p>
+          <button class="btn-retry" (click)="retry()">Retry</button>
+        }
+      </div>
+    }
+
+    <!-- ── EMPTY ───────────────────────────────────────────────────── -->
+    @else if (loadState() === 'loaded' && dashboards().length === 0) {
+      <div class="state-center">
+        <div class="state-icon" aria-hidden="true">◈</div>
+        <p class="state-label">No dashboards yet.</p>
+        <p class="state-sub">Create your first dashboard to get started.</p>
+        <button class="btn-retry" (click)="createDashboard()" [disabled]="creating()">
+          New Dashboard
+        </button>
+      </div>
+    }
+
+    <!-- ── DASHBOARD GRID ──────────────────────────────────────────── -->
+    @else if (loadState() === 'loaded') {
+      <ul class="dash-grid">
+        @for (dash of dashboards(); track dash.id) {
+          <li
+            class="dash-card"
+            [class.dash-card--active]="dash.id === activeDashboardId()"
+          >
+            <!-- Delete error banner (inline per-card) -->
+            @if (deleteErrorId() === dash.id) {
+              <div class="card-error" role="alert">
+                Delete failed.
+                <button class="card-error-dismiss" (click)="clearDeleteError(dash.id, $event)">
+                  <span aria-hidden="true">×</span>
+                  <span class="sr-only">Dismiss error</span>
+                </button>
+              </div>
+            }
+
+            <!-- Card body (click to open) -->
+            <button
+              class="card-body"
+              (click)="openDashboard(dash.id)"
+              [attr.aria-label]="'Open ' + dash.title"
+            >
+              <!-- Icon -->
+              <div class="card-icon" aria-hidden="true">◈</div>
+
+              <!-- Title row -->
+              @if (renamingId() === dash.id) {
+                <input
+                  class="card-rename-input"
+                  type="text"
+                  [value]="renameValue()"
+                  (input)="onRenameInput($any($event.target).value)"
+                  (keydown.enter)="commitRename(dash.id)"
+                  (keydown.escape)="cancelRename()"
+                  (blur)="commitRename(dash.id)"
+                  (click)="$event.stopPropagation()"
+                  [attr.aria-label]="'Rename ' + dash.title"
+                  autofocus
+                />
+              } @else {
+                <span class="card-title">{{ dash.title }}</span>
+              }
+
+              <span class="card-meta">
+                <span class="card-date">{{ formatDate(dash.updatedAt) }}</span>
+              </span>
+            </button>
+
+            <!-- Card footer actions -->
+            <div class="card-footer">
+              <button
+                class="btn-open"
+                (click)="openDashboard(dash.id)"
+              >Open</button>
+
+              <div class="card-menu-group">
+                <button
+                  class="btn-icon"
+                  (click)="startRename(dash, $event)"
+                  [attr.title]="'Rename ' + dash.title"
+                  [attr.aria-label]="'Rename ' + dash.title"
+                >
+                  <span aria-hidden="true">✎</span>
+                </button>
+
+                <button
+                  class="btn-icon btn-icon--danger"
+                  [disabled]="deletingId() === dash.id"
+                  (click)="deleteDashboard(dash.id, $event)"
+                  [attr.title]="'Delete ' + dash.title"
+                  [attr.aria-label]="'Delete ' + dash.title"
+                >
+                  @if (deletingId() === dash.id) {
+                    <span class="spinner spinner--sm" aria-hidden="true"></span>
+                  } @else {
+                    <span aria-hidden="true">🗑</span>
+                  }
+                </button>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+</div>

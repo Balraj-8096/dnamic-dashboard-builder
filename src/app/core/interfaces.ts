@@ -37,6 +37,7 @@ export enum ResizeDirection {
 }
 
 export enum PageState {
+  List    = 'list',
   Builder = 'builder',
   View    = 'view',
 }
@@ -437,6 +438,23 @@ export interface DashboardExport {
   widgets: Widget[];
   /** Per-dashboard row height in pixels. Optional — absent = DEFAULT_ROW_H (80). */
   rowH?:   number;
+}
+
+/**
+ * Registry metadata for a single dashboard.
+ * Stored locally (localStorage or DashboardRegistryService) for the list page.
+ * Does NOT include widgets — full widget data is fetched on demand via the API
+ * (real-API mode) or loaded from per-dashboard localStorage keys (mock mode).
+ */
+export interface DashboardRecord {
+  /** UUID — matches the API's dashboard id */
+  id:         string;
+  /** Dashboard title — snapshot for display in the list; updated on save */
+  title:      string;
+  /** Unix ms timestamp — Date.now() at last save */
+  updatedAt:  number;
+  /** Widget count snapshot — for "N widgets" label in list card */
+  widgetCount: number;
 }
 
 

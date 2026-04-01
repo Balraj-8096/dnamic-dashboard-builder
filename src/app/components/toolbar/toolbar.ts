@@ -50,6 +50,10 @@ export class Toolbar {
     }
   }
 
+  goToDashboards(): void {
+    this.router.navigate(['/dashboards']);
+  }
+
   openWizard(): void {
     this.svc.openWizard(null);   // null = open at Step 1
   }

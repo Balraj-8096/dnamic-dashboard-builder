@@ -1196,4 +1196,47 @@ export class DashboardService {
       return 'Could not parse file — make sure it is a valid dashcraft JSON export';
     }
   }
+
+  /**
+   * Load a dashboard payload fetched from the API into the canvas.
+   *
+   * Unlike importLayout(), this method:
+   * - Preserves original widget IDs (they are authoritative from the server)
+   * - Does NOT close the import modal (not triggered by a file import)
+   * - Resets all transient interaction state (selection, drag, clipboard, guides)
+   *
+   * Used by DashboardPersistenceService.load() when switching between dashboards
+   * so the save effect never fires with a mismatched ID + widget dataset.
+   *
+   * @param payload - { title, widgets, rowH? } from DashboardApiService.get()
+   */
+  loadLayout(payload: { title: string; widgets: Widget[]; rowH?: number }): void {
+    // Set widgets directly — IDs are preserved (unlike importLayout which regenerates)
+    this.widgets.set(deepClone(payload.widgets));
+
+    // RESET history — not undoable across dashboard switches
+    this.history.set([{
+      widgets:     deepClone(payload.widgets),
+      timestamp:   Date.now(),
+      label:       'Load dashboard',
+      widgetCount: payload.widgets.length,
+    }]);
+    this.histIdx.set(0);
+
+    // Update title and display preferences
+    this.dashTitle.set(payload.title || 'Untitled Dashboard');
+    if (payload.rowH && ALLOWED_ROW_HEIGHTS.includes(payload.rowH)) {
+      this.rowH.set(payload.rowH);
+    } else {
+      this.rowH.set(DEFAULT_ROW_H);
+    }
+
+    // Reset all transient interaction state — Gap 10 fix
+    this.selectedId.set(null);
+    this.activeId.set(null);
+    this.animatingId.set(null);
+    this.clipboard.set(null);
+    this.alignmentGuides.set([]);
+    this.closeAllModals();
+  }
 }
