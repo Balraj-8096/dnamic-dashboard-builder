@@ -161,6 +161,18 @@ export class DashboardPersistenceService implements OnDestroy {
   }
 
   /**
+   * Assign a fresh UUID for a brand-new (unsaved) dashboard session.
+   * Called when the builder is opened without a route :id param so that
+   * any subsequent auto-save targets a new record, not the previously
+   * opened dashboard. C-N1 fix.
+   */
+  initForNewDashboard(): void {
+    const newId = crypto.randomUUID();
+    this._dashboardId.set(newId);
+    try { localStorage.setItem(DASHBOARD_ID_KEY, newId); } catch { /* quota / private mode */ }
+  }
+
+  /**
    * Bypass the debounce and save immediately.
    * Useful for explicit "Save" buttons or before navigation.
    */

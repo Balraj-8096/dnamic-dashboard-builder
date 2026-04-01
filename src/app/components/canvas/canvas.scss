@@ -41,10 +41,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background:
-    linear-gradient(180deg,
-      color-mix(in srgb, var(--bg0) 78%, transparent),
-      color-mix(in srgb, var(--bg0) 88%, black 12%));
+  background: color-mix(in srgb, var(--bg0) 82%, transparent);
   backdrop-filter: blur(8px);
   opacity: 0;
   pointer-events: none;
@@ -97,9 +94,7 @@
   padding: 8px;
   display: flex;
   overflow: hidden;
-  background:
-    radial-gradient(circle at top left, color-mix(in srgb, var(--acc) 8%, transparent), transparent 32%),
-    linear-gradient(180deg, color-mix(in srgb, var(--bg1) 38%, transparent), transparent 26%);
+  background: color-mix(in srgb, var(--bg0) 76%, var(--bg1));
 }
 
 .canvas-area-wrapper {
@@ -183,7 +178,7 @@
   &--primary {
     width: auto;
     padding: 0 14px;
-    background: linear-gradient(150deg, #1d4ed8, var(--acc));
+    background: var(--acc);
     color: #fff;
     font-size: 12px;
     font-family: var(--font-mono);
@@ -371,7 +366,7 @@
 
   &--primary {
     border-color: color-mix(in srgb, var(--acc) 40%, transparent);
-    background: linear-gradient(135deg, #1d4ed8, var(--acc));
+    background: var(--acc);
     color: #fff;
     box-shadow: 0 12px 28px color-mix(in srgb, var(--acc) 22%, transparent);
   }

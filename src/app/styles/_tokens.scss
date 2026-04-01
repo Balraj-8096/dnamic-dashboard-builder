@@ -88,7 +88,7 @@
   // ── Borders ──────────────────────────────────────────────────
   --bdr:  #1e2d42; // default border
   --bdrH: #2a4060; // hovered border
-  --bdrA: #1d4ed8; // active / dragging border
+  --bdrA: #151922; // active / dragging border
 
   // ── Text ─────────────────────────────────────────────────────
   --txt0: #e8edf5; // primary text
@@ -143,24 +143,11 @@
   // ── Canvas Decoration ────────────────────────────────────────
   --canvas-inset-highlight: inset 0 1px 0 color-mix(in srgb, white 4%, transparent);
 
-  // Shared gradient surfaces
-  --gradient-surface-header:
-    linear-gradient(10deg,
-      color-mix(in srgb, var(--bg2) 60%, white 6%) 0%,
-      color-mix(in srgb, var(--bg1) 64%, transparent) 100%);
-  --gradient-surface-floating:
-    linear-gradient(10deg,
-      color-mix(in srgb, var(--bg1) 86%, white 6%) 0%,
-      color-mix(in srgb, var(--bg1) 74%, var(--bg0) 26%) 100%);
-  --gradient-surface-emphasis:
-    linear-gradient(135deg,
-      color-mix(in srgb, var(--acc) 16%, var(--bg1)) 0%,
-      color-mix(in srgb, var(--acc2) 8%, var(--bg1)) 62%,
-      color-mix(in srgb, white 3%, var(--bg1)) 100%);
-  --gradient-surface-card:
-    linear-gradient(10deg,
-      color-mix(in srgb, var(--bg1) 96%, white 3%) 0%,
-      color-mix(in srgb, var(--bg1) 88%, var(--bg0) 12%) 100%);
+  // Shared surface fills
+  --gradient-surface-header:   color-mix(in srgb, var(--bg2) 72%, var(--bg1));
+  --gradient-surface-floating: color-mix(in srgb, var(--bg1) 86%, var(--bg0));
+  --gradient-surface-emphasis: color-mix(in srgb, var(--bg1) 82%, var(--acc) 18%);
+  --gradient-surface-card:     color-mix(in srgb, var(--bg1) 90%, var(--bg0));
 
   // ── Status Badge Colors ──────────────────────────────────────
   --status-paid-bg:     #052e16;
@@ -191,47 +178,53 @@
 [data-theme="light"] {
 
   // ── Backgrounds ──────────────────────────────────────────────
-  --bg0: #eef1f6; // canvas background
+  --bg0: #f8fafc; // canvas background
   --bg1: #ffffff; // card / sidebar background
-  --bg2: #f4f6fa; // widget header
-  --bg3: #e8edf6; // input background, hover states
-  --bg4: #dce3ef; // button hover
+  --bg2: #f4f4f5; // widget header
+  --bg3: #f1f5f9; // input background, hover states
+  --bg4: #e4e4e7; // button hover
 
   // ── Accents (darkened for contrast on white) ─────────────────
   // Dark uses mid-tone accents that pop on near-black bg.
   // Light needs darker variants to meet WCAG contrast on white.
-  --acc:  #2563eb; // 5.6:1 on white  (was #3b82f6 = 3.1:1)
-  --acc2: #3b82f6; // 3.1:1 — large bold text only
+  --acc:  #18181b; // near-black primary for minimal CTAs and focus rings
+  --acc2: #52525b; // softer neutral emphasis
   --grn:  #16a34a; // 4.5:1 on white  (was #22c55e = 2.0:1)
   --red:  #dc2626; // 5.9:1 on white  (was #ef4444 = 3.0:1)
   --amb:  #b45309; // 5.2:1 on white  (was #f59e0b = 2.8:1)
   --pur:  #7c3aed; // 5.5:1 on white  (was #a78bfa = 2.8:1)
 
   // ── Borders ──────────────────────────────────────────────────
-  --bdr:  #cdd5e0;
-  --bdrH: #93b4d4;
-  --bdrA: #2563eb; // matches --acc
+  --bdr:  #e4e4e7;
+  --bdrH: #d4d4d8;
+  --bdrA: #18181b; // matches --acc
 
   // ── Text ─────────────────────────────────────────────────────
-  --txt0: #0f172a;
-  --txt1: #475569;
-  --txt2: #94a3b8;
+  --txt0: #09090b;
+  --txt1: #3f3f46;
+  --txt2: #71717a;
 
   // ── Shadows ──────────────────────────────────────────────────
   --shadow-header:             none;
-  --shadow-card:               0 2px 12px rgba(0, 0, 0, 0.10);
-  --shadow-modal:              0 24px 64px rgba(0, 0, 0, 0.22);
-  --shadow-ctx:                0 16px 40px rgba(0, 0, 0, 0.14),
-                               0 0 0 1px #cdd5e0;
-  --shadow-widget-active:      0 4px 20px rgba(0, 0, 0, 0.10),
-                               0 0 0 1px color-mix(in srgb, var(--acc) 20%, transparent);
-  --shadow-widget-interacting: 0 8px 24px rgba(0, 0, 0, 0.09),
-                               0 0 0 1px color-mix(in srgb, var(--acc) 22%, transparent);
-  --shadow-preview-card:       0 4px 16px rgba(0, 0, 0, 0.08);
-  --shadow-bottom-bar:         0 4px 28px rgba(0, 0, 0, 0.02), 0 0 0 1px var(--bdr);
-  --shadow-panel:              0 10px 28px rgba(0, 0, 0, 0.10), 0 0 0 1px var(--bdr);
-  --shadow-minimap:            0 4px 16px rgba(0, 0, 0, 0.12), 0 0 0 1px var(--bdrH);
-  --shadow-sidebar-drawer:     8px 0 24px rgba(0, 0, 0, 0.10), 1px 0 0 var(--bdr);
+  --shadow-card:               0 1px 2px rgba(15, 23, 42, 0.05),
+                               0 4px 14px rgba(15, 23, 42, 0.04);
+  --shadow-modal:              0 22px 54px rgba(15, 23, 42, 0.12),
+                               0 0 0 1px rgba(15, 23, 42, 0.04);
+  --shadow-ctx:                0 18px 40px rgba(15, 23, 42, 0.10),
+                               0 0 0 1px var(--bdr);
+  --shadow-widget-active:      0 0 0 1px color-mix(in srgb, var(--acc) 18%, transparent),
+                               0 12px 30px rgba(15, 23, 42, 0.08);
+  --shadow-widget-interacting: 0 0 0 1px color-mix(in srgb, var(--acc) 16%, transparent),
+                               0 18px 36px rgba(15, 23, 42, 0.10);
+  --shadow-preview-card:       0 1px 2px rgba(15, 23, 42, 0.04),
+                               0 10px 24px rgba(15, 23, 42, 0.05);
+  --shadow-bottom-bar:         0 12px 32px rgba(15, 23, 42, 0.07),
+                               0 0 0 1px rgba(15, 23, 42, 0.04);
+  --shadow-panel:              0 16px 36px rgba(15, 23, 42, 0.08),
+                               0 0 0 1px rgba(15, 23, 42, 0.05);
+  --shadow-minimap:            0 10px 22px rgba(15, 23, 42, 0.08),
+                               0 0 0 1px rgba(15, 23, 42, 0.05);
+  --shadow-sidebar-drawer:     18px 0 36px rgba(15, 23, 42, 0.08), 1px 0 0 var(--bdr);
 
   // ── Dev JSON Syntax Colors (darkened for light bg) ────────────
   --dev-json-query-color:   #0369a1;
@@ -239,15 +232,15 @@
   --dev-json-payload-color: #6d28d9;
   --dev-json-sql-color:     #92400e;
   --dev-json-error-color:   #dc2626;
-  --dev-json-error-bg:      color-mix(in srgb, #dc2626 8%, #eef1f6);
+  --dev-json-error-bg:      color-mix(in srgb, #dc2626 8%, #f8fafc);
 
   // ── Dev Badge Colors ─────────────────────────────────────────
   --dev-badge-err: #dc2626; // matches --red in light
   --dev-badge-sql: #92400e;
 
   // ── Table Row Tints ──────────────────────────────────────────
-  --table-row-hover-bg:  rgba(0, 0, 0, 0.030);
-  --table-row-stripe-bg: rgba(0, 0, 0, 0.018);
+  --table-row-hover-bg:  rgba(9, 9, 11, 0.028);
+  --table-row-stripe-bg: rgba(9, 9, 11, 0.018);
 
   // ── Empty State ──────────────────────────────────────────────
   --empty-text-opacity-1: 0.60;
@@ -255,27 +248,14 @@
   --empty-icon-opacity:   0.10;
 
   // ── Canvas Decoration ────────────────────────────────────────
-  --canvas-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.85),
-                            inset 0 0 0 1px color-mix(in srgb, var(--bdr) 40%, transparent);
+  --canvas-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.92),
+                            inset 0 0 0 1px rgba(15, 23, 42, 0.04);
 
-  // Shared gradient surfaces
-  --gradient-surface-header:
-    linear-gradient(0deg,
-      color-mix(in srgb, white 80%, var(--acc) 8%) 0%,
-      color-mix(in srgb, white 94%, transparent) 100%);
-  --gradient-surface-floating:
-    linear-gradient(0deg,
-      color-mix(in srgb, white 84%, var(--acc)8%) 0%,
-      color-mix(in srgb, white 74%, var(--bg0) 26%) 100%);
-  --gradient-surface-emphasis:
-    linear-gradient(135deg,
-      color-mix(in srgb, white 84%, var(--acc) 10%) 0%,
-      color-mix(in srgb, white 88%, var(--acc2) 7%) 58%,
-      color-mix(in srgb, white 92%, #000 1%) 100%);
-  --gradient-surface-card:
-    linear-gradient(10deg,
-      color-mix(in srgb, white 96%, var(--acc) 2%) 0%,
-      color-mix(in srgb, white 90%, var(--bg0) 10%) 100%);
+  // Shared surface fills
+  --gradient-surface-header:   color-mix(in srgb, var(--bg1) 74%, var(--bg2));
+  --gradient-surface-floating: color-mix(in srgb, var(--bg1) 90%, var(--bg0));
+  --gradient-surface-emphasis: color-mix(in srgb, var(--bg1) 82%, var(--bg2));
+  --gradient-surface-card:     color-mix(in srgb, var(--bg1) 94%, var(--bg2));
 
   // ── Status Badge Colors ──────────────────────────────────────
   --status-paid-bg:     #dcfce7;
@@ -285,7 +265,7 @@
   --status-failed-bg:   #fee2e2;
   --status-failed-fg:   #dc2626;
   --status-active-bg:   #dbeafe;
-  --status-active-fg:   #1d4ed8;
+  --status-active-fg:   #151922;
   --status-inactive-bg: #f1f5f9;
   --status-inactive-fg: #64748b;
   --status-shipped-bg:  #d1fae5;

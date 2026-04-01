@@ -90,17 +90,11 @@
   }
 
   &--current {
-    background:
-      linear-gradient(135deg,
-        color-mix(in srgb, var(--acc) 14%, transparent),
-        color-mix(in srgb, var(--acc2, var(--acc)) 6%, transparent));
+    background: color-mix(in srgb, var(--acc) 12%, transparent);
     border-left-color: var(--acc);
 
     &:hover {
-      background:
-        linear-gradient(135deg,
-          color-mix(in srgb, var(--acc) 18%, transparent),
-          color-mix(in srgb, var(--acc2, var(--acc)) 8%, transparent));
+      background: color-mix(in srgb, var(--acc) 16%, transparent);
     }
   }
 

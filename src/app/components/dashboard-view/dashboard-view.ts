@@ -130,11 +130,28 @@ export class DashboardView implements OnInit, OnDestroy {
         }
       });
 
-    // Route param: if :id is present and API mode is active, load remotely
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id && this.configSvc.useRealApi()) {
-      this.loadFromApi(id);
-    }
+    // Subscribe to paramMap so /view/id1 → /view/id2 navigation (same route config,
+    // component reused) correctly loads the new dashboard instead of staying on the
+    // previous one.  C-N2 fix.
+    this.route.paramMap
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        const id = params.get('id');
+        if (id && this.configSvc.useRealApi()) {
+          // Clear stale remote state before starting the new load to prevent a
+          // flash of the previous dashboard's content. C-N2 fix.
+          this._remoteWidgets.set([]);
+          this._remoteTitle.set('');
+          this._loadState.set('idle');
+          this.loadFromApi(id);
+        } else if (!id) {
+          // No ID = live mode (read from DashboardService); ensure remote state is cleared.
+          this._viewMode.set('live');
+          this._remoteWidgets.set([]);
+          this._remoteTitle.set('');
+          this._loadState.set('idle');
+        }
+      });
   }
 
   ngOnDestroy(): void {

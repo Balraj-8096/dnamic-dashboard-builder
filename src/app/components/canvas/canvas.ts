@@ -147,14 +147,24 @@ export class Canvas implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Load dashboard by route :id param if present.
-    // load() handles both real-API and mock modes; redirects to /dashboards on 404.
-    const routeId = this.route.snapshot.paramMap.get('id');
-    if (routeId) {
-      this.persistence.load(routeId, () => this.router.navigate(['/dashboards']));
-    }
-    // Track which dashboard is open so the list page can highlight it.
-    this.registry.setActive(routeId);
+    // Subscribe to paramMap instead of using snapshot so that navigating from
+    // /builder/id1 → /builder/id2 (same route config, component reused) still
+    // triggers a reload.  Also handles the /builder (no-ID) → fresh blank state
+    // case so previous session data never bleeds into a new dashboard.  C-N1 fix.
+    this.route.paramMap
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        const routeId = params.get('id');
+        if (routeId) {
+          this.persistence.load(routeId, () => this.router.navigate(['/dashboards']));
+        } else {
+          // No ID = new blank dashboard.  Reset service state and assign a fresh
+          // persistence ID so auto-save never writes to the previously open dashboard.
+          this.persistence.initForNewDashboard();
+          this.svc.loadLayout({ title: 'New Dashboard', widgets: [] });
+        }
+        this.registry.setActive(routeId);
+      });
 
     const main = this.mainRef.nativeElement;
     const canvas = this.canvasRef.nativeElement;

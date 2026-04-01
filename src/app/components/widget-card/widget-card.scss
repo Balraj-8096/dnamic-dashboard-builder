@@ -214,11 +214,7 @@
     cursor: ns-resize;
 
     &:hover {
-      background: linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--acc) 40%, transparent),
-        color-mix(in srgb, var(--acc) 18%, transparent)
-      );
+      background: color-mix(in srgb, var(--acc) 28%, transparent);
     }
   }
 
@@ -239,11 +235,7 @@
     border-radius: 999px;
 
     &:hover {
-      background: linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--acc) 18%, transparent),
-        color-mix(in srgb, var(--acc) 40%, transparent)
-      );
+      background: color-mix(in srgb, var(--acc) 28%, transparent);
     }
   }
 
@@ -256,11 +248,7 @@
     border-radius: 999px;
 
     &:hover {
-      background: linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--acc) 40%, transparent),
-        color-mix(in srgb, var(--acc) 18%, transparent)
-      );
+      background: color-mix(in srgb, var(--acc) 28%, transparent);
     }
   }
 

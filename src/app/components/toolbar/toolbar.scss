@@ -298,9 +298,7 @@
   padding: 6px 16px;
   border-radius: var(--radius-sm);
   border: 1px solid color-mix(in srgb, var(--grn) 40%, transparent);
-  background: linear-gradient(135deg,
-      color-mix(in srgb, var(--grn) 18%, transparent),
-      color-mix(in srgb, var(--grn) 7%, transparent));
+  background: color-mix(in srgb, var(--grn) 12%, var(--bg1));
   color: var(--grn);
   cursor: pointer;
   font-size: 12px;
@@ -311,7 +309,7 @@
 
   &:not(:disabled):hover {
     background: var(--grn);
-    color: #000;
+    color: #08110a;
   }
 
   &:disabled {
